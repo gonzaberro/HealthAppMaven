@@ -89,6 +89,58 @@ export default function PrestadoraForm() {
       <Grid container className={classes.gridForm}>
         <Grid item xs={12} md={12} sm={12} lg={12}>
           <Grid container>
+            <Grid item xs={12} md={6} sm={6} lg={6}>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                label={"Nombre"}
+                fullWidth
+                value={nombre}
+                onChange={(event) => setNombre(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} md={6} sm={6} lg={6}>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                label={"Telefono"}
+                fullWidth
+                value={telefono}
+                onChange={(event) => setTelefono(event.target.value)}
+              />
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid item xs={12} md={12} sm={12} lg={12}>
+          <Grid container>
+            <Grid item xs={12} md={12} sm={12} lg={12}>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                label={"Dirección"}
+                fullWidth
+                value={direccion}
+                onChange={(event) => setDireccion(event.target.value)}
+              />
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid item xs={12} md={12} sm={12} lg={12}>
+          <Grid container>
+            <Grid item xs={12} md={6} sm={6} lg={6}>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                label={"Intervalo (en minutos)"}
+                fullWidth
+                value={intervalo}
+                onChange={(event) => setIntervalo(event.target.value)}
+              />
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid item xs={12} md={12} sm={12} lg={12}>
+          <Grid container>
             <Grid item xs={12} sm={6} md={6} lg={6}>
               <FormControl
                 variant="outlined"
@@ -143,10 +195,10 @@ export default function PrestadoraForm() {
           <TextField
             variant="outlined"
             margin="normal"
-            label={"Intervalo (en minutos)"}
+            label={"Logo"}
             fullWidth
-            value={intervalo}
-            onChange={(event) => setIntervalo(event.target.value)}
+            value={logo}
+            onChange={(event) => setLogo(event.target.value)}
           />
         </Grid>
         <Grid item>

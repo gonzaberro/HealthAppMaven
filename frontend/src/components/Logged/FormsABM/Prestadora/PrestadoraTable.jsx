@@ -63,22 +63,22 @@ export default function PrestadoraTable() {
                   onClick={() => editPrestadora(prestadora)}
                 >
                   <TableCell component="th" scope="row">
-                    {prestadoras.nombre}
+                    {prestadora.nombre}
                   </TableCell>
                   <TableCell component="th" scope="row">
-                    {prestadoras.direccion}
+                    {prestadora.direccion}
                   </TableCell>
                   <TableCell component="th" scope="row">
-                    {prestadoras.telefono}
+                    {prestadora.telefono}
                   </TableCell>
                   <TableCell component="th" scope="row">
-                    {prestadoras.intervalo}
+                    {prestadora.intervalo}
                   </TableCell>
                   <TableCell component="th" scope="row">
-                    {prestadoras.horaDesde}
+                    {prestadora.horaDesde}
                   </TableCell>
                   <TableCell component="th" scope="row">
-                    {prestadoras.horaHasta}
+                    {prestadora.horaHasta}
                   </TableCell>
                   <TableCell align="right">
                     <FontAwesomeIcon

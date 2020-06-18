@@ -16,10 +16,6 @@ import {
   obraSocialOptions,
   columnsPersonalMedico,
   formPersonalMedico,
-  columnsInstituciones,
-  formInstituciones,
-  columnsEspecialidades,
-  formEspecialidades,
 } from "Utils/formInputs";
 
 export default function PrimaryContainer() {
