@@ -31,17 +31,16 @@ export default function SimpleTable() {
   };
 
   const deleteObraSocial = (cd_os, nombre) => {
-    console.log("HOLA");
     confirmAlert({
       title: "¿Eliminar " + nombre + "?",
       message: "",
       buttons: [
         {
-          label: "Cancelar",
-        },
-        {
           label: "Confirmar",
           onClick: () => dispatch(eliminarObraSocial(cd_os)),
+        },
+        {
+          label: "Cancelar",
         },
       ],
     });

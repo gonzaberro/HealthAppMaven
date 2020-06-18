@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 import { useSelector, useDispatch } from "react-redux";
 import { setObraSocial, getListaObrasSocial } from "actions/ObraSocialActions";
 import { useSnackbar } from "notistack";
+import { url_servidor } from "Utils/constants";
 
 export default function ObraSocialForm() {
   const classes = useStyles();
@@ -17,8 +18,8 @@ export default function ObraSocialForm() {
 
   const guardarObraSocial = () => {
     if (nombreObraSocial !== "") {
-      fetch("http://localhost:8080/obraSocial", {
-        method: "post",
+      fetch(url_servidor + "obraSocial", {
+        method: cdObraSocial !== 0 ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ cd_os: cdObraSocial, nombre: nombreObraSocial }),
       }).then(function (response) {

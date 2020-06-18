@@ -3,6 +3,7 @@ import Agenda from "./Agenda/Agenda";
 
 import Wrapper from "components/Logged/Wrapper";
 import ObraSocial from "./FormsABM/ObraSocial/ObraSocial";
+import Plan from "./FormsABM/Plan/Plan";
 import { useSelector } from "react-redux";
 import { menuOptions } from "Utils/constants";
 import AgendaMensual from "./Agenda Mensual/AgendaMensual";
@@ -45,6 +46,8 @@ export default function PrimaryContainer() {
 
       case menuOptions.OBRAS_SOCIALES:
         return <ObraSocial />;
+      case menuOptions.PLAN:
+        return <Plan />;
       case menuOptions.PESONAL_SALUD:
         return (
           <Wrapper

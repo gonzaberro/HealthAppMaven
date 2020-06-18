@@ -1,13 +1,13 @@
 import { combineReducers } from "redux";
 
 import LoginReducer from "./LoginReducer";
-import globalReducer from "./globalReducer";
+import globalReducer from "./GlobalReducer";
 import AgendaReducer from "./AgendaReducer";
 import EditTurnoReducer from "./EditTurnoReducer";
 import VistaMensualySemanalReducer from "./VistaMensualySemanalReducer";
 import { reducer as toastrReducer } from "react-redux-toastr";
-
-import ObraSocialReducer from "./obraSocialReducer";
+import PlanReducer from "./PlanReducer";
+import ObraSocialReducer from "./ObraSocialReducer";
 
 export default combineReducers({
   login_state: LoginReducer,
@@ -17,4 +17,5 @@ export default combineReducers({
   vista_mensual_semanal: VistaMensualySemanalReducer,
   obra_social: ObraSocialReducer,
   toastr: toastrReducer,
+  plan: PlanReducer,
 });

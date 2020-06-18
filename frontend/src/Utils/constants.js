@@ -10,4 +10,6 @@ export const menuOptions = {
   Agenda_DIARIA: "agenda_diaria",
   Agenda_MENSUAL: "agenda_mensual",
   Agenda_SEMANAL: "agenda_semanal",
+  PLAN: "PLAN",
 };
+export const url_servidor = "http://localhost:8080/";
