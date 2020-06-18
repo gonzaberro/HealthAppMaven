@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/HealthApp/static/css/main.5f361e03.chunk.css",
+    "main.js": "/HealthApp/static/js/main.467fcee0.chunk.js",
+    "main.js.map": "/HealthApp/static/js/main.467fcee0.chunk.js.map",
+    "runtime-main.js": "/HealthApp/static/js/runtime-main.cbbee312.js",
+    "runtime-main.js.map": "/HealthApp/static/js/runtime-main.cbbee312.js.map",
+    "static/css/2.5b7efe6d.chunk.css": "/HealthApp/static/css/2.5b7efe6d.chunk.css",
+    "static/js/2.359254f4.chunk.js": "/HealthApp/static/js/2.359254f4.chunk.js",
+    "static/js/2.359254f4.chunk.js.map": "/HealthApp/static/js/2.359254f4.chunk.js.map",
+    "index.html": "/HealthApp/index.html",
+    "precache-manifest.f2610e21d1daceb24a5be4b381eedbbd.js": "/HealthApp/precache-manifest.f2610e21d1daceb24a5be4b381eedbbd.js",
+    "service-worker.js": "/HealthApp/service-worker.js",
+    "static/css/2.5b7efe6d.chunk.css.map": "/HealthApp/static/css/2.5b7efe6d.chunk.css.map",
+    "static/css/main.5f361e03.chunk.css.map": "/HealthApp/static/css/main.5f361e03.chunk.css.map",
+    "static/js/2.359254f4.chunk.js.LICENSE.txt": "/HealthApp/static/js/2.359254f4.chunk.js.LICENSE.txt",
+    "static/media/fondo.png": "/HealthApp/static/media/fondo.a7499bbf.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.cbbee312.js",
+    "static/css/2.5b7efe6d.chunk.css",
+    "static/js/2.359254f4.chunk.js",
+    "static/css/main.5f361e03.chunk.css",
+    "static/js/main.467fcee0.chunk.js"
+  ]
+}
