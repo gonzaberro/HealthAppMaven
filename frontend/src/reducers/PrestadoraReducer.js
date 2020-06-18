@@ -1,15 +1,6 @@
 import { SET_PRESTADORA, SET_LISTA_PRESTADORA } from "actions/types";
 const initialState = {
-  prestadora: {
-    cd_prestadora: 0,
-    nombre: "",
-    direccion: "",
-    telefono: "",
-    logo: "",
-    intervalo: 0,
-    horaDesde: "",
-    horaHasta: "",
-  },
+  prestadora: {},
   listaPrestadoras: [],
 };
 

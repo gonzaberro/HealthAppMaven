@@ -11,6 +11,8 @@ export const menuOptions = {
   Agenda_SEMANAL: "agenda_semanal",
   PLAN: "PLAN",
   PRESTADORA: "PRESTADORA",
+  SERVICIOS: "SERVICIOS",
+  TIPO_SERVICIO: "TIPO_SERVICIO",
 };
 export const url_servidor = "http://localhost:8080/";
 

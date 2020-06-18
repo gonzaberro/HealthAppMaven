@@ -14,7 +14,7 @@ export default function PrestadoraForm() {
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
-  const [cdPrestadora, setCdPrestadora] = useState(1);
+  const [cdPrestadora, setCdPrestadora] = useState(0);
   const [nombre, setNombre] = useState("");
   const [direccion, setDireccion] = useState("");
   const [telefono, setTelefono] = useState("");
@@ -24,9 +24,20 @@ export default function PrestadoraForm() {
   const [horaHasta, setHoraHasta] = useState("");
 
   const prestadora = useSelector((state) => state.prestadora.prestadora);
-
+  const validarCampos = () => {
+    if (
+      nombre === "" ||
+      direccion === "" ||
+      telefono === "" ||
+      intervalo === ""
+    ) {
+      return false;
+    } else {
+      return true;
+    }
+  };
   const guardarHorario = () => {
-    if (intervalo !== "") {
+    if (validarCampos) {
       fetch(url_servidor + "prestadora", {
         method: cdPrestadora !== 0 ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
@@ -54,7 +65,7 @@ export default function PrestadoraForm() {
         }
       });
     } else {
-      enqueueSnackbar("No puede dejar el intervalo en blanco", {
+      enqueueSnackbar("No puede dejar campos en blanco", {
         variant: "warning",
       });
     }
@@ -71,20 +82,30 @@ export default function PrestadoraForm() {
     setHoraHasta(prestadora.horaHasta);
   }, [prestadora]);
 
+  const nuevaPrestadora = () => {
+    setCdPrestadora(0);
+    setNombre("");
+    setDireccion("");
+    setTelefono("");
+    setLogo("");
+    setIntervalo("");
+    setHoraDesde("");
+    setHoraHasta("");
+
+    dispatch(setPrestadora({}));
+  };
+
   return (
     <div>
       <Grid container>
         <Grid item lg={10} xs={8} md={8} sm={8} className={classes.headerForm}>
           Editar Horario
         </Grid>
-        <Grid
-          item
-          lg={2}
-          xs={4}
-          md={4}
-          sm={4}
-          className={classes.buttonForm}
-        ></Grid>
+        <Grid item lg={2} xs={4} md={4} sm={4} className={classes.buttonForm}>
+          <Button variant="contained" color="default" onClick={nuevaPrestadora}>
+            Nuevo
+          </Button>
+        </Grid>
       </Grid>
       <Grid container className={classes.gridForm}>
         <Grid item xs={12} md={12} sm={12} lg={12}>

@@ -1,6 +1,6 @@
 import { SET_OBRA_SOCIAL, SET_LISTA_OBRA_SOCIAL } from "actions/types";
 const initialState = {
-  obraSocial: { cd_os: 0, nombre: "" },
+  obraSocial: {},
   listaObrasSociales: [],
 };
 

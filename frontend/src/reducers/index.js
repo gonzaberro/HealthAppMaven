@@ -10,6 +10,8 @@ import PlanReducer from "./PlanReducer";
 import ObraSocialReducer from "./ObraSocialReducer";
 import EspecialidadReducer from "./EspecialidadReducer";
 import PrestadoraReducer from "./PrestadoraReducer";
+import ServicioReducer from "./ServicioReducer";
+import TipoServicioReducer from "./TipoServicioReducer";
 
 export default combineReducers({
   login_state: LoginReducer,
@@ -22,4 +24,6 @@ export default combineReducers({
   plan: PlanReducer,
   especialidad: EspecialidadReducer,
   prestadora: PrestadoraReducer,
+  servicio: ServicioReducer,
+  tipoServicio: TipoServicioReducer,
 });

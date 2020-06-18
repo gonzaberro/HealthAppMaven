@@ -57,13 +57,14 @@ export default function ObraSocialForm() {
   useEffect(() => {
     setNombrePlan(plan.nombre);
     setCdPlan(plan.cd_plan);
-    setObraSocial(plan.obraSocial.cd_os);
+    if (plan.obraSocial !== undefined) setObraSocial(plan.obraSocial.cd_os);
   }, [plan]);
 
   const nuevoPlan = () => {
-    dispatch(
-      setPlan({ cd_plan: 0, nombre: "", obraSocial: { cd_os: 0, nombre: "" } })
-    );
+    setNombrePlan("");
+    setCdPlan(0);
+    setObraSocial(0);
+    dispatch(setPlan({}));
   };
 
   return (

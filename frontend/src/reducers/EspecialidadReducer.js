@@ -1,6 +1,6 @@
 import { SET_ESPECIALIDAD, SET_LISTA_ESPECIALIDAD } from "actions/types";
 const initialState = {
-  especialidad: { cd_especialidad: 0, nombre: "" },
+  especialidad: {},
   listaEspecialidades: [],
 };
 

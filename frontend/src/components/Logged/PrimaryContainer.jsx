@@ -4,12 +4,14 @@ import Agenda from "./Agenda/Agenda";
 import Wrapper from "components/Logged/Wrapper";
 import ObraSocial from "./FormsABM/ObraSocial/ObraSocial";
 import Plan from "./FormsABM/Plan/Plan";
+import Servicio from "./FormsABM/Servicio/Servicio";
 import { useSelector } from "react-redux";
 import { menuOptions } from "Utils/constants";
 import AgendaMensual from "./Agenda Mensual/AgendaMensual";
 import AgendaSemanal from "./Agenda Semanal/AgendaSemanal";
 import Especialidad from "./FormsABM/Especialidad/Especialidad";
 import Prestadora from "./FormsABM/Prestadora/Prestadora";
+import TipoServicio from "./FormsABM/TipoServicio/TipoServicio";
 import {
   columnsPacientes,
   formPacientes,
@@ -46,6 +48,10 @@ export default function PrimaryContainer() {
         return <ObraSocial />;
       case menuOptions.PLAN:
         return <Plan />;
+      case menuOptions.SERVICIOS:
+        return <Servicio />;
+      case menuOptions.TIPO_SERVICIO:
+        return <TipoServicio />;
       case menuOptions.PRESTADORA:
         return <Prestadora />;
       case menuOptions.PESONAL_SALUD:

@@ -1,6 +1,6 @@
 import { SET_PLAN, SET_LISTA_PLANES } from "actions/types";
 const initialState = {
-  plan: { cd_plan: 0, nombre: "", obraSocial: { cd_os: 0, nombre: "" } },
+  plan: {},
   listaPlanes: [],
 };
 

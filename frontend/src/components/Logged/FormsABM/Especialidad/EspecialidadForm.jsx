@@ -53,12 +53,9 @@ export default function EspecialidadForm() {
   }, [especialidad]);
 
   const nuevaEspecialidad = () => {
-    dispatch(
-      setEspecialidad({
-        cd_especialidad: 0,
-        nombre: "",
-      })
-    );
+    setNombreEspecialidad("");
+    setCdEspecialidad(0);
+    dispatch(setEspecialidad({}));
   };
 
   return (

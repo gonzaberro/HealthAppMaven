@@ -47,12 +47,9 @@ export default function ObraSocialForm() {
   }, [obra_social]);
 
   const nuevaObraSocial = () => {
-    dispatch(
-      setObraSocial({
-        cd_os: 0,
-        nombre: "",
-      })
-    );
+    setNombreObraSocial("");
+    setCdObraSocial(0);
+    dispatch(setObraSocial({}));
   };
 
   return (

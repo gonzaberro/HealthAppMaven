@@ -51,6 +51,12 @@ export default function LeftMenu() {
           <NavItem eventKey={menuOptions.PACIENTES}>
             <NavText>Pacientes</NavText>
           </NavItem>
+          <NavItem eventKey={menuOptions.SERVICIOS}>
+            <NavText>Servicios</NavText>
+          </NavItem>
+          <NavItem eventKey={menuOptions.TIPO_SERVICIO}>
+            <NavText>Tipo Servicio</NavText>
+          </NavItem>
 
           <NavItem eventKey={menuOptions.ESPECIALIDADES}>
             <NavText>Especialidades</NavText>
