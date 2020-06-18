@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setPlan, eliminarPlan } from "actions/PlanActions";
 import { confirmAlert } from "react-confirm-alert"; // Import
 
-export default function SimpleTable() {
+export default function PlanTable() {
   const classes = useStyles();
   const dispatch = useDispatch();
 

@@ -23,7 +23,7 @@ export default function ObraSocialForm() {
   );
 
   const guardarPlan = () => {
-    if (nombrePlan !== "") {
+    if (nombrePlan !== "" && obraSocial !== 0) {
       fetch(url_servidor + "plan", {
         method: cdPlan !== 0 ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
@@ -45,9 +45,12 @@ export default function ObraSocialForm() {
         }
       });
     } else {
-      enqueueSnackbar("No puede dejar el nombre en blanco", {
-        variant: "warning",
-      });
+      enqueueSnackbar(
+        "No puede dejar el nombre, ni la obra social, en blanco",
+        {
+          variant: "warning",
+        }
+      );
     }
   };
 

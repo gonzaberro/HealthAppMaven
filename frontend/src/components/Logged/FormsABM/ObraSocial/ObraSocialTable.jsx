@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setObraSocial, eliminarObraSocial } from "actions/ObraSocialActions";
 import { confirmAlert } from "react-confirm-alert"; // Import
 
-export default function SimpleTable() {
+export default function ObraSocialTable() {
   const classes = useStyles();
   const dispatch = useDispatch();
 

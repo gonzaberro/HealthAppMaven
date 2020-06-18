@@ -8,6 +8,8 @@ import VistaMensualySemanalReducer from "./VistaMensualySemanalReducer";
 import { reducer as toastrReducer } from "react-redux-toastr";
 import PlanReducer from "./PlanReducer";
 import ObraSocialReducer from "./ObraSocialReducer";
+import EspecialidadReducer from "./EspecialidadReducer";
+import PrestadoraReducer from "./PrestadoraReducer";
 
 export default combineReducers({
   login_state: LoginReducer,
@@ -18,4 +20,6 @@ export default combineReducers({
   obra_social: ObraSocialReducer,
   toastr: toastrReducer,
   plan: PlanReducer,
+  especialidad: EspecialidadReducer,
+  prestadora: PrestadoraReducer,
 });

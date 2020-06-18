@@ -8,6 +8,8 @@ import { useSelector } from "react-redux";
 import { menuOptions } from "Utils/constants";
 import AgendaMensual from "./Agenda Mensual/AgendaMensual";
 import AgendaSemanal from "./Agenda Semanal/AgendaSemanal";
+import Especialidad from "./FormsABM/Especialidad/Especialidad";
+import Prestadora from "./FormsABM/Prestadora/Prestadora";
 import {
   columnsPacientes,
   formPacientes,
@@ -48,6 +50,8 @@ export default function PrimaryContainer() {
         return <ObraSocial />;
       case menuOptions.PLAN:
         return <Plan />;
+      case menuOptions.PRESTADORA:
+        return <Prestadora />;
       case menuOptions.PESONAL_SALUD:
         return (
           <Wrapper
@@ -63,17 +67,9 @@ export default function PrimaryContainer() {
             options={obraSocialOptions}
           />
         );
-      case menuOptions.INSTITUCIONES:
-        return (
-          <Wrapper columns={columnsInstituciones} inputs={formInstituciones} />
-        );
+
       case menuOptions.ESPECIALIDADES:
-        return (
-          <Wrapper
-            columns={columnsEspecialidades}
-            inputs={formEspecialidades}
-          />
-        );
+        return <Especialidad />;
       default:
         return <></>;
     }

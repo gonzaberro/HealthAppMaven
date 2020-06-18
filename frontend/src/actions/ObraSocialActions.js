@@ -1,5 +1,5 @@
 import { SET_OBRA_SOCIAL, SET_LISTA_OBRA_SOCIAL } from "../actions/types";
-
+import { url_servidor } from "Utils/constants";
 export function setObraSocial(obraSocial) {
   //Set de la obraSocial que quiero editar
   return (dispatch) => {
@@ -12,7 +12,7 @@ export function setObraSocial(obraSocial) {
 
 export function eliminarObraSocial(cd_os) {
   return (dispatch) => {
-    fetch("http://localhost:8080/obraSocial/" + cd_os, {
+    fetch(url_servidor + "obraSocial/" + cd_os, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
     })
@@ -27,7 +27,7 @@ export function eliminarObraSocial(cd_os) {
 }
 export function getListaObrasSocial() {
   return (dispatch) => {
-    fetch("http://localhost:8080/obraSocial", {
+    fetch(url_servidor + "obraSocial", {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     })
