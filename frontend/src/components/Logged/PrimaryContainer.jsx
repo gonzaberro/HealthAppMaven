@@ -1,7 +1,7 @@
 import React from "react";
 import Agenda from "./Agenda/Agenda";
 
-import Wrapper from "components/Logged/Wrapper";
+// import Wrapper from "components/Logged/Wrapper";
 import ObraSocial from "./FormsABM/ObraSocial/ObraSocial";
 import Plan from "./FormsABM/Plan/Plan";
 import { useSelector } from "react-redux";
@@ -10,17 +10,8 @@ import AgendaMensual from "./Agenda Mensual/AgendaMensual";
 import AgendaSemanal from "./Agenda Semanal/AgendaSemanal";
 import Especialidad from "./FormsABM/Especialidad/Especialidad";
 import Prestadora from "./FormsABM/Prestadora/Prestadora";
-import {
-  columnsPacientes,
-  formPacientes,
-  obraSocialOptions,
-  columnsPersonalMedico,
-  formPersonalMedico,
-  columnsInstituciones,
-  formInstituciones,
-  columnsEspecialidades,
-  formEspecialidades,
-} from "Utils/formInputs";
+import Profesional from "./FormsABM/Profesional/Profesional";
+import Paciente from "./FormsABM/Paciente/Paciente";
 
 export default function PrimaryContainer() {
   const menuSelected = useSelector((state) => state.globalReducer.menuSelected);
@@ -52,21 +43,10 @@ export default function PrimaryContainer() {
         return <Plan />;
       case menuOptions.PRESTADORA:
         return <Prestadora />;
-      case menuOptions.PESONAL_SALUD:
-        return (
-          <Wrapper
-            columns={columnsPersonalMedico}
-            inputs={formPersonalMedico}
-          />
-        );
+      case menuOptions.PROFESIONALES:
+        return <Profesional />;
       case menuOptions.PACIENTES:
-        return (
-          <Wrapper
-            columns={columnsPacientes}
-            inputs={formPacientes}
-            options={obraSocialOptions}
-          />
-        );
+        return <Paciente />;
 
       case menuOptions.ESPECIALIDADES:
         return <Especialidad />;

@@ -12,7 +12,7 @@ export default function ObraSocial() {
   useEffect(() => {
     dispatch(getListaPlanes());
     dispatch(getListaObrasSocial());
-  }, []);
+  }, [dispatch]);
 
   return (
     <Grid container>
