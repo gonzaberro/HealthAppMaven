@@ -10,7 +10,7 @@ import { setPlan, getListaPlanes } from "actions/PlanActions";
 import { useSnackbar } from "notistack";
 import { url_servidor } from "Utils/constants";
 
-export default function ObraSocialForm() {
+export default function PlanForm() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
