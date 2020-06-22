@@ -22,14 +22,24 @@ import {
   setProgramar,
   setServicio,
   setNota,
+  setTipoServicio,
 } from "../../../actions/EditTurnoActions";
 
 export default function EditAgendaItem() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const turno_info = useSelector((state) => state.editTurnoReducer); //Para saber si estoy o no logueado en el sistema
+
   const fechaCalendario = useSelector(
     (state) => state.agenda_reducer.fecha_agenda
+  );
+  const listaPacientes = useSelector((state) => state.paciente.listaPacientes);
+  const listaProfesionales = useSelector(
+    (state) => state.profesional.listaProfesionales
+  );
+  const listaServicios = useSelector((state) => state.servicio.listaServicios);
+  const listaTipoServicios = useSelector(
+    (state) => state.tipoServicio.listaTipoServicios
   );
 
   const fechaString = () => {
@@ -88,9 +98,14 @@ export default function EditAgendaItem() {
           value={turno_info.doctor}
           fullWidth
         >
-          <MenuItem value={"Gines Gonzales"}>Gines Gonzales</MenuItem>
-          <MenuItem value={"Rene Favaloro"}>Rene Favaloro</MenuItem>
-          <MenuItem value={"Conrad Hawkings"}>Conrad Hawkings</MenuItem>
+          {listaProfesionales.map((profesional) => {
+            return (
+              <MenuItem value={profesional.dni}>
+                {profesional.nombre} {profesional.apellido} (
+                {profesional.especialidad.nombre})
+              </MenuItem>
+            );
+          })}
         </Select>
       </FormControl>
       <FormControl variant="outlined" fullWidth className={classes.formControl}>
@@ -103,9 +118,13 @@ export default function EditAgendaItem() {
           value={turno_info.paciente}
           fullWidth
         >
-          <MenuItem value={"Ignacio Ledesma"}>Ignacio Ledesma</MenuItem>
-          <MenuItem value={"Gonzalo Berro"}>Gonzalo Berro</MenuItem>
-          <MenuItem value={"Matias Solimo"}>Matias Solimo</MenuItem>
+          {listaPacientes.map((paciente) => {
+            return (
+              <MenuItem value={paciente.dni}>
+                {paciente.nombre} {paciente.apellido} - {paciente.dni}
+              </MenuItem>
+            );
+          })}
         </Select>
       </FormControl>
       <FormControl variant="outlined" fullWidth className={classes.formControl}>
@@ -118,7 +137,34 @@ export default function EditAgendaItem() {
           value={turno_info.servicio}
           fullWidth
         >
-          <MenuItem value={30}>FSINET</MenuItem>
+          {listaServicios.map((servicio) => {
+            return (
+              <MenuItem value={servicio.cd_servicio}>
+                {servicio.cd_servicio} - {servicio.nombre}
+              </MenuItem>
+            );
+          })}
+        </Select>
+      </FormControl>
+      <FormControl variant="outlined" fullWidth className={classes.formControl}>
+        <InputLabel id="demo-simple-select-outlined-label">
+          Tipo Servicio
+        </InputLabel>
+        <Select
+          labelId="demo-simple-select-outlined-label"
+          id="demo-simple-select-outlined"
+          label="Tipo Servicio"
+          onChange={(event) => dispatch(setTipoServicio(event.target.value))}
+          value={turno_info.tipoServicio}
+          fullWidth
+        >
+          {listaTipoServicios.map((tipoServicio) => {
+            return (
+              <MenuItem value={tipoServicio.cdTipoServicio}>
+                {tipoServicio.nombre}
+              </MenuItem>
+            );
+          })}
         </Select>
       </FormControl>
       <Grid container>

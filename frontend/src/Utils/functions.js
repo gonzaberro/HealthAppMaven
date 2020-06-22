@@ -26,7 +26,7 @@ export const setDefaultFormInput = () => {
 export function parseISOString(s, format) {
   let b = s.split(/\D+/);
   const date = new Date(Date.UTC(b[0], --b[1], b[2], b[3], b[4], b[5], b[6]));
-  return format != undefined && format === 2
+  return format !== undefined && format === 2
     ? fechaStringFormat2(date)
     : fechaString(date);
 }

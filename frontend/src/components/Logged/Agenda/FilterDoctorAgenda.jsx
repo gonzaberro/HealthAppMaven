@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
@@ -8,22 +8,36 @@ import Paper from "@material-ui/core/Paper";
 import Popper from "@material-ui/core/Popper";
 import MenuItem from "@material-ui/core/MenuItem";
 import MenuList from "@material-ui/core/MenuList";
-
-const options = ["Rene Favaloro", "Gines Gonzales", "Conrad Hawkings"];
+import { useSelector } from "react-redux";
 
 export default function FilterDoctorAgenda() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const anchorRef = React.useRef(null);
-  const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const listaProfesionales = useSelector(
+    (state) => state.profesional.listaProfesionales
+  );
+  const [selectedProfesional, setSelectedProfesional] = useState(1);
+  const [selectedNombreProfesional, setSelectedNombreProfesional] = useState(
+    ""
+  );
 
-  const handleClick = () => {
-    console.info(`You clicked ${options[selectedIndex]}`);
+  const selectProfesional = (profesional) => {
+    console.log(profesional);
+    setSelectedProfesional(profesional.dni);
+    setSelectedNombreProfesional(
+      profesional.nombre +
+        " " +
+        profesional.apellido +
+        " (" +
+        profesional.especialidad.nombre +
+        ")"
+    );
   };
 
-  const handleMenuItemClick = (event, index) => {
-    setSelectedIndex(index);
-    setOpen(false);
-  };
+  useEffect(() => {
+    if (listaProfesionales[0] !== undefined)
+      selectProfesional(listaProfesionales[0]);
+  }, [listaProfesionales]);
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -46,7 +60,7 @@ export default function FilterDoctorAgenda() {
         ref={anchorRef}
         aria-label="split button"
       >
-        <Button onClick={handleClick}>{options[selectedIndex]}</Button>
+        <Button>{selectedNombreProfesional}</Button>
         <Button
           color="default"
           size="small"
@@ -80,13 +94,13 @@ export default function FilterDoctorAgenda() {
             <Paper>
               <ClickAwayListener onClickAway={handleClose}>
                 <MenuList id="split-button-menu">
-                  {options.map((option, index) => (
+                  {listaProfesionales.map((profesional, index) => (
                     <MenuItem
-                      key={option}
-                      selected={index === selectedIndex}
-                      onClick={(event) => handleMenuItemClick(event, index)}
+                      selected={profesional.dni === selectedProfesional}
+                      onClick={() => selectProfesional(profesional)}
                     >
-                      {option}
+                      {profesional.nombre} {profesional.apellido} (
+                      {profesional.especialidad.nombre})
                     </MenuItem>
                   ))}
                 </MenuList>

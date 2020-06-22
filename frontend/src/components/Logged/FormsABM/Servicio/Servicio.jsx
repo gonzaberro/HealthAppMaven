@@ -10,7 +10,7 @@ export default function ObraSocial() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getListaServicios());
-  }, []);
+  }, [dispatch]);
 
   return (
     <Grid container>
