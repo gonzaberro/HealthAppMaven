@@ -1,7 +1,7 @@
 import { SWITCH_MENU } from "actions/types";
 import { menuOptions } from "Utils/constants";
 const initialState = {
-  menuSelected: menuOptions.PRESTADORA,
+  menuSelected: menuOptions.COSTO_SERVICIO,
 };
 
 export default function (state = initialState, action) {

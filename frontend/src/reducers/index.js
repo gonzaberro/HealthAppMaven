@@ -12,6 +12,7 @@ import EspecialidadReducer from "./EspecialidadReducer";
 import PrestadoraReducer from "./PrestadoraReducer";
 import ServicioReducer from "./ServicioReducer";
 import TipoServicioReducer from "./TipoServicioReducer";
+import CostoServicioReducer from "./CostoServicioReducer";
 
 export default combineReducers({
   login_state: LoginReducer,
@@ -26,4 +27,5 @@ export default combineReducers({
   prestadora: PrestadoraReducer,
   servicio: ServicioReducer,
   tipoServicio: TipoServicioReducer,
+  costoServicio: CostoServicioReducer,
 });

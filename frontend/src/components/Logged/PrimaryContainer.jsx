@@ -12,6 +12,7 @@ import AgendaSemanal from "./Agenda Semanal/AgendaSemanal";
 import Especialidad from "./FormsABM/Especialidad/Especialidad";
 import Prestadora from "./FormsABM/Prestadora/Prestadora";
 import TipoServicio from "./FormsABM/TipoServicio/TipoServicio";
+import CostoServicio from "./FormsABM/CostoServicio/CostoServicio";
 import {
   columnsPacientes,
   formPacientes,
@@ -54,6 +55,8 @@ export default function PrimaryContainer() {
         return <TipoServicio />;
       case menuOptions.PRESTADORA:
         return <Prestadora />;
+      case menuOptions.COSTO_SERVICIO:
+        return <CostoServicio />;
       case menuOptions.PESONAL_SALUD:
         return (
           <Wrapper

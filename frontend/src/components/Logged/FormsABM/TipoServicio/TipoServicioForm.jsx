@@ -25,7 +25,7 @@ export default function TipoServicioForm() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          cd_tipo_servicio: cdTipoServicio,
+          cdTipoServicio: cdTipoServicio,
           nombre: nombre,
         }),
       }).then(function (response) {
@@ -48,14 +48,14 @@ export default function TipoServicioForm() {
   };
 
   useEffect(() => {
-    setCdTipoServicio(tipoServicio.cd_tipo_servicio);
+    setCdTipoServicio(tipoServicio.cdTipoServicio);
     setNombre(tipoServicio.nombre);
   }, [tipoServicio]);
 
   const nuevoTipoServicio = () => {
     dispatch(
       setTipoServicio({
-        cd_tipo_servicio: 0,
+        cdTipoServicio: 0,
         nombre: "",
       })
     );
