@@ -24,8 +24,8 @@ export default function FormSelect({
         {options &&
           options.map((option, index) => {
             return (
-              <MenuItem key={`${option}-${index}`} value={option}>
-                {option}
+              <MenuItem key={`${option.value}-${index}`} value={option.value}>
+                {option.name}
               </MenuItem>
             );
           })}
