@@ -4,7 +4,7 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 
 import FormSelect from "components/Logged/FormSelect";
-import { setDefaultFormInput } from "Utils/functions";
+// import { setDefaultFormInput } from "Utils/functions";
 
 export default function Form({ inputs, options }) {
   const [formInput, setFormInput] = useReducer(
@@ -13,7 +13,7 @@ export default function Form({ inputs, options }) {
   );
 
   useEffect(() => {
-    setFormInput(setDefaultFormInput());
+    //  setFormInput(setDefaultFormInput());
   }, []);
 
   const handleInputChange = (e) => {
