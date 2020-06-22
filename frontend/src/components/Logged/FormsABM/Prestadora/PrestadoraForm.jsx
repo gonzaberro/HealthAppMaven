@@ -98,11 +98,23 @@ export default function PrestadoraForm() {
   return (
     <div>
       <Grid container>
-        <Grid item lg={10} xs={8} md={8} sm={8} className={classes.headerForm}>
-          Editar Horario
+        <Grid
+          item
+          lg={10}
+          xs={12}
+          md={8}
+          sm={12}
+          className={classes.headerForm}
+        >
+          Crear/Editar Prestadora
         </Grid>
-        <Grid item lg={2} xs={4} md={4} sm={4} className={classes.buttonForm}>
-          <Button variant="contained" color="default" onClick={nuevaPrestadora}>
+        <Grid item lg={2} xs={12} md={4} sm={12} className={classes.buttonForm}>
+          <Button
+            variant="contained"
+            color="default"
+            style={{ width: "100%" }}
+            onClick={nuevaPrestadora}
+          >
             Nuevo
           </Button>
         </Grid>
@@ -110,7 +122,7 @@ export default function PrestadoraForm() {
       <Grid container className={classes.gridForm}>
         <Grid item xs={12} md={12} sm={12} lg={12}>
           <Grid container>
-            <Grid item xs={12} md={6} sm={6} lg={6}>
+            <Grid item xs={12} md={12} sm={12} lg={12}>
               <TextField
                 variant="outlined"
                 margin="normal"
@@ -120,7 +132,7 @@ export default function PrestadoraForm() {
                 onChange={(event) => setNombre(event.target.value)}
               />
             </Grid>
-            <Grid item xs={12} md={6} sm={6} lg={6}>
+            <Grid item xs={12} md={12} sm={12} lg={12}>
               <TextField
                 variant="outlined"
                 margin="normal"
@@ -147,71 +159,65 @@ export default function PrestadoraForm() {
           </Grid>
         </Grid>
         <Grid item xs={12} md={12} sm={12} lg={12}>
-          <Grid container>
-            <Grid item xs={12} md={6} sm={6} lg={6}>
-              <TextField
-                variant="outlined"
-                margin="normal"
-                label={"Intervalo (en minutos)"}
-                fullWidth
-                value={intervalo}
-                onChange={(event) => setIntervalo(event.target.value)}
-              />
-            </Grid>
-          </Grid>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            label={"Intervalo (en minutos)"}
+            fullWidth
+            value={intervalo}
+            onChange={(event) => setIntervalo(event.target.value)}
+          />
         </Grid>
-        <Grid item xs={12} md={12} sm={12} lg={12}>
-          <Grid container>
-            <Grid item xs={12} sm={6} md={6} lg={6}>
-              <FormControl
-                variant="outlined"
-                fullWidth
-                className={classes.formControl}
-              >
-                <InputLabel id="demo-simple-select-outlined-label">
-                  Hora Desde
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-outlined-label"
-                  id="demo-simple-select-outlined"
-                  label="Hora Desde"
-                  fullWidth
-                  value={horaDesde}
-                  onChange={(event) => setHoraDesde(event.target.value)}
-                >
-                  {horarios &&
-                    horarios.map((hora) => {
-                      return <MenuItem value={hora}>{hora}</MenuItem>;
-                    })}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={6} md={6} lg={6}>
-              <FormControl
-                variant="outlined"
-                fullWidth
-                className={classes.formControl}
-              >
-                <InputLabel id="demo-simple-select-outlined-label">
-                  Hora Hasta
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-outlined-label"
-                  id="demo-simple-select-outlined"
-                  label="Hora Hasta"
-                  fullWidth
-                  value={horaHasta}
-                  onChange={(event) => setHoraHasta(event.target.value)}
-                >
-                  {horarios &&
-                    horarios.map((hora) => {
-                      return <MenuItem value={hora}>{hora}</MenuItem>;
-                    })}
-                </Select>
-              </FormControl>
-            </Grid>
-          </Grid>
+
+        <Grid item xs={12} sm={6} md={12} lg={12} style={{ marginTop: 15 }}>
+          <FormControl
+            variant="outlined"
+            fullWidth
+            className={classes.formControl}
+          >
+            <InputLabel id="demo-simple-select-outlined-label">
+              Hora Desde
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-outlined-label"
+              id="demo-simple-select-outlined"
+              label="Hora Desde"
+              fullWidth
+              value={horaDesde}
+              onChange={(event) => setHoraDesde(event.target.value)}
+            >
+              {horarios &&
+                horarios.map((hora) => {
+                  return <MenuItem value={hora}>{hora}</MenuItem>;
+                })}
+            </Select>
+          </FormControl>
         </Grid>
+        <Grid item xs={12} md={12} sm={6} lg={12} style={{ marginTop: 15 }}>
+          <FormControl
+            variant="outlined"
+            fullWidth
+            className={classes.formControl}
+          >
+            <InputLabel id="demo-simple-select-outlined-label">
+              Hora Hasta
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-outlined-label"
+              id="demo-simple-select-outlined"
+              label="Hora Hasta"
+              fullWidth
+              value={horaHasta}
+              onChange={(event) => setHoraHasta(event.target.value)}
+            >
+              {horarios &&
+                horarios.map((hora) => {
+                  return <MenuItem value={hora}>{hora}</MenuItem>;
+                })}
+            </Select>
+          </FormControl>
+        </Grid>
+
         <Grid item xs={12} md={12} sm={12} lg={12}>
           <TextField
             variant="outlined"

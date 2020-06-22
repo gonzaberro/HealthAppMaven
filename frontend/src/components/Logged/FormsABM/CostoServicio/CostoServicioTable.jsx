@@ -57,7 +57,7 @@ export default function CostoServicioTable() {
         <TableHead>
           <TableRow>
             <TableCell className={classes.titleTable}>Plan</TableCell>
-            <TableCell className={classes.titleTable}>Obra Social</TableCell>
+            <TableCell className={classes.titleTable}>Servicio</TableCell>
             <TableCell className={classes.titleTable}>Tipo Servicio</TableCell>
             <TableCell className={classes.titleTable}>Costo</TableCell>
             <TableCell className={classes.titleTable}></TableCell>
@@ -72,16 +72,33 @@ export default function CostoServicioTable() {
                   className={classes.rowTable}
                   onClick={() => editCostoServicio(costoServicio)}
                 >
-                  <TableCell component="th" scope="row">
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    style={{ textAlign: "center" }}
+                  >
+                    {costoServicio.plan.obraSocial.nombre} -{" "}
                     {costoServicio.plan.nombre}
                   </TableCell>
-                  <TableCell component="th" scope="row">
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    style={{ textAlign: "center" }}
+                  >
                     {costoServicio.servicio.nombre}
                   </TableCell>
-                  <TableCell component="th" scope="row">
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    style={{ textAlign: "center" }}
+                  >
                     {costoServicio.id.tipoServicio.nombre}
                   </TableCell>
-                  <TableCell component="th" scope="row">
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    style={{ textAlign: "center" }}
+                  >
                     ${costoServicio.costo}
                   </TableCell>
                   <TableCell align="right">

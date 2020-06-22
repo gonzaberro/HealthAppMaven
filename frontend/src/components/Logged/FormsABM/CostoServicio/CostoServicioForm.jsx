@@ -92,13 +92,21 @@ export default function CostoServicioForm() {
   return (
     <div>
       <Grid container>
-        <Grid item lg={10} xs={8} md={8} sm={8} className={classes.headerForm}>
+        <Grid
+          item
+          lg={10}
+          xs={12}
+          md={8}
+          sm={12}
+          className={classes.headerForm}
+        >
           Establecer Costo del Servicio
         </Grid>
-        <Grid item lg={2} xs={4} md={4} sm={4} className={classes.buttonForm}>
+        <Grid item lg={2} xs={12} md={4} sm={12} className={classes.buttonForm}>
           <Button
             variant="contained"
             color="default"
+            style={{ width: "100%" }}
             onClick={nuevoCostoServicio}
           >
             Nuevo

@@ -74,10 +74,18 @@ export default function PlanTable() {
                     )
                   }
                 >
-                  <TableCell component="th" scope="row">
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    style={{ textAlign: "center" }}
+                  >
                     {plan.nombre}
                   </TableCell>
-                  <TableCell component="th" scope="row">
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    style={{ textAlign: "center" }}
+                  >
                     {plan.obraSocial.nombre}
                   </TableCell>
                   <TableCell align="right">

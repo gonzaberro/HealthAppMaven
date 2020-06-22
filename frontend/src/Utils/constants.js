@@ -3,7 +3,7 @@ export const menuOptions = {
   CHARTS: "charts",
   AGENDA: "agenda",
   OBRAS_SOCIALES: "obras_sociales",
-  PESONAL_SALUD: "personal_salud",
+  PROFESIONALES: "profesionales",
   PACIENTES: "pacientes",
   ESPECIALIDADES: "especialidades",
   Agenda_DIARIA: "agenda_diaria",

@@ -7,12 +7,14 @@ import EditTurnoReducer from "./EditTurnoReducer";
 import VistaMensualySemanalReducer from "./VistaMensualySemanalReducer";
 import { reducer as toastrReducer } from "react-redux-toastr";
 import PlanReducer from "./PlanReducer";
-import ObraSocialReducer from "./ObraSocialReducer";
+import obraSocialReducer from "./ObraSocialReducer";
 import EspecialidadReducer from "./EspecialidadReducer";
 import PrestadoraReducer from "./PrestadoraReducer";
 import ServicioReducer from "./ServicioReducer";
 import TipoServicioReducer from "./TipoServicioReducer";
 import CostoServicioReducer from "./CostoServicioReducer";
+import ProfesionalReducer from "./ProfesionalReducer";
+import PacienteReducer from "./PacienteReducer";
 
 export default combineReducers({
   login_state: LoginReducer,
@@ -20,7 +22,7 @@ export default combineReducers({
   agenda_reducer: AgendaReducer,
   editTurnoReducer: EditTurnoReducer,
   vista_mensual_semanal: VistaMensualySemanalReducer,
-  obra_social: ObraSocialReducer,
+  obra_social: obraSocialReducer,
   toastr: toastrReducer,
   plan: PlanReducer,
   especialidad: EspecialidadReducer,
@@ -28,4 +30,6 @@ export default combineReducers({
   servicio: ServicioReducer,
   tipoServicio: TipoServicioReducer,
   costoServicio: CostoServicioReducer,
+  profesional: ProfesionalReducer,
+  paciente: PacienteReducer,
 });

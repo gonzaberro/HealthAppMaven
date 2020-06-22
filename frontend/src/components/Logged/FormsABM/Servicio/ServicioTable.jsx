@@ -60,10 +60,18 @@ export default function ServicioTable() {
                   className={classes.rowTable}
                   onClick={() => editServicio(servicio)}
                 >
-                  <TableCell component="th" scope="row">
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    style={{ textAlign: "center" }}
+                  >
                     {servicio.cd_servicio}
                   </TableCell>
-                  <TableCell component="th" scope="row">
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    style={{ textAlign: "center" }}
+                  >
                     {servicio.nombre}
                   </TableCell>
                   <TableCell align="right">
