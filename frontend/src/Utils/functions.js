@@ -1,4 +1,4 @@
-const getAllInputNames = () => {
+/* const getAllInputNames = () => {
   const form = document.getElementById("form");
   if (form == null) return [];
 
@@ -21,7 +21,7 @@ export const setDefaultFormInput = () => {
     }, {});
   }
   return state;
-};
+}; */
 
 export function parseISOString(s, format) {
   let b = s.split(/\D+/);
@@ -43,4 +43,11 @@ export const fechaStringFormat2 = (date) => {
   const mo = new Intl.DateTimeFormat("es", { month: "2-digit" }).format(date);
   const da = new Intl.DateTimeFormat("es", { day: "2-digit" }).format(date);
   return da + "/" + mo + "/" + ye;
+};
+
+export const validateForm = (object) => {
+  const arrPro = Object.values(object);
+  const hayCamposVacios = arrPro.some((field) => field === "");
+
+  return !hayCamposVacios;
 };

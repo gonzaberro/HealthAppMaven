@@ -17,6 +17,7 @@ import CostoServicio from "./FormsABM/CostoServicio/CostoServicio";
 
 import Profesional from "./FormsABM/Profesional/Profesional";
 import Paciente from "./FormsABM/Paciente/Paciente";
+import HistoriaClinica from "./FormsABM/HistoriaClinica/HistoriaClinica";
 
 export default function PrimaryContainer() {
   const menuSelected = useSelector((state) => state.globalReducer.menuSelected);
@@ -64,6 +65,8 @@ export default function PrimaryContainer() {
 
       case menuOptions.ESPECIALIDADES:
         return <Especialidad />;
+      case menuOptions.HISTORIA_CLINICA:
+        return <HistoriaClinica />;
       default:
         return <></>;
     }

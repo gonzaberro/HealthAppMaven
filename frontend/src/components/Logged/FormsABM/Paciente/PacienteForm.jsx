@@ -7,10 +7,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { setPaciente, getListaPacientes } from "actions/PacienteActions";
 
 import FormSelect from "components/Logged/FormSelect";
-
 import { useSnackbar } from "notistack";
 import { url_servidor } from "Utils/constants";
-import { fechaString, parseISOString } from "Utils/functions";
+import { fechaString, parseISOString, validateForm } from "Utils/functions";
 
 const defaultState = {
   dni: "",
@@ -28,13 +27,6 @@ const options = [
   { name: "Femenino", value: "F" },
   { name: "Masculino", value: "M" },
 ];
-
-function validarForm(paciente) {
-  const arrPro = Object.values(paciente);
-  const hayCamposVacios = arrPro.some((p) => p === "");
-
-  return !hayCamposVacios;
-}
 
 export default function PacienteForm() {
   const classes = useStyles();
@@ -60,12 +52,13 @@ export default function PacienteForm() {
     : [];
 
   useEffect(() => {
-    console.log("PACIENTE_SELECCIONADO", pacienteSeleccionado);
-
     if (Object.keys(pacienteSeleccionado).length !== 0) {
       const paciente = {
         ...pacienteSeleccionado,
-        fecha_nacimiento: parseISOString(pacienteSeleccionado.fecha_nacimiento),
+        fecha_nacimiento: parseISOString(
+          pacienteSeleccionado.fecha_nacimiento,
+          1
+        ),
       };
       setPacienteForm(paciente);
       setPlan(pacienteSeleccionado.plan);
@@ -83,8 +76,7 @@ export default function PacienteForm() {
 
   const guardarPaciente = () => {
     const objPlan = { ...paciente, plan: plan };
-
-    if (validarForm(paciente)) {
+    if (validateForm(paciente)) {
       fetch(`${url_servidor}paciente`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -115,8 +107,6 @@ export default function PacienteForm() {
     setPacienteForm(defaultState);
     setPlan("");
   };
-
-  console.log(paciente);
 
   return (
     <div>
@@ -214,7 +204,6 @@ export default function PacienteForm() {
             onChange={handleInputChange}
           />
         </Grid>
-
         <Grid item lg={12} md={12} sm={12} xs={12}>
           <TextField
             variant="outlined"
