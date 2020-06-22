@@ -1,10 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
 import EditAgendaItem from "./EditAgendaItem";
+import { getListaProfesionales } from "actions/ProfesionalActions";
+import { getListaPacientes } from "actions/PacienteActions";
+import { getListaServicios } from "actions/ServicioActions";
+import { getListaTipoServicios } from "actions/TipoServicioActions";
 import ItemAgendaContainer from "./ItemsAgendaContainer";
 import { makeStyles } from "@material-ui/core/styles";
+import { useDispatch } from "react-redux";
+
 export default function Agenda() {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getListaProfesionales());
+    dispatch(getListaPacientes());
+    dispatch(getListaServicios());
+    dispatch(getListaTipoServicios());
+  }, [dispatch]);
 
   return (
     <Grid container style={{ height: "100%" }}>

@@ -14,6 +14,8 @@ export const FECHA_AGENDA = "FECHA_AGENDA";
 export const EDIT_ALL = "EDIT_ALL";
 export const BORRAR_TURNO = "BORRAR_TURNO";
 export const EDIT_NOTA = "EDIT_NOTA";
+export const EDIT_TIPO_SERVICIO = "EDIT_TIPO_SERVICIO";
+
 export const SELECT_DIA_MES = "SELECT_DIA_MES";
 export const VISTAMENSUALSEMANAL = "VISTAMENSUALSEMANAL";
 

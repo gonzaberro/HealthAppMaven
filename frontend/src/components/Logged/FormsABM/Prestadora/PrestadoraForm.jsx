@@ -44,7 +44,6 @@ export default function PrestadoraForm() {
         body: JSON.stringify({
           cd_prestadora: cdPrestadora,
           nombre: nombre,
-          direccion: direccion,
           telefono: telefono,
           direccion: direccion,
           logo: logo,

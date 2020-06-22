@@ -5,11 +5,9 @@ import { FormControl, InputLabel, Select, MenuItem } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { useSelector, useDispatch } from "react-redux";
-import { setPlan, getListaPlanes } from "actions/PlanActions";
 
 import { useSnackbar } from "notistack";
 import { url_servidor } from "Utils/constants";
-import { setTipoServicio } from "actions/TipoServicioActions";
 import {
   setCostoServicio,
   getListaCostoServicios,
@@ -132,7 +130,7 @@ export default function CostoServicioForm() {
               {listaPlanes &&
                 listaPlanes.map((plan) => {
                   return (
-                    <MenuItem value={plan.cd_plan}>
+                    <MenuItem key={plan.cd_plan} value={plan.cd_plan}>
                       {plan.obraSocial.nombre} - {plan.nombre}
                     </MenuItem>
                   );
@@ -160,7 +158,10 @@ export default function CostoServicioForm() {
               {listaServicios &&
                 listaServicios.map((servicio) => {
                   return (
-                    <MenuItem value={servicio.cd_servicio}>
+                    <MenuItem
+                      key={servicio.cd_servicio}
+                      value={servicio.cd_servicio}
+                    >
                       {servicio.nombre}
                     </MenuItem>
                   );
@@ -180,7 +181,7 @@ export default function CostoServicioForm() {
             <Select
               labelId="demo-simple-select-outlined-label"
               id="demo-simple-select-outlined"
-              label="Institución"
+              label="Tipo Servicio"
               fullWidth
               value={cdTipoServicio}
               onChange={(event) => setCdTipoServicio(event.target.value)}
@@ -188,7 +189,10 @@ export default function CostoServicioForm() {
               {listaTipoServicio &&
                 listaTipoServicio.map((tipoServicio) => {
                   return (
-                    <MenuItem value={tipoServicio.cdTipoServicio}>
+                    <MenuItem
+                      key={tipoServicio.cdTipoServicio}
+                      value={tipoServicio.cdTipoServicio}
+                    >
                       {tipoServicio.nombre}
                     </MenuItem>
                   );

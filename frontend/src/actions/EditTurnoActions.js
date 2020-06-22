@@ -7,6 +7,7 @@ import {
   EDIT_SERVICIO,
   EDIT_ALL,
   EDIT_NOTA,
+  EDIT_TIPO_SERVICIO,
 } from "../actions/types";
 
 export function setProgramar(data) {
@@ -71,6 +72,15 @@ export function editTurnoComplete(data) {
   return (dispatch) => {
     dispatch({
       type: EDIT_ALL,
+      payload: data,
+    });
+  };
+}
+
+export function setTipoServicio(data) {
+  return (dispatch) => {
+    dispatch({
+      type: EDIT_TIPO_SERVICIO,
       payload: data,
     });
   };

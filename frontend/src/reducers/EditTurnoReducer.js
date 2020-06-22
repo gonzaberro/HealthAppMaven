@@ -9,6 +9,7 @@ import {
   NEW_TURNO,
   BORRAR_TURNO,
   EDIT_NOTA,
+  EDIT_TIPO_SERVICIO,
 } from "../actions/types";
 
 const initialState = {
@@ -103,6 +104,11 @@ export default function (state = initialState, action) {
       return {
         ...state,
         servicio: action.payload,
+      };
+    case EDIT_TIPO_SERVICIO:
+      return {
+        ...state,
+        tipoServicio: action.payload,
       };
 
     default:

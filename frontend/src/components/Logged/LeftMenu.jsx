@@ -39,6 +39,12 @@ export default function LeftMenu() {
             <FontAwesomeIcon icon={faBook} />
           </NavIcon>
           <NavText>Información Empresa</NavText>
+          <NavItem eventKey={menuOptions.COSTO_SERVICIO}>
+            <NavText>Costo Servicio</NavText>
+          </NavItem>
+          <NavItem eventKey={menuOptions.ESPECIALIDADES}>
+            <NavText>Especialidades</NavText>
+          </NavItem>
           <NavItem eventKey={menuOptions.OBRAS_SOCIALES}>
             <NavText>Obras Sociales</NavText>
           </NavItem>
@@ -51,21 +57,15 @@ export default function LeftMenu() {
           <NavItem eventKey={menuOptions.PACIENTES}>
             <NavText>Pacientes</NavText>
           </NavItem>
+          <NavItem eventKey={menuOptions.PRESTADORA}>
+            <NavText>Prestadoras</NavText>
+          </NavItem>
+
           <NavItem eventKey={menuOptions.SERVICIOS}>
             <NavText>Servicios</NavText>
           </NavItem>
           <NavItem eventKey={menuOptions.TIPO_SERVICIO}>
             <NavText>Tipo Servicio</NavText>
-          </NavItem>
-          <NavItem eventKey={menuOptions.COSTO_SERVICIO}>
-            <NavText>Costo Servicio</NavText>
-          </NavItem>
-
-          <NavItem eventKey={menuOptions.ESPECIALIDADES}>
-            <NavText>Especialidades</NavText>
-          </NavItem>
-          <NavItem eventKey={menuOptions.PRESTADORA}>
-            <NavText>Prestadoras</NavText>
           </NavItem>
         </NavItem>
       </SideNav.Nav>

@@ -16,7 +16,7 @@ export default function ObraSocial() {
     dispatch(getListaServicios());
     dispatch(getListaTipoServicios());
     dispatch(getListaCostoServicios());
-  }, []);
+  }, [dispatch]);
 
   return (
     <Grid container>
