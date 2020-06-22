@@ -122,13 +122,14 @@ export default function ProfesionalForm() {
   return (
     <div>
       <Grid container>
-        <Grid item lg={10} xs={8} md={8} sm={8} className={classes.headerForm}>
+        <Grid item lg={9} xs={12} md={7} sm={12} className={classes.headerForm}>
           Crear/Editar Profesional
         </Grid>
-        <Grid item lg={2} xs={4} md={4} sm={4} className={classes.buttonForm}>
+        <Grid item lg={3} xs={12} md={5} sm={12} className={classes.buttonForm}>
           <Button
             variant="contained"
             color="default"
+            style={{ width: "100%" }}
             onClick={nuevoProfesional}
           >
             Nuevo
@@ -136,7 +137,7 @@ export default function ProfesionalForm() {
         </Grid>
       </Grid>
       <Grid container className={classes.gridForm}>
-        <Grid item md={6}>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -149,7 +150,7 @@ export default function ProfesionalForm() {
           />
         </Grid>
 
-        <Grid item md={6}>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -160,7 +161,7 @@ export default function ProfesionalForm() {
             onChange={handleInputChange}
           />
         </Grid>
-        <Grid item md={6}>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -171,7 +172,7 @@ export default function ProfesionalForm() {
             onChange={handleInputChange}
           />
         </Grid>
-        <Grid item md={6}>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
           <FormSelect
             name="sexo"
             label="Sexo"
@@ -180,7 +181,7 @@ export default function ProfesionalForm() {
             handleChange={handleInputChange}
           />
         </Grid>
-        <Grid item md={6}>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -191,7 +192,7 @@ export default function ProfesionalForm() {
             onChange={handleInputChange}
           />
         </Grid>
-        <Grid item md={6}>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -202,7 +203,7 @@ export default function ProfesionalForm() {
             onChange={handleInputChange}
           />
         </Grid>
-        <Grid item md={6}>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -213,7 +214,7 @@ export default function ProfesionalForm() {
             onChange={handleInputChange}
           />
         </Grid>
-        <Grid item md={6}>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -224,7 +225,7 @@ export default function ProfesionalForm() {
             onChange={handleInputChange}
           />
         </Grid>
-        <Grid item md={6}>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -236,7 +237,7 @@ export default function ProfesionalForm() {
             onChange={handleInputChange}
           />
         </Grid>
-        <Grid item md={6}>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -248,7 +249,7 @@ export default function ProfesionalForm() {
             onChange={handleInputChange}
           />
         </Grid>
-        <Grid item md={6}>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -260,7 +261,7 @@ export default function ProfesionalForm() {
             onChange={handleInputChange}
           />
         </Grid>
-        <Grid item md={6}>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
           <FormSelect
             name="especialidad"
             label="Especialidad"
@@ -270,7 +271,7 @@ export default function ProfesionalForm() {
           />
         </Grid>
 
-        <Grid item md={12}>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
           <Button
             variant="contained"
             color="primary"

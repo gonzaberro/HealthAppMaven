@@ -17,10 +17,10 @@ export default function Paciente() {
 
   return (
     <Grid container>
-      <Grid item xs={12} sm={8} md={8} lg={8} className={classes.lista}>
+      <Grid item xs={12} sm={12} md={9} lg={9} className={classes.lista}>
         <PacienteTable />
       </Grid>
-      <Grid item xs={12} sm={4} md={4} lg={4} className={classes.borderForm}>
+      <Grid item xs={12} sm={12} md={3} lg={3} className={classes.borderForm}>
         <PacienteForm />
       </Grid>
     </Grid>

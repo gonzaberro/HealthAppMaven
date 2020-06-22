@@ -121,21 +121,27 @@ export default function PacienteForm() {
   return (
     <div>
       <Grid container>
-        <Grid item lg={10} xs={8} md={8} sm={8} className={classes.headerForm}>
+        <Grid item lg={9} xs={12} md={7} sm={12} className={classes.headerForm}>
           Crear/Editar Paciente
         </Grid>
-        <Grid item lg={2} xs={4} md={4} sm={4} className={classes.buttonForm}>
-          <Button variant="contained" color="default" onClick={nuevoPaciente}>
+        <Grid item lg={3} xs={12} md={5} sm={12} className={classes.buttonForm}>
+          <Button
+            variant="contained"
+            style={{ width: "100%" }}
+            color="default"
+            onClick={nuevoPaciente}
+          >
             Nuevo
           </Button>
         </Grid>
       </Grid>
       <Grid container className={classes.gridForm}>
-        <Grid item md={6}>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
           <TextField
             variant="outlined"
             margin="normal"
             label="DNI"
+            type="number"
             name="dni"
             fullWidth
             value={paciente.dni}
@@ -143,7 +149,7 @@ export default function PacienteForm() {
           />
         </Grid>
 
-        <Grid item md={6}>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -154,7 +160,7 @@ export default function PacienteForm() {
             onChange={handleInputChange}
           />
         </Grid>
-        <Grid item md={6}>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -165,7 +171,7 @@ export default function PacienteForm() {
             onChange={handleInputChange}
           />
         </Grid>
-        <Grid item md={6}>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
           <FormSelect
             name="sexo"
             label="Sexo"
@@ -174,7 +180,7 @@ export default function PacienteForm() {
             handleChange={handleInputChange}
           />
         </Grid>
-        <Grid item md={6}>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -185,18 +191,19 @@ export default function PacienteForm() {
             onChange={handleInputChange}
           />
         </Grid>
-        <Grid item md={6}>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
           <TextField
             variant="outlined"
             margin="normal"
             label="Teléfono"
+            type="number"
             name="telefono"
             fullWidth
             value={paciente.telefono}
             onChange={handleInputChange}
           />
         </Grid>
-        <Grid item md={6}>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -208,7 +215,7 @@ export default function PacienteForm() {
           />
         </Grid>
 
-        <Grid item md={6}>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -220,11 +227,12 @@ export default function PacienteForm() {
             onChange={handleInputChange}
           />
         </Grid>
-        <Grid item md={6}>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
           <TextField
             variant="outlined"
             margin="normal"
             label="Nro de Afiliado"
+            type="number"
             name="nroAfiliado"
             fullWidth
             value={paciente.nroAfiliado}
@@ -232,7 +240,7 @@ export default function PacienteForm() {
           />
         </Grid>
 
-        <Grid item md={6}>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
           <FormSelect
             name="plan"
             label="Plan"
@@ -242,7 +250,7 @@ export default function PacienteForm() {
           />
         </Grid>
 
-        <Grid item md={12}>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
           <Button variant="contained" color="primary" onClick={guardarPaciente}>
             Guardar
           </Button>

@@ -51,7 +51,7 @@ export default function ProfesionalTable() {
           <TableRow>
             <TableCell className={classes.titleTable}>DNI</TableCell>
             <TableCell className={classes.titleTable}>Profesional</TableCell>
-            <TableCell className={classes.titleTable}>CUIT</TableCell>
+
             <TableCell className={classes.titleTable}>Matrícula</TableCell>
             <TableCell className={classes.titleTable}>Dirección</TableCell>
             <TableCell className={classes.titleTable}>Teléfono</TableCell>
@@ -59,10 +59,7 @@ export default function ProfesionalTable() {
             <TableCell className={classes.titleTable}>
               Correo Electrónico
             </TableCell>
-            <TableCell className={classes.titleTable}>
-              Reg. Nac. Prestadores
-            </TableCell>
-            <TableCell className={classes.titleTable}>Seguro</TableCell>
+
             <TableCell className={classes.titleTable}>Especialidad</TableCell>
 
             <TableCell className={classes.titleTable}></TableCell>
@@ -83,9 +80,7 @@ export default function ProfesionalTable() {
                   <TableCell component="th" scope="row">
                     {`${profesional.nombre} ${profesional.apellido}`}
                   </TableCell>
-                  <TableCell component="th" scope="row">
-                    {profesional.cuit}
-                  </TableCell>
+
                   <TableCell component="th" scope="row">
                     {profesional.matricula}
                   </TableCell>
@@ -95,18 +90,17 @@ export default function ProfesionalTable() {
                   <TableCell component="th" scope="row">
                     {profesional.telefono}
                   </TableCell>
-                  <TableCell component="th" scope="row">
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    style={{ textAlign: "center" }}
+                  >
                     {profesional.sexo}
                   </TableCell>
                   <TableCell component="th" scope="row">
                     {profesional.email}
                   </TableCell>
-                  <TableCell component="th" scope="row">
-                    {profesional.registroNacPrestadores}
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                    {profesional.seguroMalaPraxis}
-                  </TableCell>
+
                   <TableCell component="th" scope="row">
                     {profesional.especialidad.nombre}
                   </TableCell>

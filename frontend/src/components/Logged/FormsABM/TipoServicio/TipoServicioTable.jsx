@@ -36,7 +36,7 @@ export default function TipoServicioTable() {
         {
           label: "Confirmar",
           onClick: () =>
-            dispatch(eliminarTipoServicio(tipoServicio.cd_tipo_servicio)),
+            dispatch(eliminarTipoServicio(tipoServicio.cdTipoServicio)),
         },
         {
           label: "Cancelar",
@@ -61,7 +61,7 @@ export default function TipoServicioTable() {
             listaTipoServicios.map((tipoServicio) => {
               return (
                 <TableRow
-                  key={tipoServicio.cd_tipo_servicio}
+                  key={tipoServicio.cdTipoServicio}
                   className={classes.rowTable}
                   onClick={() => editTipoServicio(tipoServicio)}
                 >

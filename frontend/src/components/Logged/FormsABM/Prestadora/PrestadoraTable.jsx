@@ -62,7 +62,11 @@ export default function PrestadoraTable() {
                   className={classes.rowTable}
                   onClick={() => editPrestadora(prestadora)}
                 >
-                  <TableCell component="th" scope="row">
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    style={{ textAlign: "center" }}
+                  >
                     {prestadora.nombre}
                   </TableCell>
                   <TableCell component="th" scope="row">
@@ -71,13 +75,25 @@ export default function PrestadoraTable() {
                   <TableCell component="th" scope="row">
                     {prestadora.telefono}
                   </TableCell>
-                  <TableCell component="th" scope="row">
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    style={{ textAlign: "center" }}
+                  >
                     {prestadora.intervalo}
                   </TableCell>
-                  <TableCell component="th" scope="row">
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    style={{ textAlign: "center" }}
+                  >
                     {prestadora.horaDesde}
                   </TableCell>
-                  <TableCell component="th" scope="row">
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    style={{ textAlign: "center" }}
+                  >
                     {prestadora.horaHasta}
                   </TableCell>
                   <TableCell align="right">

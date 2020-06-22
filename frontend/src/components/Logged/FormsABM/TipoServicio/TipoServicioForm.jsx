@@ -25,7 +25,7 @@ export default function TipoServicioForm() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          cd_tipo_servicio: cdTipoServicio,
+          cdTipoServicio: cdTipoServicio,
           nombre: nombre,
         }),
       }).then(function (response) {
@@ -48,14 +48,14 @@ export default function TipoServicioForm() {
   };
 
   useEffect(() => {
-    setCdTipoServicio(tipoServicio.cd_tipo_servicio);
+    setCdTipoServicio(tipoServicio.cdTipoServicio);
     setNombre(tipoServicio.nombre);
   }, [tipoServicio]);
 
   const nuevoTipoServicio = () => {
     dispatch(
       setTipoServicio({
-        cd_tipo_servicio: 0,
+        cdTipoServicio: 0,
         nombre: "",
       })
     );
@@ -64,13 +64,21 @@ export default function TipoServicioForm() {
   return (
     <div>
       <Grid container>
-        <Grid item lg={10} xs={8} md={8} sm={8} className={classes.headerForm}>
-          Crear/Editar Especialidad
+        <Grid
+          item
+          lg={10}
+          xs={12}
+          md={8}
+          sm={12}
+          className={classes.headerForm}
+        >
+          Crear/Editar Tipo Servicio
         </Grid>
-        <Grid item lg={2} xs={4} md={4} sm={4} className={classes.buttonForm}>
+        <Grid item lg={2} xs={12} md={4} sm={12} className={classes.buttonForm}>
           <Button
             variant="contained"
             color="default"
+            style={{ width: "100%" }}
             onClick={nuevoTipoServicio}
           >
             Nueva

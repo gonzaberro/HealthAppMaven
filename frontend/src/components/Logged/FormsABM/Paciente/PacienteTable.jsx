@@ -12,7 +12,7 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { setPaciente, eliminarPaciente } from "actions/PacienteActions";
 import { confirmAlert } from "react-confirm-alert"; // Import
-
+import { parseISOString } from "Utils/functions";
 export default function PacienteTable() {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -84,11 +84,19 @@ export default function PacienteTable() {
                   <TableCell component="th" scope="row">
                     {paciente.telefono}
                   </TableCell>
-                  <TableCell component="th" scope="row">
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    style={{ textAlign: "center" }}
+                  >
                     {paciente.sexo}
                   </TableCell>
-                  <TableCell component="th" scope="row">
-                    {paciente.fecha_nacimiento}
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    style={{ textAlign: "center" }}
+                  >
+                    {parseISOString(paciente.fecha_nacimiento, 2)}
                   </TableCell>
                   <TableCell component="th" scope="row">
                     {paciente.email}

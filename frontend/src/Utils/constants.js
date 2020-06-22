@@ -13,6 +13,7 @@ export const menuOptions = {
   PRESTADORA: "PRESTADORA",
   SERVICIOS: "SERVICIOS",
   TIPO_SERVICIO: "TIPO_SERVICIO",
+  COSTO_SERVICIO: "COSTO_SERVICIO",
 };
 export const url_servidor = "http://localhost:8080/";
 
