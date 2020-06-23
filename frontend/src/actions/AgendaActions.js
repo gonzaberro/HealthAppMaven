@@ -1,18 +1,12 @@
 import {
-  NEW_TURNO,
   FECHA_AGENDA,
-  BORRAR_TURNO,
   SELECT_DIA_MES,
+  SET_HORARIOS,
+  SET_TURNOS,
+  SELECT_PROFESIONAL,
 } from "../actions/types";
+import { url_servidor } from "Utils/constants/";
 
-export function addTurno(turno) {
-  return (dispatch) => {
-    dispatch({
-      type: NEW_TURNO,
-      payload: turno,
-    });
-  };
-}
 export function setFechaAgenda(fecha) {
   return (dispatch) => {
     dispatch({
@@ -29,12 +23,56 @@ export function setDiaMesSeleccionado(fecha) {
     });
   };
 }
-
-export function borrarTurno(index, horario) {
+export function selectProfesionalAgenda(dni) {
   return (dispatch) => {
     dispatch({
-      type: BORRAR_TURNO, //Aparece en AgendaReducer
-      payload: { index: index, horario: horario },
+      type: SELECT_PROFESIONAL, //Aparece en AgendaReducer
+      payload: dni,
     });
+  };
+}
+
+export function borrarTurno(cdTurno, callback) {
+  return (dispatch) => {
+    fetch(url_servidor + "turno/" + cdTurno, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+    }).then((response) => {
+      if (response.status === 200 && callback) {
+        callback();
+      }
+    });
+  };
+}
+export function setHorariosAgenda() {
+  return (dispatch) => {
+    fetch(url_servidor + "prestadora/1/horarios", {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((response) => response.json())
+      .then((data) =>
+        dispatch({
+          type: SET_HORARIOS,
+          payload: data,
+        })
+      );
+  };
+}
+
+export function getTurnos(fecha, profesional) {
+  //fecha en formato yyyy-MM-dd
+  return (dispatch) => {
+    fetch(url_servidor + "turnos/" + profesional + "/" + fecha, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        dispatch({
+          type: SET_TURNOS,
+          payload: data,
+        });
+      });
   };
 }

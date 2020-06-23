@@ -1,5 +1,5 @@
 export const make_data = function () {
-  let turnos_total = { mes: 6, dias: [] };
+  let turnos_total = [ {dia: 6, dias: [] ];
 
   for (let i = 1; i <= 30; i++) {
     for (let j = 1; j <= 30; j++) {

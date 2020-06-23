@@ -9,12 +9,19 @@ import Popper from "@material-ui/core/Popper";
 import MenuItem from "@material-ui/core/MenuItem";
 import MenuList from "@material-ui/core/MenuList";
 import { useSelector } from "react-redux";
+import { selectProfesionalAgenda, getTurnos } from "actions/AgendaActions";
+import { useDispatch } from "react-redux";
+import { fechaString } from "Utils/functions";
 
 export default function FilterDoctorAgenda() {
   const [open, setOpen] = useState(false);
   const anchorRef = React.useRef(null);
+  const dispatch = useDispatch();
   const listaProfesionales = useSelector(
     (state) => state.profesional.listaProfesionales
+  );
+  const fecha_agenda = useSelector(
+    (state) => state.agenda_reducer.fecha_agenda
   );
   const [selectedProfesional, setSelectedProfesional] = useState(1);
   const [selectedNombreProfesional, setSelectedNombreProfesional] = useState(
@@ -22,7 +29,6 @@ export default function FilterDoctorAgenda() {
   );
 
   const selectProfesional = (profesional) => {
-    console.log(profesional);
     setSelectedProfesional(profesional.dni);
     setSelectedNombreProfesional(
       profesional.nombre +
@@ -32,11 +38,15 @@ export default function FilterDoctorAgenda() {
         profesional.especialidad.nombre +
         ")"
     );
+    dispatch(selectProfesionalAgenda(profesional.dni));
+    dispatch(getTurnos(fechaString(fecha_agenda), profesional.dni));
   };
 
   useEffect(() => {
-    if (listaProfesionales[0] !== undefined)
+    if (listaProfesionales[0] !== undefined) {
       selectProfesional(listaProfesionales[0]);
+      dispatch(selectProfesionalAgenda(listaProfesionales[0].dni));
+    }
   }, [listaProfesionales]);
 
   const handleToggle = () => {

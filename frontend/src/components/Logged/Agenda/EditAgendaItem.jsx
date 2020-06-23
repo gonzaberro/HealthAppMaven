@@ -12,9 +12,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import EditAgendaHeader from "./EditAgendaHeader";
 import ProgramarAgenda from "./ProgramarAgenda";
-import { horarios } from "./itemsAgendaData";
 import { useSelector, useDispatch } from "react-redux";
-import { addTurno, borrarTurno } from "../../../actions/AgendaActions";
+import { getTurnos, borrarTurno } from "../../../actions/AgendaActions";
 import {
   setDoctor,
   setHorario,
@@ -24,12 +23,16 @@ import {
   setNota,
   setTipoServicio,
 } from "../../../actions/EditTurnoActions";
+import { useSnackbar } from "notistack";
+import { url_servidor } from "Utils/constants";
+import { confirmAlert } from "react-confirm-alert"; // Import
 
 export default function EditAgendaItem() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const turno_info = useSelector((state) => state.editTurnoReducer); //Para saber si estoy o no logueado en el sistema
-
+  const turno_info = useSelector((state) => state.editTurnoReducer);
+  const horarios = useSelector((state) => state.agenda_reducer.horarios);
+  const { enqueueSnackbar } = useSnackbar();
   const fechaCalendario = useSelector(
     (state) => state.agenda_reducer.fecha_agenda
   );
@@ -41,7 +44,9 @@ export default function EditAgendaItem() {
   const listaTipoServicios = useSelector(
     (state) => state.tipoServicio.listaTipoServicios
   );
-
+  const profesional_seleccionado = useSelector(
+    (state) => state.agenda_reducer.profesional_seleccionado
+  );
   const fechaString = () => {
     const ye = new Intl.DateTimeFormat("es", { year: "numeric" }).format(
       fechaCalendario
@@ -64,25 +69,81 @@ export default function EditAgendaItem() {
   const changeProgramar = () => {
     dispatch(setProgramar(turno_info.programar === 0 ? 1 : 0));
   };
-  const crearTurno = () => {
+
+  const guardarTurno = () => {
+    const {
+      cdTurno,
+      paciente,
+      doctor,
+      horario,
+      nota,
+      servicio,
+      tipoServicio,
+    } = turno_info;
+
     if (
-      turno_info.paciente !== "" &&
-      turno_info.doctor !== "" &&
-      turno_info.horario !== ""
+      paciente !== "" &&
+      doctor !== "" &&
+      horario !== "" &&
+      servicio !== "" &&
+      tipoServicio !== ""
     ) {
-      let turno = {
-        horario: turno_info.horario,
-        turno: {
-          paciente: turno_info.paciente,
-          doctor: turno_info.doctor,
-          servicio: turno_info.servicio,
+      fetch(url_servidor + "turno", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          cdTurno: cdTurno !== 0 ? cdTurno : 0,
+          hora: horario,
+          paciente: { dni: paciente },
+          profesional: { dni: doctor },
+          servicio: { cd_servicio: servicio },
+          tipoServicio: { cdTipoServicio: tipoServicio },
           fecha: fechaTurno,
-          programar: turno_info.programar,
-          nota: turno_info.nota,
-        },
-      };
-      dispatch(addTurno(turno));
+          notas: nota,
+        }),
+      }).then(function (response) {
+        if (response.status === 200) {
+          enqueueSnackbar("Se guardó el turno", {
+            variant: "success",
+          });
+          dispatch(
+            getTurnos(fechaString(fechaCalendario), profesional_seleccionado)
+          );
+        } else {
+          enqueueSnackbar("Error al guardar el turno", {
+            variant: "error",
+          });
+        }
+      });
     }
+  };
+
+  const eliminarTurno = (turno) => {
+    if (turno.cdTurno !== 0) {
+      confirmAlert({
+        title: "¿Eliminar turno de paciente DNI: " + turno.paciente + "?",
+        message: "",
+        buttons: [
+          {
+            label: "Confirmar",
+            onClick: () => confirmDeleteTurno(turno),
+          },
+          {
+            label: "Cancelar",
+          },
+        ],
+      });
+    }
+  };
+
+  const confirmDeleteTurno = (turno) => {
+    dispatch(
+      borrarTurno(turno.cdTurno, () =>
+        dispatch(
+          getTurnos(fechaString(fechaCalendario), profesional_seleccionado)
+        )
+      )
+    );
   };
 
   return (
@@ -115,6 +176,7 @@ export default function EditAgendaItem() {
           id="demo-simple-select-outlined"
           onChange={(event) => dispatch(setPaciente(event.target.value))}
           label="Paciente"
+          disabled={turno_info.cdTurno !== 0 ? true : false}
           value={turno_info.paciente}
           fullWidth
         >
@@ -241,9 +303,7 @@ export default function EditAgendaItem() {
             variant="contained"
             color="default"
             fullWidth
-            onClick={() =>
-              dispatch(borrarTurno(turno_info.index, turno_info.horario))
-            }
+            onClick={() => eliminarTurno(turno_info)}
           >
             Eliminar
           </Button>
@@ -253,7 +313,7 @@ export default function EditAgendaItem() {
             variant="contained"
             color="primary"
             fullWidth
-            onClick={crearTurno}
+            onClick={guardarTurno}
           >
             Guardar
           </Button>

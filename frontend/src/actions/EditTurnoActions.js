@@ -8,7 +8,16 @@ import {
   EDIT_ALL,
   EDIT_NOTA,
   EDIT_TIPO_SERVICIO,
+  SET_DEFAULT,
 } from "../actions/types";
+
+export function setDefault() {
+  return (dispatch) => {
+    dispatch({
+      type: SET_DEFAULT,
+    });
+  };
+}
 
 export function setProgramar(data) {
   return (dispatch) => {

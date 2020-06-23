@@ -3,11 +3,16 @@ import {
   FECHA_AGENDA,
   BORRAR_TURNO,
   SELECT_DIA_MES,
+  SET_HORARIOS,
+  SET_TURNOS,
+  SELECT_PROFESIONAL,
 } from "../actions/types";
 
 const initialState = {
   turnos: [],
   fecha_agenda: new Date(),
+  horarios: [],
+  profesional_seleccionado: "",
 };
 
 export default function (state = initialState, action) {
@@ -34,6 +39,21 @@ export default function (state = initialState, action) {
       return {
         ...state,
         turnos: borrarTurnos(state.turnos, action.payload),
+      };
+    case SET_HORARIOS:
+      return {
+        ...state,
+        horarios: action.payload,
+      };
+    case SET_TURNOS:
+      return {
+        ...state,
+        turnos: action.payload,
+      };
+    case SELECT_PROFESIONAL:
+      return {
+        ...state,
+        profesional_seleccionado: action.payload,
       };
 
     default:

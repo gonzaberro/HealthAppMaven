@@ -10,6 +10,8 @@ import {
   BORRAR_TURNO,
   EDIT_NOTA,
   EDIT_TIPO_SERVICIO,
+  EDIT_CD_TURNO,
+  SET_DEFAULT,
 } from "../actions/types";
 
 const initialState = {
@@ -20,7 +22,8 @@ const initialState = {
   fecha: "",
   horario: "",
   nota: "",
-  index: null,
+  tipoServicio: "",
+  cdTurno: 0,
 };
 
 export default function (state = initialState, action) {
@@ -28,27 +31,28 @@ export default function (state = initialState, action) {
     case EDIT_ALL:
       return {
         ...state,
-        doctor: action.payload.doctor,
+        doctor: action.payload.profesional.dni,
         fecha: action.payload.fecha,
-        horario: action.payload.horario,
-        paciente: action.payload.paciente,
-        programar: action.payload.programar,
-        servicio: action.payload.servicio,
-        nota: action.payload.nota,
-        index: action.payload.index,
+        horario: action.payload.hora,
+        paciente: action.payload.paciente.dni,
+        servicio: action.payload.servicio.cd_servicio,
+        nota: action.payload.notas,
+        tipoServicio: action.payload.tipoServicio.cdTipoServicio,
+        cdTurno: action.payload.cdTurno,
       };
 
-    case NEW_TURNO:
+    case SET_DEFAULT:
       return {
         ...state,
         doctor: "",
+        paciente: "",
+        servicio: "",
+        programar: 0,
         fecha: "",
         horario: "",
-        paciente: "",
-        programar: 0,
-        servicio: "",
         nota: "",
-        index: null,
+        tipoServicio: "",
+        cdTurno: 0,
       };
 
     case BORRAR_TURNO:
@@ -63,7 +67,11 @@ export default function (state = initialState, action) {
         nota: "",
         index: null,
       };
-
+    case EDIT_CD_TURNO:
+      return {
+        ...state,
+        cdTurno: action.payload,
+      };
     case EDIT_DOCTOR:
       return {
         ...state,

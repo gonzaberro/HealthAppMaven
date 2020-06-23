@@ -5,6 +5,7 @@ import { getListaProfesionales } from "actions/ProfesionalActions";
 import { getListaPacientes } from "actions/PacienteActions";
 import { getListaServicios } from "actions/ServicioActions";
 import { getListaTipoServicios } from "actions/TipoServicioActions";
+import { setHorariosAgenda } from "actions/AgendaActions";
 import ItemAgendaContainer from "./ItemsAgendaContainer";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch } from "react-redux";
@@ -13,6 +14,7 @@ export default function Agenda() {
   const classes = useStyles();
   const dispatch = useDispatch();
   useEffect(() => {
+    dispatch(setHorariosAgenda());
     dispatch(getListaProfesionales());
     dispatch(getListaPacientes());
     dispatch(getListaServicios());
