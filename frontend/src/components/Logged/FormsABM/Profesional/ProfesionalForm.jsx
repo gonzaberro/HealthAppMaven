@@ -10,7 +10,7 @@ import {
 } from "actions/ProfesionalActions";
 
 import FormSelect from "../../FormSelect";
-
+import { validateForm } from "Utils/functions";
 import { useSnackbar } from "notistack";
 import { url_servidor } from "Utils/constants";
 
@@ -32,13 +32,6 @@ const options = [
   { name: "Femenino", value: "F" },
   { name: "Masculino", value: "M" },
 ];
-
-function validarForm(profesional) {
-  const arrPro = Object.values(profesional);
-  const hayCamposVacios = arrPro.some((p) => p === "");
-
-  return !hayCamposVacios;
-}
 
 export default function ProfesionalForm() {
   const classes = useStyles();
@@ -87,7 +80,7 @@ export default function ProfesionalForm() {
 
   const guardarProfesional = () => {
     const objProfesional = { ...profesional, especialidad: especialidad };
-    if (validarForm(profesional)) {
+    if (validateForm(profesional)) {
       fetch(`${url_servidor}profesional`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

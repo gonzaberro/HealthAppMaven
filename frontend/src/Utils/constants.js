@@ -14,6 +14,7 @@ export const menuOptions = {
   SERVICIOS: "SERVICIOS",
   TIPO_SERVICIO: "TIPO_SERVICIO",
   COSTO_SERVICIO: "COSTO_SERVICIO",
+  HISTORIA_CLINICA: "HISTORIA_CLINICA",
 };
 export const url_servidor = "http://localhost:8080/";
 
