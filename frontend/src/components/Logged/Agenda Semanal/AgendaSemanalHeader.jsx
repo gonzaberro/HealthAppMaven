@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useCallback } from "react";
 import Grid from "@material-ui/core/Grid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "@material-ui/core/Button";
@@ -26,20 +26,15 @@ export default function AgendaSemanalHeader() {
     return new Date(dia.setDate(diff));
   }, [fechaCalendario]);
 
-  const [inicioSemana, setInicioSemana] = useState(getMonday());
-
-  useEffect(() => {
-    setInicioSemana(getMonday());
-  }, [fechaCalendario, getMonday]);
-
   const downFecha = () => {
-    const anterior_lunes = inicioSemana;
+    const anterior_lunes = getMonday();
+    console.log(anterior_lunes.getDate());
     anterior_lunes.setDate(anterior_lunes.getDate() - 7);
 
     dispatch(setFechaAgenda(anterior_lunes));
   };
   const upFecha = () => {
-    const siguiente_lunes = inicioSemana;
+    const siguiente_lunes = getMonday();
     siguiente_lunes.setDate(siguiente_lunes.getDate() + 7);
     dispatch(setFechaAgenda(siguiente_lunes));
   };
@@ -48,37 +43,65 @@ export default function AgendaSemanalHeader() {
   };
 
   const fechaString = () => {
-    const dia_lunes = inicioSemana.getDate();
+    const dia_lunes = getMonday();
 
     const mo = new Intl.DateTimeFormat("es", { month: "long" }).format(
-      inicioSemana
+      dia_lunes
     );
 
-    const fecha_sabado = inicioSemana;
+    const ye_lunes = new Intl.DateTimeFormat("es", { year: "numeric" }).format(
+      dia_lunes
+    );
+    const fecha_sabado = fechaCalendario;
     fecha_sabado.setDate(fecha_sabado.getDate() + 5);
 
     const mo_sabado = new Intl.DateTimeFormat("es", { month: "long" }).format(
       fecha_sabado
     );
+    const ye_sabado = new Intl.DateTimeFormat("es", { year: "numeric" }).format(
+      fecha_sabado
+    );
 
     let fecha =
       fecha_sabado.getDate() < dia_lunes
-        ? dia_lunes +
+        ? dia_lunes.getDate() +
           " de " +
           mo.toUpperCase() +
+          (ye_sabado !== ye_lunes ? " del " + ye_lunes + " " : "") +
           " - " +
           fecha_sabado.getDate() +
           " de " +
-          mo_sabado.toUpperCase()
+          mo_sabado.toUpperCase() +
+          " del " +
+          ye_sabado
         : dia_lunes +
           " de " +
           mo.toUpperCase() +
           " - " +
           fecha_sabado.getDate() +
           " de " +
-          mo.toUpperCase();
+          mo.toUpperCase() +
+          " del " +
+          ye_lunes;
 
     return fecha;
+  };
+
+  const semanaActual = () => {
+    let diaHoy = false;
+
+    let fechaActual = new Date();
+    let onejan = new Date(fechaActual.getFullYear(), 0, 1);
+
+    let week = Math.ceil(
+      ((fechaCalendario - onejan) / 86400000 + onejan.getDay() + 1) / 7
+    );
+
+    let weekActual = Math.ceil(
+      ((fechaActual - onejan) / 86400000 + onejan.getDay() + 1) / 7
+    );
+    if (week === weekActual) diaHoy = true;
+    return diaHoy;
   };
 
   return (
@@ -93,15 +116,26 @@ export default function AgendaSemanalHeader() {
         >
           <FontAwesomeIcon style={{ color: "#db3d44" }} icon={faChevronLeft} />
         </Grid>
-        <Grid item md={1} xs={2} className={classes.gridButtonHoy}>
-          <Button variant="contained" onClick={setDateToday}>
-            Hoy
+        <Grid item md={2} xs={12} className={classes.gridButtonHoy}>
+          <Button
+            variant="contained"
+            disabled={semanaActual()}
+            onClick={setDateToday}
+          >
+            Semana Actual
           </Button>
         </Grid>
-        <Grid item md={3} xs={5} className={classes.fechaAgenda}>
+        <Grid
+          item
+          md={4}
+          xs={12}
+          className={
+            semanaActual() ? classes.fechaAgendaHoy : classes.fechaAgenda
+          }
+        >
           {fechaString()}
         </Grid>
-        <Grid item md={6} xs={5} className={classes.gridFilterDoctor}>
+        <Grid item md={4} xs={12} className={classes.gridFilterDoctor}>
           <FilterDoctorAgenda />
         </Grid>
         <Grid
@@ -149,6 +183,16 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
 
     color: "#0000008a",
+    fontWeight: "bold",
+    userSelect: "none",
+  },
+  fechaAgendaHoy: {
+    paddingTop: "2%",
+    borderBottom: "1px solid #ccc",
+    borderTop: "1px solid #ccc",
+    textAlign: "center",
+
+    color: "#db3d44",
     fontWeight: "bold",
     userSelect: "none",
   },

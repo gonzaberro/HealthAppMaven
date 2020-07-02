@@ -5,14 +5,16 @@ import InputLabel from "@material-ui/core/InputLabel";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
 import { useSelector, useDispatch } from "react-redux";
 import {
   setHistoriaClinica,
   getListaHistoriaClinica,
+  setModalHistoriaClinica,
 } from "actions/HistoriaClinicaActions";
-
 import FormSelect from "../../FormSelect";
-import { fechaString, validateForm, parseISOString } from "Utils/functions";
+import { fechaString, validateForm } from "Utils/functions";
 import { useSnackbar } from "notistack";
 import { url_servidor } from "Utils/constants";
 
@@ -32,15 +34,14 @@ export default function HistoriaClinicaForm() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
-
+  const [cirugia, setCirugia] = useState(true);
+  const paciente = useSelector((state) => state.buscarTurnos.paciente);
   const [historiaClinicaForm, setHistoriaClinicaForm] = useReducer(
     (state, newState) => ({ ...state, ...newState }),
     {
       ...defaultState,
     }
   );
-
-  const [paciente, setPaciente] = useState();
   const [profesional, setProfesional] = useState();
 
   const historiaClinicaSeleccionada = useSelector(
@@ -55,7 +56,7 @@ export default function HistoriaClinicaForm() {
 
   const pacientesOptions = listaPacientes
     ? listaPacientes.map((p) => {
-        return { name: `${p.nombre} ${p.apellido}`, value: p.dni };
+        return { name: `${p.nombre} ${p.apellido} - ${p.dni}`, value: p.dni };
       })
     : [];
 
@@ -69,28 +70,49 @@ export default function HistoriaClinicaForm() {
     if (Object.keys(historiaClinicaSeleccionada).length !== 0) {
       const historiaClinica = {
         ...historiaClinicaSeleccionada,
-        fechaQuirurgica: parseISOString(
-          historiaClinicaSeleccionada.fechaQuirurgica
+        fechaQuirurgica: fechaString(
+          new Date(historiaClinicaSeleccionada.fechaQuirurgica)
         ),
-        fechaIngreso: parseISOString(historiaClinicaSeleccionada.fechaIngreso),
-        fechaAutorizacion: parseISOString(
-          historiaClinicaSeleccionada.fechaAutorizacion
+        fechaIngreso: fechaString(
+          new Date(historiaClinicaSeleccionada.fechaIngreso)
+        ),
+        fechaAutorizacion: fechaString(
+          new Date(historiaClinicaSeleccionada.fechaAutorizacion)
         ),
       };
 
       setHistoriaClinicaForm(historiaClinica);
-      setPaciente(historiaClinicaSeleccionada.paciente);
+
       setProfesional(historiaClinicaSeleccionada.profesional);
+      setCirugia(
+        historiaClinicaSeleccionada.fechaQuirurgica === null ? false : true
+      );
     }
   }, [historiaClinicaSeleccionada]);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setHistoriaClinicaForm({ [name]: value });
+  const checkFechaCirugia = (cirugia) => {
+    let historiaClinica = historiaClinicaForm;
+    if (cirugia) {
+      historiaClinica.fechaQuirurgica = fechaString(new Date());
+      setHistoriaClinicaForm(historiaClinica);
+    }
+    setCirugia(cirugia);
   };
 
-  const handlePaciente = (e) => {
-    setPaciente({ dni: e.target.value });
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+
+    if (name === "cantidadSesiones" && value <= 0) {
+      enqueueSnackbar("La cantidad de sesiones debe ser mayor a 0", {
+        variant: "warning",
+      });
+    } else if (name === "cdFacturacion" && value <= 0) {
+      enqueueSnackbar("El número de factura debe ser mayor a 0", {
+        variant: "warning",
+      });
+    } else {
+      setHistoriaClinicaForm({ [name]: value });
+    }
   };
 
   const handleProfesional = (e) => {
@@ -100,7 +122,7 @@ export default function HistoriaClinicaForm() {
   const guardarHistoriaClinica = () => {
     const objHistoriaClinica = {
       ...historiaClinicaForm,
-      paciente: paciente,
+      paciente: { dni: paciente },
       profesional: profesional,
     };
     if (validateForm(historiaClinicaForm)) {
@@ -113,10 +135,8 @@ export default function HistoriaClinicaForm() {
           enqueueSnackbar("Se guardó la Historia Clínica", {
             variant: "success",
           });
-          dispatch(getListaHistoriaClinica());
-          setHistoriaClinicaForm(defaultState);
-          setPaciente("");
-          setProfesional("");
+          dispatch(getListaHistoriaClinica(paciente));
+          nuevaHistoriaClinica();
         } else {
           enqueueSnackbar("Error al guardar la Historia Clínica", {
             variant: "error",
@@ -133,66 +153,89 @@ export default function HistoriaClinicaForm() {
   const nuevaHistoriaClinica = () => {
     dispatch(setHistoriaClinica({}));
     setHistoriaClinicaForm(defaultState);
-    setPaciente("");
     setProfesional("");
+    dispatch(setModalHistoriaClinica(false));
   };
 
   return (
     <div>
-      <Grid container>
-        <Grid item lg={9} xs={12} md={7} sm={12} className={classes.headerForm}>
-          Crear/Editar Historia Clínica
-        </Grid>
-        <Grid item lg={3} xs={12} md={5} sm={12} className={classes.buttonForm}>
-          <Button
-            variant="contained"
-            color="default"
-            style={{ width: "100%" }}
-            onClick={nuevaHistoriaClinica}
-          >
-            Nueva
-          </Button>
-        </Grid>
-      </Grid>
-
       <Grid container className={classes.gridForm}>
-        <Grid item xs={12}>
+        <Grid item xs={12} md={6} className={classes.gridInputs}>
+          <FormSelect
+            name="paciente"
+            label="Paciente"
+            options={pacientesOptions}
+            disabled={true}
+            value={paciente}
+          />
+        </Grid>
+        <Grid item xs={12} md={6} className={classes.gridInputs}>
+          <FormSelect
+            name="profesional"
+            label="Profesional"
+            options={profesionalesOptions}
+            value={(profesional && profesional.dni) || ""}
+            handleChange={handleProfesional}
+          />
+        </Grid>
+        <Grid item xs={12} md={6} className={classes.gridInputs}>
           <InputLabel id="diagnostico">Diagnóstico</InputLabel>
           <TextareaAutosize
             id="diagnostico"
             name="diagnostico"
-            rowsMax={4}
+            rowsMax={6}
             className={classes.textArea}
             value={historiaClinicaForm.diagnostico}
             onChange={handleInputChange}
             aria-label="maximum height"
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} md={6} className={classes.gridInputs}>
           <InputLabel id="tratamiento">Tratamiento</InputLabel>
           <TextareaAutosize
             id="tratamiento"
             name="tratamiento"
-            rowsMax={4}
+            rowsMax={6}
             className={classes.textArea}
             value={historiaClinicaForm.tratamiento}
             onChange={handleInputChange}
             aria-label="maximum height"
           />
         </Grid>
-        <Grid item xs={12}>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            label="Fecha Quirúrgica"
-            name="fechaQuirurgica"
-            fullWidth
-            type="date"
-            value={historiaClinicaForm.fechaQuirurgica}
-            onChange={handleInputChange}
-          />
+        <Grid item xs={12} md={6} className={classes.gridInputs}>
+          <Grid container>
+            <Grid item xs={6} md={4}>
+              <FormControlLabel
+                style={{ paddingTop: 20 }}
+                control={
+                  <Checkbox
+                    checked={cirugia}
+                    onChange={() => checkFechaCirugia(cirugia ? false : true)}
+                    name="checkedB"
+                    color="primary"
+                  />
+                }
+                label="Fecha de Cirugía"
+              />
+            </Grid>
+            {cirugia ? (
+              <Grid item xs={6} md={8}>
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  name="fechaQuirurgica"
+                  fullWidth
+                  type="date"
+                  value={historiaClinicaForm.fechaQuirurgica}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+            ) : (
+              ""
+            )}
+          </Grid>
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} md={6} className={classes.gridInputs}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -204,7 +247,7 @@ export default function HistoriaClinicaForm() {
             onChange={handleInputChange}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} md={6} className={classes.gridInputs}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -216,7 +259,7 @@ export default function HistoriaClinicaForm() {
             onChange={handleInputChange}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} md={6} className={classes.gridInputs}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -229,7 +272,7 @@ export default function HistoriaClinicaForm() {
           />
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid item xs={12} md={6} className={classes.gridInputs}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -242,7 +285,7 @@ export default function HistoriaClinicaForm() {
           />
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid item xs={12} md={6} className={classes.gridInputs}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -255,26 +298,7 @@ export default function HistoriaClinicaForm() {
           />
         </Grid>
 
-        <Grid item xs={12}>
-          <FormSelect
-            name="paciente"
-            label="Paciente"
-            options={pacientesOptions}
-            value={(paciente && paciente.dni) || ""}
-            handleChange={handlePaciente}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <FormSelect
-            name="profesional"
-            label="Profesional"
-            options={profesionalesOptions}
-            value={(profesional && profesional.dni) || ""}
-            handleChange={handleProfesional}
-          />
-        </Grid>
-
-        <Grid item xs={12}>
+        <Grid item xs={6} lg={9} md={7} className={classes.gridInputs}>
           <Button
             variant="contained"
             color="primary"
@@ -291,13 +315,12 @@ export default function HistoriaClinicaForm() {
 const useStyles = makeStyles(() => ({
   headerForm: {
     textAlign: "center",
-    paddingTop: 20,
   },
   buttonForm: {
     paddingTop: 10,
   },
   gridForm: {
-    padding: 10,
+    padding: 5,
   },
   textArea: {
     width: "100%",
@@ -307,6 +330,6 @@ const useStyles = makeStyles(() => ({
     maxHeight: 100,
     borderColor: "#c4c4c4",
     borderRadius: 5,
-    marginTop: 5,
   },
+  gridInputs: { paddingLeft: 10, paddingRight: 10 },
 }));

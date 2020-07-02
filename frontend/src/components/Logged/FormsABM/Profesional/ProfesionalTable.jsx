@@ -1,41 +1,109 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
+import { Button, Grid, TextField, CircularProgress } from "@material-ui/core";
+import DataTable from "react-data-table-component";
+import { useSelector, useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { useDispatch, useSelector } from "react-redux";
+import { faEye, faTrash } from "@fortawesome/free-solid-svg-icons";
+
 import {
   setProfesional,
   eliminarProfesional,
 } from "actions/ProfesionalActions";
+
 import { confirmAlert } from "react-confirm-alert"; // Import
+const FilterComponent = ({ filterText, onFilter }) => (
+  <>
+    <TextField
+      id="search"
+      type="text"
+      placeholder="Buscar..."
+      value={filterText}
+      onChange={onFilter}
+    />
+  </>
+);
 
-export default function ProfesionalTable() {
+const Circular = () => {
   const classes = useStyles();
-  const dispatch = useDispatch();
 
+  return (
+    <div className={classes.root}>
+      <CircularProgress />
+    </div>
+  );
+};
+
+const buscarEnTabla = (listaProfesionales, filterText) => {
+  return listaProfesionales.filter(
+    (profesional) =>
+      profesional.dni.toString().includes(filterText.toLowerCase()) ||
+      profesional.matricula.includes(filterText.toLowerCase()) ||
+      profesional.especialidad.nombre
+        .toLowerCase()
+        .includes(filterText.toLowerCase()) ||
+      profesional.nombre.toLowerCase().includes(filterText.toLowerCase()) ||
+      profesional.apellido.toLowerCase().includes(filterText.toLowerCase())
+  );
+};
+
+export default function TablaProfesional() {
   const listaProfesionales = useSelector(
     (state) => state.profesional.listaProfesionales
   );
+  const dispatch = useDispatch();
+  const [pending, setPending] = React.useState(true);
+  const [rows, setRows] = React.useState([]);
+  /* DATATABLE */
+  const profesionalSeleccionado = useSelector(
+    (state) => state.profesional.profesional
+  );
+  const [filterText, setFilterText] = React.useState("");
+  const [resetPaginationToggle, setResetPaginationToggle] = React.useState(
+    false
+  );
+  const filteredItems = buscarEnTabla(listaProfesionales, filterText);
+  /* FIN STATES DATATABLE */
 
-  const editProfesional = (profesional) => {
-    dispatch(setProfesional(profesional));
-  };
+  React.useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (filterText !== "") {
+        setRows(filteredItems);
+      } else setRows(listaProfesionales);
+      setPending(false);
+    });
+    return () => clearTimeout(timeout);
+  }, [listaProfesionales, filterText, filteredItems]);
 
-  const deleteProfesional = (dni) => {
+  /** ROW FILTROS DE TABLA */
+  const subHeaderComponentMemo = React.useMemo(() => {
+    const handleClear = () => {
+      if (filterText) {
+        setResetPaginationToggle(!resetPaginationToggle);
+        setFilterText("");
+      }
+    };
+
+    return (
+      <Grid container>
+        <Grid item md={3} lg={3} sm={6} xs={12}>
+          <FilterComponent
+            onFilter={(e) => setFilterText(e.target.value)}
+            onClear={handleClear}
+            filterText={filterText}
+          />
+        </Grid>
+      </Grid>
+    );
+  }, [filterText, resetPaginationToggle]);
+  const deleteProfesional = (row) => {
     confirmAlert({
-      title: `¿Eliminar profesional DNI: ${dni}?`,
-      message: "",
+      title: row.nombre + " " + row.apellido,
+      message: "DNI: " + row.dni,
       buttons: [
         {
-          label: "Confirmar",
-          onClick: () => dispatch(eliminarProfesional(dni)),
+          label: "Eliminar",
+          onClick: () => dispatch(eliminarProfesional(row.dni)),
         },
         {
           label: "Cancelar",
@@ -43,96 +111,97 @@ export default function ProfesionalTable() {
       ],
     });
   };
+  const columns = [
+    {
+      name: "Nombre",
+      cell: (row) => <div>{row.nombre + " " + row.apellido}</div>,
+      sortable: true,
+      selector: "nombre",
+    },
+    {
+      name: "Especialidad",
+      cell: (row) => <div>{row.especialidad.nombre}</div>,
+      sortable: true,
+      selector: "especialidad.nombre",
+    },
+
+    {
+      name: "Dirección",
+
+      sortable: true,
+      selector: "direccion",
+    },
+    {
+      name: "Teléfono",
+      sortable: true,
+      selector: "telefono",
+    },
+    {
+      name: "Email",
+      sortable: true,
+      selector: "email",
+    },
+
+    {
+      cell: (row) => (
+        <Button
+          variant="contained"
+          color="primary"
+          button
+          onClick={() => dispatch(setProfesional(row))}
+        >
+          <FontAwesomeIcon icon={faEye} />
+        </Button>
+      ),
+      ignoreRowClick: true,
+      allowOverflow: true,
+      button: true,
+    },
+
+    {
+      cell: (row) => (
+        <Button
+          variant="contained"
+          color="primary"
+          button
+          onClick={() => deleteProfesional(row)}
+        >
+          <FontAwesomeIcon icon={faTrash} />
+        </Button>
+      ),
+      ignoreRowClick: true,
+      allowOverflow: true,
+      button: true,
+    },
+  ];
+  /** FIN COLUMNAS DE TABLA */
+  const conditionalRowStyles = [
+    {
+      when: (row) => row.dni === profesionalSeleccionado.dni,
+      style: {
+        color: "#162996",
+        borderBottom: "2px solid #4051b5 !important",
+
+        "&:hover": {
+          cursor: "pointer",
+        },
+      },
+    },
+  ];
 
   return (
-    <TableContainer component={Paper}>
-      <Table aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell className={classes.titleTable}>DNI</TableCell>
-            <TableCell className={classes.titleTable}>Profesional</TableCell>
-
-            <TableCell className={classes.titleTable}>Matrícula</TableCell>
-            <TableCell className={classes.titleTable}>Dirección</TableCell>
-            <TableCell className={classes.titleTable}>Teléfono</TableCell>
-            <TableCell className={classes.titleTable}>Sexo</TableCell>
-            <TableCell className={classes.titleTable}>
-              Correo Electrónico
-            </TableCell>
-
-            <TableCell className={classes.titleTable}>Especialidad</TableCell>
-
-            <TableCell className={classes.titleTable}></TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {listaProfesionales &&
-            listaProfesionales.map((profesional) => {
-              return (
-                <TableRow
-                  key={profesional.dni}
-                  className={classes.rowTable}
-                  onClick={() => editProfesional(profesional)}
-                >
-                  <TableCell component="th" scope="row">
-                    {profesional.dni}
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                    {`${profesional.nombre} ${profesional.apellido}`}
-                  </TableCell>
-
-                  <TableCell component="th" scope="row">
-                    {profesional.matricula}
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                    {profesional.direccion}
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                    {profesional.telefono}
-                  </TableCell>
-                  <TableCell
-                    component="th"
-                    scope="row"
-                    style={{ textAlign: "center" }}
-                  >
-                    {profesional.sexo}
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                    {profesional.email}
-                  </TableCell>
-
-                  <TableCell component="th" scope="row">
-                    {profesional.especialidad.nombre}
-                  </TableCell>
-
-                  <TableCell align="right">
-                    <FontAwesomeIcon
-                      icon={faTrash}
-                      onClick={() => deleteProfesional(profesional.dni)}
-                    />
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <DataTable
+      noHeader={true}
+      columns={columns}
+      subHeader
+      progressPending={pending}
+      progressComponent={<Circular />}
+      pointerOnHover={true}
+      subHeaderComponent={subHeaderComponentMemo}
+      data={rows}
+      conditionalRowStyles={conditionalRowStyles}
+    />
   );
 }
 
-const useStyles = makeStyles((theme) => ({
-  table: {
-    minWidth: 650,
-  },
-  titleTable: {
-    fontSize: 16,
-    textAlign: "center",
-  },
-  rowTable: {
-    "&:hover": {
-      backgroundColor: "#eeeeee",
-      color: theme.palette.primary.main,
-      cursor: "pointer",
-    },
-  },
-}));
+const useStyles = makeStyles((theme) => ({}));

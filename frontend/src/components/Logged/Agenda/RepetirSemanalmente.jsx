@@ -4,9 +4,17 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import { makeStyles } from "@material-ui/core/styles";
-
+import {
+  setRepetir,
+  setCantidad,
+  setArrayDias,
+} from "actions/ProgramarAgendaActions";
+import { useDispatch, useSelector } from "react-redux";
 export default function RepetirSemanalmente(props) {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const programarAgenda = useSelector((state) => state.programarAgenda);
+
   const [diasSeleccionados, setDiasSeleccionados] = useState([
     { dia: 0, seleccionado: false }, //Domingo
     { dia: 1, seleccionado: false }, //Lunes
@@ -16,7 +24,6 @@ export default function RepetirSemanalmente(props) {
     { dia: 5, seleccionado: false }, //Viernes
     { dia: 6, seleccionado: false }, //Sabado
   ]);
-  const [espacioRepeticion, setEspacioRepeticion] = useState(1);
 
   const cambiarDiaSeleccionado = (dia_changed) => {
     let aux_dias = [...diasSeleccionados];
@@ -27,9 +34,13 @@ export default function RepetirSemanalmente(props) {
     };
 
     setDiasSeleccionados(aux_dias);
+    dispatch(setArrayDias(aux_dias));
   };
   const changeEspacioRepeticion = (value) => {
-    if (value >= 1) setEspacioRepeticion(value);
+    if (value >= 1) dispatch(setRepetir(value));
+  };
+  const changeCantidadRepeticion = (value) => {
+    if (value >= 1) dispatch(setCantidad(value));
   };
 
   return (
@@ -40,15 +51,14 @@ export default function RepetirSemanalmente(props) {
             <Grid xs={6}>
               <TextField
                 id="espacio_repeticion"
-                label={"Repetir Cada " + espacioRepeticion + " semana(s)"}
+                label={"Repetir Cada " + programarAgenda.repetir + " semana(s)"}
                 type="number"
-                defaultValue={new Date()}
                 variant="outlined"
                 className={classes.formControl}
                 onChange={(event) =>
                   changeEspacioRepeticion(event.target.value)
                 }
-                value={espacioRepeticion}
+                value={programarAgenda.repetir}
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -59,8 +69,11 @@ export default function RepetirSemanalmente(props) {
                 id="cantidad_repeticiones"
                 label="Cantidad de Repeticiones"
                 type="number"
-                defaultValue={new Date()}
+                value={programarAgenda.cantidad}
                 variant="outlined"
+                onChange={(event) =>
+                  changeCantidadRepeticion(event.target.value)
+                }
                 className={classes.formControl}
                 InputLabelProps={{
                   shrink: true,
@@ -77,7 +90,8 @@ export default function RepetirSemanalmente(props) {
                 <Button
                   onClick={() => cambiarDiaSeleccionado(1)}
                   className={
-                    diasSeleccionados[1].seleccionado
+                    programarAgenda.arrayDias[1] &&
+                    programarAgenda.arrayDias[1].seleccionado
                       ? classes.buttonSeleccionado
                       : null
                   }
@@ -87,7 +101,8 @@ export default function RepetirSemanalmente(props) {
                 <Button
                   onClick={() => cambiarDiaSeleccionado(2)}
                   className={
-                    diasSeleccionados[2].seleccionado
+                    programarAgenda.arrayDias[2] &&
+                    programarAgenda.arrayDias[2].seleccionado
                       ? classes.buttonSeleccionado
                       : null
                   }
@@ -97,7 +112,8 @@ export default function RepetirSemanalmente(props) {
                 <Button
                   onClick={() => cambiarDiaSeleccionado(3)}
                   className={
-                    diasSeleccionados[3].seleccionado
+                    programarAgenda.arrayDias[3] &&
+                    programarAgenda.arrayDias[3].seleccionado
                       ? classes.buttonSeleccionado
                       : null
                   }
@@ -107,7 +123,8 @@ export default function RepetirSemanalmente(props) {
                 <Button
                   onClick={() => cambiarDiaSeleccionado(4)}
                   className={
-                    diasSeleccionados[4].seleccionado
+                    programarAgenda.arrayDias[4] &&
+                    programarAgenda.arrayDias[4].seleccionado
                       ? classes.buttonSeleccionado
                       : null
                   }
@@ -117,7 +134,8 @@ export default function RepetirSemanalmente(props) {
                 <Button
                   onClick={() => cambiarDiaSeleccionado(5)}
                   className={
-                    diasSeleccionados[5].seleccionado
+                    programarAgenda.arrayDias[5] &&
+                    programarAgenda.arrayDias[5].seleccionado
                       ? classes.buttonSeleccionado
                       : null
                   }
@@ -127,7 +145,8 @@ export default function RepetirSemanalmente(props) {
                 <Button
                   onClick={() => cambiarDiaSeleccionado(6)}
                   className={
-                    diasSeleccionados[6].seleccionado
+                    programarAgenda.arrayDias[6] &&
+                    programarAgenda.arrayDias[6].seleccionado
                       ? classes.buttonSeleccionado
                       : null
                   }

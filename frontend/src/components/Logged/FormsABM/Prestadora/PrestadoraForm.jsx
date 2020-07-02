@@ -57,6 +57,7 @@ export default function PrestadoraForm() {
             variant: "success",
           });
           dispatch(getPrestadoras());
+          nuevaPrestadora();
         } else {
           enqueueSnackbar("Error al guardar la Prestadora", {
             variant: "error",

@@ -9,6 +9,7 @@ import {
 } from "../../../actions/EditTurnoActions";
 import { fechaString } from "Utils/functions";
 import { makeStyles } from "@material-ui/core/styles";
+
 export default function ItemsAgendaHeader() {
   const turnos = useSelector((state) => state.agenda_reducer.turnos);
   const horarios = useSelector((state) => state.agenda_reducer.horarios);
@@ -22,10 +23,12 @@ export default function ItemsAgendaHeader() {
   const classes = useStyles();
 
   useEffect(() => {
-    dispatch(getTurnos(fechaString(fecha_agenda), profesional_seleccionado));
-  }, [fecha_agenda]);
+    if (profesional_seleccionado > 0)
+      dispatch(getTurnos(fechaString(fecha_agenda), profesional_seleccionado));
+  }, [fecha_agenda, profesional_seleccionado, dispatch]);
 
   const editTurno = (turno) => {
+    turno.fecha = fechaString(new Date(turno.fecha));
     dispatch(editTurnoComplete(turno));
   };
   return (

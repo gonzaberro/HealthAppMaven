@@ -2,7 +2,14 @@ import React from "react";
 import SideNav, { NavItem, NavIcon, NavText } from "@trendmicro/react-sidenav";
 import "@trendmicro/react-sidenav/dist/react-sidenav.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCalendarAlt, faBook } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCalendarAlt,
+  faBook,
+  faFileMedical,
+  faSearch,
+  faUserMd,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
 
 import { useDispatch } from "react-redux";
 import { SWITCH_MENU } from "actions/types";
@@ -14,7 +21,10 @@ export default function LeftMenu() {
   return (
     <SideNav
       onSelect={(selected) => {
-        dispatch({ type: SWITCH_MENU, payload: selected });
+        dispatch({
+          type: SWITCH_MENU,
+          payload: { menu: selected, limpiar: true },
+        });
       }}
     >
       <SideNav.Toggle />
@@ -34,6 +44,30 @@ export default function LeftMenu() {
             <NavText>Agenda Mensual</NavText>
           </NavItem>
         </NavItem>
+        <NavItem eventKey={menuOptions.BUSCAR_TURNO}>
+          <NavIcon eventKey={menuOptions.BUSCAR_TURNO}>
+            <FontAwesomeIcon icon={faSearch} />
+          </NavIcon>
+          <NavText>Buscar Turno</NavText>
+        </NavItem>
+        <NavItem eventKey={menuOptions.PROFESIONALES}>
+          <NavIcon eventKey={menuOptions.PROFESIONALES}>
+            <FontAwesomeIcon icon={faUserMd} />
+          </NavIcon>
+          <NavText>Profesionales</NavText>
+        </NavItem>
+        <NavItem eventKey={menuOptions.PACIENTES}>
+          <NavIcon eventKey={menuOptions.PACIENTES}>
+            <FontAwesomeIcon icon={faUser} />
+          </NavIcon>
+          <NavText>Pacientes</NavText>
+        </NavItem>
+        <NavItem eventKey={menuOptions.HISTORIA_CLINICA}>
+          <NavIcon eventKey={menuOptions.HISTORIA_CLINICA}>
+            <FontAwesomeIcon icon={faFileMedical} />
+          </NavIcon>
+          <NavText>Historia Clínica</NavText>
+        </NavItem>
         <NavItem eventKey={menuOptions.CHARTS}>
           <NavIcon>
             <FontAwesomeIcon icon={faBook} />
@@ -51,12 +85,6 @@ export default function LeftMenu() {
           <NavItem eventKey={menuOptions.PLAN}>
             <NavText>Planes</NavText>
           </NavItem>
-          <NavItem eventKey={menuOptions.PROFESIONALES}>
-            <NavText>Profesionales</NavText>
-          </NavItem>
-          <NavItem eventKey={menuOptions.PACIENTES}>
-            <NavText>Pacientes</NavText>
-          </NavItem>
           <NavItem eventKey={menuOptions.PRESTADORA}>
             <NavText>Prestadoras</NavText>
           </NavItem>
@@ -66,18 +94,6 @@ export default function LeftMenu() {
           </NavItem>
           <NavItem eventKey={menuOptions.TIPO_SERVICIO}>
             <NavText>Tipo Servicio</NavText>
-          </NavItem>
-          <NavItem eventKey={menuOptions.COSTO_SERVICIO}>
-            <NavText>Costo Servicio</NavText>
-          </NavItem>
-          <NavItem eventKey={menuOptions.ESPECIALIDADES}>
-            <NavText>Especialidades</NavText>
-          </NavItem>
-          <NavItem eventKey={menuOptions.PRESTADORA}>
-            <NavText>Prestadoras</NavText>
-          </NavItem>
-          <NavItem eventKey={menuOptions.HISTORIA_CLINICA}>
-            <NavText>Historias Clínicas</NavText>
           </NavItem>
         </NavItem>
       </SideNav.Nav>

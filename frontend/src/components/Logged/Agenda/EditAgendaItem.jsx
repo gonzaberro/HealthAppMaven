@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
-import Select from "@material-ui/core/Select";
-import FormControl from "@material-ui/core/FormControl";
+
 import Button from "@material-ui/core/Button";
 import InputLabel from "@material-ui/core/InputLabel";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
-import MenuItem from "@material-ui/core/MenuItem";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import { makeStyles } from "@material-ui/core/styles";
@@ -13,7 +11,13 @@ import TextField from "@material-ui/core/TextField";
 import EditAgendaHeader from "./EditAgendaHeader";
 import ProgramarAgenda from "./ProgramarAgenda";
 import { useSelector, useDispatch } from "react-redux";
-import { getTurnos, borrarTurno } from "../../../actions/AgendaActions";
+import Select from "react-select";
+
+import {
+  getTurnos,
+  borrarTurno,
+  selectProfesionalAgenda,
+} from "../../../actions/AgendaActions";
 import {
   setDoctor,
   setHorario,
@@ -23,10 +27,76 @@ import {
   setNota,
   setTipoServicio,
 } from "../../../actions/EditTurnoActions";
+import { setFechaAgenda } from "../../../actions/AgendaActions";
 import { useSnackbar } from "notistack";
-import { url_servidor } from "Utils/constants";
 import { confirmAlert } from "react-confirm-alert"; // Import
+import { fechaString } from "Utils/functions";
+import { grabarTurno } from "./grabarTurnoLogica";
+import { cleanProgramar } from "actions/ProgramarAgendaActions";
+import { setDefault } from "../../../actions/EditTurnoActions";
+import { CLEAN_GLOBAL } from "actions/types";
 
+const optionsProfesional = (listaProfesionales) => {
+  const options = [];
+
+  listaProfesionales.map((profesional) => {
+    return options.push({
+      value: profesional.dni,
+      label:
+        profesional.nombre +
+        " " +
+        profesional.apellido +
+        " (" +
+        profesional.especialidad.nombre +
+        ")",
+    });
+  });
+  return options;
+};
+const optionsPaciente = (listaPacientes) => {
+  const options = [];
+
+  listaPacientes.map((paciente) => {
+    return options.push({
+      value: paciente.dni,
+      label: paciente.dni + " " + paciente.nombre + " " + paciente.apellido,
+    });
+  });
+  return options;
+};
+const optionsServicios = (listaServicios) => {
+  const options = [];
+
+  listaServicios.map((servicio) => {
+    return options.push({
+      value: servicio.cd_servicio,
+      label: servicio.cd_servicio + " - " + servicio.nombre,
+    });
+  });
+  return options;
+};
+const optionsTipoServicios = (listaTipoServicios) => {
+  const options = [];
+
+  listaTipoServicios.map((tipoServicio) => {
+    return options.push({
+      value: tipoServicio.cdTipoServicio,
+      label: tipoServicio.nombre,
+    });
+  });
+  return options;
+};
+const optionsHorarios = (horarios) => {
+  const options = [];
+
+  horarios.map((horarios) => {
+    return options.push({
+      value: horarios,
+      label: horarios,
+    });
+  });
+  return options;
+};
 export default function EditAgendaItem() {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -36,6 +106,7 @@ export default function EditAgendaItem() {
   const fechaCalendario = useSelector(
     (state) => state.agenda_reducer.fecha_agenda
   );
+  const programarAgenda = useSelector((state) => state.programarAgenda);
   const listaPacientes = useSelector((state) => state.paciente.listaPacientes);
   const listaProfesionales = useSelector(
     (state) => state.profesional.listaProfesionales
@@ -47,85 +118,76 @@ export default function EditAgendaItem() {
   const profesional_seleccionado = useSelector(
     (state) => state.agenda_reducer.profesional_seleccionado
   );
-  const fechaString = () => {
-    const ye = new Intl.DateTimeFormat("es", { year: "numeric" }).format(
-      fechaCalendario
-    );
-    const mo = new Intl.DateTimeFormat("es", { month: "2-digit" }).format(
-      fechaCalendario
-    );
-    const da = new Intl.DateTimeFormat("es", { day: "2-digit" }).format(
-      fechaCalendario
-    );
-    return ye + "-" + mo + "-" + da;
-  };
-
-  const [fechaTurno, setFechaTurno] = useState(fechaString());
 
   useEffect(() => {
-    if (turno_info.fecha !== "") setFechaTurno(turno_info.fecha);
-  }, [turno_info]);
+    dispatch(cleanProgramar());
+  }, [dispatch, turno_info, fechaCalendario]);
 
   const changeProgramar = () => {
     dispatch(setProgramar(turno_info.programar === 0 ? 1 : 0));
   };
-
-  const guardarTurno = () => {
-    const {
-      cdTurno,
-      paciente,
-      doctor,
-      horario,
-      nota,
-      servicio,
-      tipoServicio,
-    } = turno_info;
-
-    if (
-      paciente !== "" &&
-      doctor !== "" &&
-      horario !== "" &&
-      servicio !== "" &&
-      tipoServicio !== ""
-    ) {
-      fetch(url_servidor + "turno", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          cdTurno: cdTurno !== 0 ? cdTurno : 0,
-          hora: horario,
-          paciente: { dni: paciente },
-          profesional: { dni: doctor },
-          servicio: { cd_servicio: servicio },
-          tipoServicio: { cdTipoServicio: tipoServicio },
-          fecha: fechaTurno,
-          notas: nota,
-        }),
-      }).then(function (response) {
-        if (response.status === 200) {
-          enqueueSnackbar("Se guardó el turno", {
-            variant: "success",
-          });
-          dispatch(
-            getTurnos(fechaString(fechaCalendario), profesional_seleccionado)
-          );
-        } else {
-          enqueueSnackbar("Error al guardar el turno", {
-            variant: "error",
-          });
-        }
+  const seleccionarFechaTurno = (fecha) => {
+    if (fecha >= fechaString(new Date())) {
+      dispatch(setFechaAgenda(new Date(fecha + " " + turno_info.horario)));
+    } else {
+      enqueueSnackbar("No puede seleccionar una fecha anterior al día de hoy", {
+        variant: "warning",
       });
     }
   };
-
+  const guardarTurno = () => {
+    console.log(fechaString(new Date()));
+    if (fechaString(fechaCalendario) >= fechaString(new Date())) {
+      if (
+        turno_info.paciente !== "" &&
+        turno_info.doctor !== "" &&
+        turno_info.horario !== "" &&
+        turno_info.servicio !== "" &&
+        turno_info.tipoServicio !== ""
+      ) {
+        grabarTurno(
+          turno_info,
+          enqueueSnackbar,
+          dispatch,
+          fechaString(fechaCalendario),
+          profesional_seleccionado,
+          programarAgenda
+        );
+      }
+    } else {
+      enqueueSnackbar("No puede seleccionar una fecha anterior al día de hoy", {
+        variant: "warning",
+      });
+    }
+  };
+  const setFechaEsp = (fecha, hora) => {
+    fecha = fecha + " " + hora;
+    return new Date(fecha).toLocaleString("es-ES", {
+      timeZone: "America/Argentina/Buenos_Aires",
+    });
+  };
   const eliminarTurno = (turno) => {
+    let pacienteTurno = listaPacientes.filter(
+      (paciente) => paciente.dni === turno.paciente
+    )[0];
+    let profesionalTurno = listaProfesionales.filter(
+      (profesional) => profesional.dni === turno.doctor
+    )[0];
+
     if (turno.cdTurno !== 0) {
       confirmAlert({
-        title: "¿Eliminar turno de paciente DNI: " + turno.paciente + "?",
-        message: "",
+        title: "Turno: " + pacienteTurno.nombre + " " + pacienteTurno.apellido,
+        message:
+          "Día " +
+          setFechaEsp(turno.fecha, turno.horario) +
+          " Profesional: " +
+          profesionalTurno.nombre +
+          " " +
+          profesionalTurno.apellido,
+
         buttons: [
           {
-            label: "Confirmar",
+            label: "Eliminar",
             onClick: () => confirmDeleteTurno(turno),
           },
           {
@@ -138,97 +200,72 @@ export default function EditAgendaItem() {
 
   const confirmDeleteTurno = (turno) => {
     dispatch(
-      borrarTurno(turno.cdTurno, () =>
-        dispatch(
-          getTurnos(fechaString(fechaCalendario), profesional_seleccionado)
-        )
+      borrarTurno(
+        turno.cdTurno,
+        () => dispatch(cleanProgramar()),
+        () => dispatch(setDefault()),
+        () =>
+          dispatch(
+            getTurnos(fechaString(fechaCalendario), profesional_seleccionado)
+          )
       )
     );
+  };
+  const setDoctorSeleccinado = (doctor) => {
+    dispatch(setDoctor(doctor));
+    dispatch(selectProfesionalAgenda(doctor));
+
+    dispatch({
+      type: CLEAN_GLOBAL,
+      payload: false,
+    });
   };
 
   return (
     <>
       <EditAgendaHeader />
-      <FormControl variant="outlined" fullWidth className={classes.formControl}>
-        <InputLabel id="demo-simple-select-outlined-label">Doctor</InputLabel>
-        <Select
-          labelId="demo-simple-select-outlined-label"
-          id="demo-simple-select-outlined"
-          onChange={(event) => dispatch(setDoctor(event.target.value))}
-          label="Doctor"
-          value={turno_info.doctor}
-          fullWidth
-        >
-          {listaProfesionales.map((profesional) => {
-            return (
-              <MenuItem value={profesional.dni}>
-                {profesional.nombre} {profesional.apellido} (
-                {profesional.especialidad.nombre})
-              </MenuItem>
-            );
-          })}
-        </Select>
-      </FormControl>
-      <FormControl variant="outlined" fullWidth className={classes.formControl}>
-        <InputLabel id="demo-simple-select-outlined-label">Paciente</InputLabel>
-        <Select
-          labelId="demo-simple-select-outlined-label"
-          id="demo-simple-select-outlined"
-          onChange={(event) => dispatch(setPaciente(event.target.value))}
-          label="Paciente"
-          disabled={turno_info.cdTurno !== 0 ? true : false}
-          value={turno_info.paciente}
-          fullWidth
-        >
-          {listaPacientes.map((paciente) => {
-            return (
-              <MenuItem value={paciente.dni}>
-                {paciente.nombre} {paciente.apellido} - {paciente.dni}
-              </MenuItem>
-            );
-          })}
-        </Select>
-      </FormControl>
-      <FormControl variant="outlined" fullWidth className={classes.formControl}>
-        <InputLabel id="demo-simple-select-outlined-label">Servicio</InputLabel>
-        <Select
-          labelId="demo-simple-select-outlined-label"
-          id="demo-simple-select-outlined"
-          label="Servicio"
-          onChange={(event) => dispatch(setServicio(event.target.value))}
-          value={turno_info.servicio}
-          fullWidth
-        >
-          {listaServicios.map((servicio) => {
-            return (
-              <MenuItem value={servicio.cd_servicio}>
-                {servicio.cd_servicio} - {servicio.nombre}
-              </MenuItem>
-            );
-          })}
-        </Select>
-      </FormControl>
-      <FormControl variant="outlined" fullWidth className={classes.formControl}>
-        <InputLabel id="demo-simple-select-outlined-label">
-          Tipo Servicio
-        </InputLabel>
-        <Select
-          labelId="demo-simple-select-outlined-label"
-          id="demo-simple-select-outlined"
-          label="Tipo Servicio"
-          onChange={(event) => dispatch(setTipoServicio(event.target.value))}
-          value={turno_info.tipoServicio}
-          fullWidth
-        >
-          {listaTipoServicios.map((tipoServicio) => {
-            return (
-              <MenuItem value={tipoServicio.cdTipoServicio}>
-                {tipoServicio.nombre}
-              </MenuItem>
-            );
-          })}
-        </Select>
-      </FormControl>
+      <Select
+        options={optionsProfesional(listaProfesionales)}
+        isSearchable={true}
+        placeholder={<div>Profesional</div>}
+        styles={colourStyles}
+        onChange={(value) => setDoctorSeleccinado(value.value)}
+        value={optionsProfesional(listaProfesionales).filter(
+          (option) => option.value === profesional_seleccionado
+        )}
+      />
+      <Select
+        options={optionsPaciente(listaPacientes)}
+        isSearchable={true}
+        placeholder={<div>Paciente</div>}
+        styles={colourStyles}
+        isDisabled={turno_info.cdTurno !== 0 ? true : false}
+        onChange={(value) => dispatch(setPaciente(value.value))}
+        value={optionsPaciente(listaPacientes).filter(
+          (option) => option.value === turno_info.paciente
+        )}
+      />
+      <Select
+        options={optionsServicios(listaServicios)}
+        isSearchable={true}
+        placeholder={<div>Servicio</div>}
+        styles={colourStyles}
+        onChange={(value) => dispatch(setServicio(value.value))}
+        value={optionsServicios(listaServicios).filter(
+          (option) => option.value === turno_info.servicio
+        )}
+      />
+
+      <Select
+        options={optionsTipoServicios(listaTipoServicios)}
+        isSearchable={true}
+        placeholder={<div>Tipo de Servicio</div>}
+        styles={colourStyles}
+        onChange={(value) => dispatch(setTipoServicio(value.value))}
+        value={optionsTipoServicios(listaTipoServicios).filter(
+          (option) => option.value === turno_info.tipoServicio
+        )}
+      />
       <Grid container>
         <Grid item md={6} xs={12}>
           <form className={classes.container} noValidate>
@@ -236,9 +273,9 @@ export default function EditAgendaItem() {
               id="date"
               label="Fecha"
               type="date"
-              value={fechaTurno}
+              value={fechaString(fechaCalendario)}
               variant="outlined"
-              onChange={(event) => setFechaTurno(event.target.value)}
+              onChange={(event) => seleccionarFechaTurno(event.target.value)}
               className={classes.textField}
               InputLabelProps={{
                 shrink: true,
@@ -247,31 +284,16 @@ export default function EditAgendaItem() {
           </form>
         </Grid>
         <Grid item md={6} xs={12}>
-          <FormControl
-            variant="outlined"
-            fullWidth
-            className={classes.formControl}
-          >
-            <InputLabel id="demo-simple-select-outlined-label">
-              Horario
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-outlined-label"
-              id="demo-simple-select-outlined"
-              label="Institución"
-              value={turno_info.horario}
-              onChange={(event) => dispatch(setHorario(event.target.value))}
-              fullWidth
-            >
-              {horarios.map((horario) => {
-                return (
-                  <MenuItem key={horario} value={horario}>
-                    {horario}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-          </FormControl>
+          <Select
+            options={optionsHorarios(horarios)}
+            isSearchable={true}
+            placeholder={<div>Horario</div>}
+            styles={colourStyles}
+            onChange={(value) => dispatch(setHorario(value.value))}
+            value={optionsHorarios(horarios).filter(
+              (option) => option.value === turno_info.horario
+            )}
+          />
         </Grid>
       </Grid>
       <form className={classes.container} noValidate>
@@ -303,6 +325,7 @@ export default function EditAgendaItem() {
             variant="contained"
             color="default"
             fullWidth
+            disabled={turno_info.cdTurno > 0 ? false : true}
             onClick={() => eliminarTurno(turno_info)}
           >
             Eliminar
@@ -313,6 +336,11 @@ export default function EditAgendaItem() {
             variant="contained"
             color="primary"
             fullWidth
+            disabled={
+              fechaString(fechaCalendario) < fechaString(new Date())
+                ? true
+                : false
+            }
             onClick={guardarTurno}
           >
             Guardar
@@ -326,6 +354,7 @@ const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: 10,
   },
+
   container: {
     margin: 10,
     marginRight: 0,
@@ -357,3 +386,12 @@ const useStyles = makeStyles((theme) => ({
 
   gridContainer: { border: "1px solid #ccc", padding: 30, paddingTop: 0 },
 }));
+
+const colourStyles = {
+  control: (base) => ({
+    ...base,
+    height: 56,
+    minHeight: 35,
+    margin: 10,
+  }),
+};

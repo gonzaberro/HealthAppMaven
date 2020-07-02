@@ -32,7 +32,13 @@ export default function ItemsAgendaHeader() {
   const setDateToday = () => {
     dispatch(setFechaAgenda(new Date()));
   };
+  const diaActual = () => {
+    let diaHoy = false;
 
+    if (new Date(fechaCalendario).toDateString() === new Date().toDateString())
+      diaHoy = true;
+    return diaHoy;
+  };
   const fechaString = () => {
     const ye = new Intl.DateTimeFormat("es", { year: "numeric" }).format(
       fechaCalendario
@@ -89,7 +95,11 @@ export default function ItemsAgendaHeader() {
               lg={2}
               className={classes.gridButtonHoy}
             >
-              <Button variant="contained" onClick={setDateToday}>
+              <Button
+                variant="contained"
+                disabled={diaActual()}
+                onClick={setDateToday}
+              >
                 Hoy
               </Button>
             </Grid>
@@ -99,7 +109,9 @@ export default function ItemsAgendaHeader() {
               xs={9}
               sm={10}
               lg={5}
-              className={classes.fechaAgenda}
+              className={
+                diaActual() ? classes.fechaAgendaHoy : classes.fechaAgenda
+              }
             >
               {fechaString()}
             </Grid>
@@ -157,6 +169,15 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
 
     color: "#0000008a",
+    fontWeight: "bold",
+    userSelect: "none",
+  },
+  fechaAgendaHoy: {
+    padding: "2%",
+
+    textAlign: "center",
+
+    color: "#db3d44",
     fontWeight: "bold",
     userSelect: "none",
   },

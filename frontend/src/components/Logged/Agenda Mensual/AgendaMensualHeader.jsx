@@ -56,6 +56,18 @@ export default function AgendaMensualHeader() {
     return mo.toUpperCase() + " del " + ye;
   };
 
+  const mesActual = () => {
+    let diaHoy = false;
+    let fechaSeleccionada = new Date(fechaCalendario);
+    let fechaActual = new Date();
+    if (
+      fechaSeleccionada.getMonth() === fechaActual.getMonth() &&
+      fechaActual.getFullYear() === fechaSeleccionada.getFullYear()
+    )
+      diaHoy = true;
+    return diaHoy;
+  };
+
   return (
     <>
       <Grid container style={{ height: "5%" }}>
@@ -69,11 +81,20 @@ export default function AgendaMensualHeader() {
           <FontAwesomeIcon style={{ color: "#db3d44" }} icon={faChevronLeft} />
         </Grid>
         <Grid item md={1} xs={2} className={classes.gridButtonHoy}>
-          <Button variant="contained" onClick={setDateToday}>
-            Hoy
+          <Button
+            variant="contained"
+            onClick={setDateToday}
+            disabled={mesActual()}
+          >
+            Mes Actual
           </Button>
         </Grid>
-        <Grid item md={3} xs={5} className={classes.fechaAgenda}>
+        <Grid
+          item
+          md={3}
+          xs={5}
+          className={mesActual() ? classes.fechaAgendaHoy : classes.fechaAgenda}
+        >
           {fechaString()}
         </Grid>
         <Grid item md={6} xs={5} className={classes.gridFilterDoctor}>
@@ -116,6 +137,17 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: "1px solid #ccc",
 
     textAlign: "center",
+  },
+
+  fechaAgendaHoy: {
+    paddingTop: "2%",
+    borderBottom: "1px solid #ccc",
+    borderTop: "1px solid #ccc",
+    textAlign: "center",
+
+    color: "#db3d44",
+    fontWeight: "bold",
+    userSelect: "none",
   },
   fechaAgenda: {
     paddingTop: "2%",

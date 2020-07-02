@@ -51,3 +51,15 @@ export const validateForm = (object) => {
 
   return !hayCamposVacios;
 };
+
+export const formatDateString = (date) => {
+  let month = parseInt(date.getMonth()) + 1;
+
+  return (
+    date.getDate() +
+    "/" +
+    (month < 10 ? "0" + month : month) +
+    "/" +
+    date.getFullYear()
+  );
+};

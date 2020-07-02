@@ -1,6 +1,18 @@
-import { SET_HISTORIA_CLINICA, SET_LISTA_HISTORIA_CLINICA } from "./types";
+import {
+  SET_HISTORIA_CLINICA,
+  SET_LISTA_HISTORIA_CLINICA,
+  MODAL_HISTORIA_CLINICA,
+} from "./types";
 import { url_servidor } from "Utils/constants";
 
+export function setModalHistoriaClinica(open) {
+  return (dispatch) => {
+    dispatch({
+      type: MODAL_HISTORIA_CLINICA,
+      payload: open,
+    });
+  };
+}
 export function setHistoriaClinica(historiaClinica) {
   return (dispatch) => {
     dispatch({
@@ -9,7 +21,6 @@ export function setHistoriaClinica(historiaClinica) {
     });
   };
 }
-
 export function eliminarHistoriaClinica(id) {
   return (dispatch) => {
     fetch(`${url_servidor}historiaClinica/${id}`, {
@@ -26,9 +37,9 @@ export function eliminarHistoriaClinica(id) {
   };
 }
 
-export function getListaHistoriaClinica() {
+export function getListaHistoriaClinica(dni) {
   return (dispatch) => {
-    fetch(`${url_servidor}historiaClinica`, {
+    fetch(`${url_servidor}historiaClinica/dni/${dni}`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     })

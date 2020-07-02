@@ -1,36 +1,68 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
+import { Button, Grid, TextField, CircularProgress } from "@material-ui/core";
+import DataTable from "react-data-table-component";
+import { useSelector, useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { useDispatch, useSelector } from "react-redux";
-import { setPaciente, eliminarPaciente } from "actions/PacienteActions";
+import { faEye, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { buscarTurnosPaciente } from "actions/BuscarTurnosActions";
+import { useEffect } from "react";
 import { confirmAlert } from "react-confirm-alert"; // Import
-import { parseISOString } from "Utils/functions";
-export default function PacienteTable() {
+import { setPaciente, eliminarPaciente } from "actions/PacienteActions";
+const FilterComponent = ({ filterText, onFilter, onClear }) => (
+  <>
+    <TextField
+      id="search"
+      type="text"
+      placeholder="Buscar..."
+      value={filterText}
+      onChange={onFilter}
+    />
+  </>
+);
+
+const Circular = () => {
   const classes = useStyles();
-  const dispatch = useDispatch();
 
+  return (
+    <div className={classes.root}>
+      <CircularProgress />
+    </div>
+  );
+};
+
+const buscarEnTabla = (listaPacientes, filterText) => {
+  return listaPacientes.filter(
+    (paciente) =>
+      paciente.dni.toString().includes(filterText.toLowerCase()) ||
+      paciente.nombre.toLowerCase().includes(filterText.toLowerCase()) ||
+      paciente.apellido.toLowerCase().includes(filterText.toLowerCase())
+  );
+};
+
+export default function TablaPaciente() {
+  const buscarInfo = useSelector((state) => state.buscarTurnos);
   const listaPacientes = useSelector((state) => state.paciente.listaPacientes);
+  const [pending, setPending] = React.useState(true);
+  const [rows, setRows] = React.useState([]);
+  const pacienteSeleccionado = useSelector((state) => state.paciente.paciente);
+  const dispatch = useDispatch();
+  /* DATATABLE */
 
-  const editPaciente = (paciente) => {
-    dispatch(setPaciente(paciente));
-  };
+  const [filterText, setFilterText] = React.useState("");
+  const [resetPaginationToggle, setResetPaginationToggle] = React.useState(
+    false
+  );
+  const filteredItems = buscarEnTabla(listaPacientes, filterText);
 
-  const deletePaciente = (dni) => {
+  const deletePaciente = (row) => {
     confirmAlert({
-      title: `¿Eliminar paciente DNI: ${dni}?`,
-      message: "",
+      title: row.nombre + " " + row.apellido,
+      message: "DNI: " + row.dni,
       buttons: [
         {
-          label: "Confirmar",
-          onClick: () => dispatch(eliminarPaciente(dni)),
+          label: "Eliminar",
+          onClick: () => dispatch(eliminarPaciente(row.dni)),
         },
         {
           label: "Cancelar",
@@ -38,104 +70,143 @@ export default function PacienteTable() {
       ],
     });
   };
+  /* FIN STATES DATATABLE */
+
+  React.useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (filterText !== "") {
+        setRows(filteredItems);
+      } else setRows(listaPacientes);
+      setPending(false);
+    });
+    return () => clearTimeout(timeout);
+  }, [listaPacientes, filterText, filteredItems]);
+
+  useEffect(() => {
+    if (buscarInfo.paciente !== 0) {
+      dispatch(buscarTurnosPaciente(buscarInfo.paciente, buscarInfo.actuales));
+    }
+  }, [dispatch, buscarInfo.actuales, buscarInfo.paciente]);
+
+  /** ROW FILTROS DE TABLA */
+  const subHeaderComponentMemo = React.useMemo(() => {
+    const handleClear = () => {
+      if (filterText) {
+        setResetPaginationToggle(!resetPaginationToggle);
+        setFilterText("");
+      }
+    };
+
+    return (
+      <Grid container>
+        <Grid item md={3} lg={3} sm={6} xs={12}>
+          <FilterComponent
+            onFilter={(e) => setFilterText(e.target.value)}
+            onClear={handleClear}
+            filterText={filterText}
+          />
+        </Grid>
+      </Grid>
+    );
+  }, [filterText, resetPaginationToggle]);
+  /** FIN FILTROS TABLA */
+
+  const columns = [
+    {
+      name: "DNI",
+      sortable: true,
+      selector: "dni",
+    },
+    {
+      name: "Nombre",
+      cell: (row) => <div>{row.nombre + " " + row.apellido}</div>,
+      sortable: true,
+      selector: "nombre",
+    },
+
+    {
+      name: "Dirección",
+      sortable: true,
+      selector: "direccion",
+    },
+    {
+      name: "Teléfono",
+      sortable: true,
+      selector: "telefono",
+    },
+    {
+      name: "Email",
+      sortable: true,
+      selector: "email",
+    },
+    {
+      name: "Obra Social",
+      cell: (row) => (
+        <div>
+          {row.plan.obraSocial.nombre.toUpperCase() + " - " + row.plan.nombre}
+        </div>
+      ),
+      sortable: true,
+    },
+    {
+      cell: (row) => (
+        <Button
+          variant="contained"
+          color="primary"
+          button
+          onClick={() => dispatch(setPaciente(row))}
+        >
+          <FontAwesomeIcon icon={faEye} />
+        </Button>
+      ),
+      ignoreRowClick: true,
+      allowOverflow: true,
+      button: true,
+    },
+    {
+      cell: (row) => (
+        <Button
+          variant="contained"
+          color="primary"
+          button
+          onClick={() => deletePaciente(row)}
+        >
+          <FontAwesomeIcon icon={faTrash} />
+        </Button>
+      ),
+      ignoreRowClick: true,
+      allowOverflow: true,
+      button: true,
+    },
+  ];
+  /** FIN COLUMNAS DE TABLA */
+
+  const conditionalRowStyles = [
+    {
+      when: (row) => row.dni === pacienteSeleccionado.dni,
+      style: {
+        color: "#162996",
+        borderBottom: "2px solid #4051b5 !important",
+        "&:hover": {
+          cursor: "pointer",
+        },
+      },
+    },
+  ];
 
   return (
-    <TableContainer component={Paper}>
-      <Table aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell className={classes.titleTable}>DNI</TableCell>
-            <TableCell className={classes.titleTable}>Paciente</TableCell>
-            <TableCell className={classes.titleTable}>Dirección</TableCell>
-            <TableCell className={classes.titleTable}>Teléfono</TableCell>
-            <TableCell className={classes.titleTable}>Sexo</TableCell>
-            <TableCell className={classes.titleTable}>
-              Fecha de Naciemiento
-            </TableCell>
-            <TableCell className={classes.titleTable}>
-              Correo Electrónico
-            </TableCell>
-            <TableCell className={classes.titleTable}>
-              Nro de Afiliado
-            </TableCell>
-            <TableCell className={classes.titleTable}>Plan</TableCell>
-
-            <TableCell className={classes.titleTable}></TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {listaPacientes &&
-            listaPacientes.map((paciente) => {
-              return (
-                <TableRow
-                  key={paciente.dni}
-                  className={classes.rowTable}
-                  onClick={() => editPaciente(paciente)}
-                >
-                  <TableCell component="th" scope="row">
-                    {paciente.dni}
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                    {`${paciente.nombre} ${paciente.apellido}`}
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                    {paciente.direccion}
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                    {paciente.telefono}
-                  </TableCell>
-                  <TableCell
-                    component="th"
-                    scope="row"
-                    style={{ textAlign: "center" }}
-                  >
-                    {paciente.sexo}
-                  </TableCell>
-                  <TableCell
-                    component="th"
-                    scope="row"
-                    style={{ textAlign: "center" }}
-                  >
-                    {parseISOString(paciente.fecha_nacimiento, 2)}
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                    {paciente.email}
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                    {paciente.nroAfiliado}
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                    {paciente.plan.nombre}
-                  </TableCell>
-
-                  <TableCell align="right">
-                    <FontAwesomeIcon
-                      icon={faTrash}
-                      onClick={() => deletePaciente(paciente.dni)}
-                    />
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <DataTable
+      noHeader={true}
+      columns={columns}
+      subHeader
+      progressPending={pending}
+      progressComponent={<Circular />}
+      pointerOnHover={true}
+      subHeaderComponent={subHeaderComponentMemo}
+      data={rows}
+      conditionalRowStyles={conditionalRowStyles}
+    />
   );
 }
 
-const useStyles = makeStyles((theme) => ({
-  table: {
-    minWidth: 650,
-  },
-  titleTable: {
-    fontSize: 16,
-    textAlign: "center",
-  },
-  rowTable: {
-    "&:hover": {
-      backgroundColor: "#eeeeee",
-      color: theme.palette.primary.main,
-      cursor: "pointer",
-    },
-  },
-}));
+const useStyles = makeStyles((theme) => ({}));

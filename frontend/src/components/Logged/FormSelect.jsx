@@ -8,6 +8,7 @@ export default function FormSelect({
   options,
   value,
   handleChange,
+  disabled,
 }) {
   return (
     <FormControl margin="normal" variant="outlined" fullWidth>
@@ -16,6 +17,7 @@ export default function FormSelect({
         labelId={name}
         id={name}
         name={name}
+        disabled={disabled ? disabled : false}
         value={value}
         label={label}
         onChange={handleChange}

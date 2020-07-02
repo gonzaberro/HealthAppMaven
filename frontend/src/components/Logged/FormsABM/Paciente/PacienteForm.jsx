@@ -9,7 +9,7 @@ import { setPaciente, getListaPacientes } from "actions/PacienteActions";
 import FormSelect from "components/Logged/FormSelect";
 import { useSnackbar } from "notistack";
 import { url_servidor } from "Utils/constants";
-import { fechaString, parseISOString, validateForm } from "Utils/functions";
+import { fechaString, validateForm } from "Utils/functions";
 
 const defaultState = {
   dni: "",
@@ -47,7 +47,7 @@ export default function PacienteForm() {
 
   const planesOptions = listaPlanes
     ? listaPlanes.map((e) => {
-        return { name: e.nombre, value: e.cd_plan };
+        return { name: e.obraSocial.nombre + " " + e.nombre, value: e.cd_plan };
       })
     : [];
 
@@ -55,8 +55,8 @@ export default function PacienteForm() {
     if (Object.keys(pacienteSeleccionado).length !== 0) {
       const paciente = {
         ...pacienteSeleccionado,
-        fecha_nacimiento: parseISOString(
-          pacienteSeleccionado.fecha_nacimiento,
+        fecha_nacimiento: fechaString(
+          new Date(pacienteSeleccionado.fecha_nacimiento),
           1
         ),
       };
@@ -87,8 +87,7 @@ export default function PacienteForm() {
             variant: "success",
           });
           dispatch(getListaPacientes());
-          setPacienteForm(defaultState);
-          setPlan("");
+          nuevoPaciente();
         } else {
           enqueueSnackbar("Error al guardar el Paciente", {
             variant: "error",

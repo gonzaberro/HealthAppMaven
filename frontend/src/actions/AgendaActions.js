@@ -32,13 +32,15 @@ export function selectProfesionalAgenda(dni) {
   };
 }
 
-export function borrarTurno(cdTurno, callback) {
+export function borrarTurno(cdTurno, cleanProgramar, cleanEditTurno, callback) {
   return (dispatch) => {
     fetch(url_servidor + "turno/" + cdTurno, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
     }).then((response) => {
       if (response.status === 200 && callback) {
+        cleanProgramar();
+        cleanEditTurno();
         callback();
       }
     });

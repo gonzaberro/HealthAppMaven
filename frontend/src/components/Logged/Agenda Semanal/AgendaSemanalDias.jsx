@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
 import { Badge } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -7,12 +7,26 @@ import { useSelector, useDispatch } from "react-redux";
 import { menuOptions } from "Utils/constants";
 import { SWITCH_MENU } from "actions/types";
 import TurnosDiaAgendaSemanal from "./TurnosDiaAgendaSemanal";
+import { getTurnosSemana } from "actions/VistaMensualYSemanalActions";
+import { fechaString } from "Utils/functions";
+
 export default function AgendaSemanalDias() {
+  const classes = useStyles();
+  const dispatch = useDispatch();
+
   const fechaCalendario = useSelector(
     (state) => state.agenda_reducer.fecha_agenda
   );
-  const classes = useStyles();
-  const dispatch = useDispatch();
+  const profesional_seleccionado = useSelector(
+    (state) => state.agenda_reducer.profesional_seleccionado
+  );
+  useEffect(() => {
+    if (profesional_seleccionado > 0) {
+      dispatch(
+        getTurnosSemana(fechaString(fechaCalendario), profesional_seleccionado)
+      );
+    }
+  }, [fechaCalendario, profesional_seleccionado, dispatch]);
 
   const gotoDiaCalendario = (fecha_seleccionada) => {
     const ye = new Intl.DateTimeFormat("es", { year: "numeric" }).format(
@@ -25,7 +39,10 @@ export default function AgendaSemanalDias() {
     dispatch(
       setDiaMesSeleccionado(new Date(ye, mo - 1, fecha_seleccionada.getDate()))
     ); //Seteo la fecha del calendario con la fecha que seleccione
-    dispatch({ type: SWITCH_MENU, payload: menuOptions.Agenda_DIARIA }); //Voy a ver la visual del calendario por DIA*/
+    dispatch({
+      type: SWITCH_MENU,
+      payload: { menu: menuOptions.Agenda_DIARIA, limpiar: true },
+    }); //Voy a ver la visual del calendario por DIA*/
   };
   const getMonday = () => {
     let dia = fechaCalendario;
@@ -73,7 +90,6 @@ export default function AgendaSemanalDias() {
                 <TurnosDiaAgendaSemanal
                   key={"turnos_dia_semanal_" + dias}
                   dia_mes={badge_fecha.getDate()}
-                  mes_calendario={badge_fecha.getMonth() + 1}
                 />
               </Grid>
             </Grid>
@@ -101,7 +117,7 @@ const useStyles = makeStyles((theme) => ({
     minHeight: "85vh",
     "&:hover": {
       border: "1px solid #2c41b5",
-      backgroundColor: "#eeeeee",
+      // backgroundColor: "#eeeeee",
       color: theme.palette.primary.main,
       cursor: "pointer",
     },

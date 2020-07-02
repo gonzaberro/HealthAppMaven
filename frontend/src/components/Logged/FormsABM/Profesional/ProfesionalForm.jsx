@@ -91,8 +91,7 @@ export default function ProfesionalForm() {
             variant: "success",
           });
           dispatch(getListaProfesionales());
-          setProfesionalForm(defaultState);
-          setEspecialidad("");
+          nuevoProfesional();
         } else {
           enqueueSnackbar("Error al guardar el Profesional", {
             variant: "error",

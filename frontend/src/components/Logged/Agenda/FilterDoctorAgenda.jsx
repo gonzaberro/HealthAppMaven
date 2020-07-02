@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
@@ -20,6 +20,9 @@ export default function FilterDoctorAgenda() {
   const listaProfesionales = useSelector(
     (state) => state.profesional.listaProfesionales
   );
+  const profesional_seleccionado = useSelector(
+    (state) => state.agenda_reducer.profesional_seleccionado
+  ); //Profesional seleccionado en header de los calendarios
   const fecha_agenda = useSelector(
     (state) => state.agenda_reducer.fecha_agenda
   );
@@ -28,26 +31,43 @@ export default function FilterDoctorAgenda() {
     ""
   );
 
-  const selectProfesional = (profesional) => {
-    setSelectedProfesional(profesional.dni);
-    setSelectedNombreProfesional(
-      profesional.nombre +
-        " " +
-        profesional.apellido +
-        " (" +
-        profesional.especialidad.nombre +
-        ")"
-    );
-    dispatch(selectProfesionalAgenda(profesional.dni));
-    dispatch(getTurnos(fechaString(fecha_agenda), profesional.dni));
-  };
+  const selectProfesional = useCallback(
+    (profesional) => {
+      setSelectedProfesional(profesional.dni);
+      setSelectedNombreProfesional(
+        profesional.nombre +
+          " " +
+          profesional.apellido +
+          " (" +
+          profesional.especialidad.nombre +
+          ")"
+      );
+      dispatch(selectProfesionalAgenda(profesional.dni));
+      dispatch(getTurnos(fechaString(fecha_agenda), profesional.dni));
+    },
+    [dispatch, fecha_agenda]
+  );
 
   useEffect(() => {
     if (listaProfesionales[0] !== undefined) {
-      selectProfesional(listaProfesionales[0]);
-      dispatch(selectProfesionalAgenda(listaProfesionales[0].dni));
+      if (profesional_seleccionado === "") {
+        selectProfesional(listaProfesionales[0]);
+        dispatch(selectProfesionalAgenda(listaProfesionales[0].dni));
+      } else {
+        let profesional = listaProfesionales.filter((profesional) => {
+          return profesional.dni === profesional_seleccionado;
+        })[0]; //Busco el objeto profesional seleccionado
+
+        selectProfesional(profesional);
+        dispatch(selectProfesionalAgenda(profesional_seleccionado));
+      }
     }
-  }, [listaProfesionales]);
+  }, [
+    listaProfesionales,
+    selectProfesional,
+    dispatch,
+    profesional_seleccionado,
+  ]);
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);

@@ -38,6 +38,7 @@ export default function PlanForm() {
             variant: "success",
           });
           dispatch(getListaPlanes());
+          nuevoPlan();
         } else {
           enqueueSnackbar("Error al guardar el Plan", {
             variant: "error",

@@ -1,7 +1,8 @@
-import { SWITCH_MENU } from "actions/types";
+import { SWITCH_MENU, CLEAN_GLOBAL } from "actions/types";
 import { menuOptions } from "Utils/constants";
 const initialState = {
-  menuSelected: menuOptions.COSTO_SERVICIO,
+  menuSelected: menuOptions.Agenda_DIARIA,
+  limpiar: false,
 };
 
 export default function (state = initialState, action) {
@@ -9,9 +10,14 @@ export default function (state = initialState, action) {
     case SWITCH_MENU:
       return {
         ...state,
-        menuSelected: action.payload,
+        menuSelected: action.payload.menu,
+        limpiar: action.payload.limpiar,
       };
-
+    case CLEAN_GLOBAL:
+      return {
+        ...state,
+        limpiar: action.payload,
+      };
     default:
       return state;
   }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
 import { Badge } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -7,12 +7,26 @@ import { useSelector, useDispatch } from "react-redux";
 import { menuOptions } from "Utils/constants";
 import { SWITCH_MENU } from "actions/types";
 import TurnosDiaAgendaMensual from "./TurnosDiaAgendaMensual";
+import { getTurnosMensual } from "actions/VistaMensualYSemanalActions";
+import { fechaString } from "Utils/functions";
+
 export default function AgendaMensualDias() {
   const fechaCalendario = useSelector(
     (state) => state.agenda_reducer.fecha_agenda
   );
   const classes = useStyles();
   const dispatch = useDispatch();
+
+  const profesional_seleccionado = useSelector(
+    (state) => state.agenda_reducer.profesional_seleccionado
+  );
+  useEffect(() => {
+    if (profesional_seleccionado > 0) {
+      dispatch(
+        getTurnosMensual(fechaString(fechaCalendario), profesional_seleccionado)
+      );
+    }
+  }, [fechaCalendario, profesional_seleccionado, dispatch]);
 
   const gotoDiaCalendario = (numero_dia) => {
     const ye = new Intl.DateTimeFormat("es", { year: "numeric" }).format(
@@ -23,7 +37,10 @@ export default function AgendaMensualDias() {
     ); //MES en formato MM de la fecha que seleccione
 
     dispatch(setDiaMesSeleccionado(new Date(ye, mo - 1, numero_dia))); //Seteo la fecha del calendario con la fecha que seleccione
-    dispatch({ type: SWITCH_MENU, payload: menuOptions.Agenda_DIARIA }); //Voy a ver la visual del calendario por DIA
+    dispatch({
+      type: SWITCH_MENU,
+      payload: { menu: menuOptions.Agenda_DIARIA, limpiar: true },
+    }); //Voy a ver la visual del calendario por DIA
   };
 
   const renderDiasCalendario = () => {
@@ -118,7 +135,7 @@ const useStyles = makeStyles((theme) => ({
     minHeight: "14vh",
     "&:hover": {
       border: "1px solid #2c41b5",
-      backgroundColor: "#eeeeee",
+      // backgroundColor: "#eeeeee",
       color: theme.palette.primary.main,
       cursor: "pointer",
     },

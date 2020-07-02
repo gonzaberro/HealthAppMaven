@@ -34,6 +34,7 @@ export default function TipoServicioForm() {
             variant: "success",
           });
           dispatch(getListaTipoServicios());
+          nuevoTipoServicio();
         } else {
           enqueueSnackbar("Error al guardar el Tipo de Servicio", {
             variant: "error",

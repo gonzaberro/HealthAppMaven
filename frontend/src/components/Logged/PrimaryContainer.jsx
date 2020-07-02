@@ -10,7 +10,7 @@ import AgendaSemanal from "./Agenda Semanal/AgendaSemanal";
 import Especialidad from "./FormsABM/Especialidad/Especialidad";
 import Prestadora from "./FormsABM/Prestadora/Prestadora";
 import TipoServicio from "./FormsABM/TipoServicio/TipoServicio";
-
+import BuscarTurno from "./BuscarTurno/BuscarTurno";
 import CostoServicio from "./FormsABM/CostoServicio/CostoServicio";
 
 import Profesional from "./FormsABM/Profesional/Profesional";
@@ -18,57 +18,103 @@ import Paciente from "./FormsABM/Paciente/Paciente";
 import HistoriaClinica from "./FormsABM/HistoriaClinica/HistoriaClinica";
 
 export default function PrimaryContainer() {
-  const menuSelected = useSelector((state) => state.globalReducer.menuSelected);
+  const menuSelected = useSelector((state) => state.globalReducer);
 
   const switchMenu = () => {
-    switch (menuSelected) {
+    switch (menuSelected.menuSelected) {
       case menuOptions.Agenda_DIARIA:
         return (
           <div style={{ height: "100%" }}>
-            <Agenda />
+            <Agenda limpiar={menuSelected.limpiar} />
           </div>
         );
       case menuOptions.Agenda_MENSUAL:
         return (
           <div style={{ height: "100%" }}>
-            <AgendaMensual />
+            <AgendaMensual limpiar={menuSelected.limpiar} />
           </div>
         );
       case menuOptions.Agenda_SEMANAL:
         return (
           <div style={{ height: "100%" }}>
-            <AgendaSemanal />
+            <AgendaSemanal limpiar={menuSelected.limpiar} />
+          </div>
+        );
+      case menuOptions.BUSCAR_TURNO:
+        return (
+          <div style={{ height: "100%" }}>
+            <BuscarTurno limpiar={menuSelected.limpiar} />
+          </div>
+        );
+      case menuOptions.OBRAS_SOCIALES:
+        return (
+          <div style={{ height: "100%" }}>
+            <ObraSocial limpiar={menuSelected.limpiar} />
+          </div>
+        );
+      case menuOptions.PLAN:
+        return (
+          <div style={{ height: "100%" }}>
+            <Plan limpiar={menuSelected.limpiar} />
+          </div>
+        );
+      case menuOptions.SERVICIOS:
+        return (
+          <div style={{ height: "100%" }}>
+            <Servicio limpiar={menuSelected.limpiar} />
+          </div>
+        );
+      case menuOptions.TIPO_SERVICIO:
+        return (
+          <div style={{ height: "100%" }}>
+            <TipoServicio limpiar={menuSelected.limpiar} />
+          </div>
+        );
+      case menuOptions.PRESTADORA:
+        return (
+          <div style={{ height: "100%" }}>
+            <Prestadora limpiar={menuSelected.limpiar} />
           </div>
         );
 
-      case menuOptions.OBRAS_SOCIALES:
-        return <ObraSocial />;
-      case menuOptions.PLAN:
-        return <Plan />;
-      case menuOptions.SERVICIOS:
-        return <Servicio />;
-      case menuOptions.TIPO_SERVICIO:
-        return <TipoServicio />;
-      case menuOptions.PRESTADORA:
-        return <Prestadora />;
-
       case menuOptions.COSTO_SERVICIO:
-        return <CostoServicio />;
+        return (
+          <div style={{ height: "100%" }}>
+            <CostoServicio limpiar={menuSelected.limpiar} />
+          </div>
+        );
 
       case menuOptions.PROFESIONALES:
-        return <Profesional />;
+        return (
+          <div style={{ height: "100%" }}>
+            <Profesional limpiar={menuSelected.limpiar} />
+          </div>
+        );
 
       case menuOptions.PACIENTES:
-        return <Paciente />;
+        return (
+          <div style={{ height: "100%" }}>
+            <Paciente limpiar={menuSelected.limpiar} />
+          </div>
+        );
 
       case menuOptions.ESPECIALIDADES:
-        return <Especialidad />;
+        return (
+          <div style={{ height: "100%" }}>
+            <Especialidad limpiar={menuSelected.limpiar} />
+          </div>
+        );
       case menuOptions.HISTORIA_CLINICA:
-        return <HistoriaClinica />;
+        return (
+          <div style={{ height: "100%" }}>
+            <HistoriaClinica limpiar={menuSelected.limpiar} />
+          </div>
+        );
+
       default:
         return <></>;
     }
   };
 
-  return switchMenu();
+  return <div>{switchMenu()}</div>;
 }

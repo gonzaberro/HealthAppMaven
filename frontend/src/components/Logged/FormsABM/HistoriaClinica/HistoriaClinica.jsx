@@ -1,48 +1,63 @@
 import React, { useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
-import { makeStyles } from "@material-ui/core/styles";
-import { getListaHistoriaClinica } from "actions/HistoriaClinicaActions";
+import {
+  getListaHistoriaClinica,
+  setModalHistoriaClinica,
+} from "actions/HistoriaClinicaActions";
 import { getListaProfesionales } from "actions/ProfesionalActions";
 import { getListaPacientes } from "actions/PacienteActions";
-import HistoriaClinicaTable from "./HistoriaClinicaTable";
+import TablaPacientes from "../../BuscarTurno/TablaPacientes";
+import ListaHistoriaClinica from "./ListaHistoriaClinica";
+import { useDispatch, useSelector } from "react-redux";
 import HistoriaClinicaForm from "./HistoriaClinicaForm";
-import { useDispatch } from "react-redux";
+import { setBuscarPaciente } from "actions/BuscarTurnosActions";
+import Modal from "@material-ui/core/Modal";
 
 export default function HistoriaClinica() {
-  const classes = useStyles();
   const dispatch = useDispatch();
+  const open_modal = useSelector((state) => state.historiaClinica.open_modal);
   useEffect(() => {
     dispatch(getListaHistoriaClinica());
     dispatch(getListaProfesionales());
     dispatch(getListaPacientes());
+    dispatch(setBuscarPaciente(0));
   }, [dispatch]);
 
+  const handleClose = () => {
+    dispatch(setModalHistoriaClinica(false));
+  };
+
   return (
-    <Grid container>
-      <Grid item xs={12} sm={12} md={8} lg={9} className={classes.lista}>
-        <HistoriaClinicaTable />
+    <>
+      <Grid container style={{ height: "100%" }}>
+        <Grid item xs={12} style={{ height: "100vh" }}>
+          <Grid container>
+            <Grid item xs={12} md={3}>
+              <TablaPacientes />
+            </Grid>
+
+            <Grid
+              item
+              xs={12}
+              md={9}
+              style={{ height: "100vh", borderLeft: "1px solid #ccc" }}
+            >
+              <ListaHistoriaClinica />
+            </Grid>
+          </Grid>
+        </Grid>
       </Grid>
-      <Grid
-        item
-        xs={12}
-        sm={12}
-        md={4}
-        lg={3}
-        style={{ width: "100%" }}
-        className={classes.borderForm}
+      <Modal
+        open={open_modal ? true : false}
+        onClose={handleClose}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
       >
-        <HistoriaClinicaForm />
-      </Grid>
-    </Grid>
+        <div style={{ backgroundColor: "#fff", margin: 20, height: "50vh" }}>
+          {" "}
+          <HistoriaClinicaForm />
+        </div>
+      </Modal>
+    </>
   );
 }
-const useStyles = makeStyles(() => ({
-  borderForm: {
-    height: "100%",
-  },
-  lista: {
-    maxHeight: "100vh",
-    overflowY: "auto",
-    borderRight: "1px solid #e4e4e4",
-  },
-}));

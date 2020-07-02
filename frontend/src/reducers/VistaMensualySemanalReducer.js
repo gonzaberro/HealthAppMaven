@@ -1,27 +1,20 @@
-import { VISTAMENSUALSEMANAL } from "../actions/types";
-
-export const make_data = function () {
-  let turnos_total = { mes: 6, dias: [] };
-
-  for (let i = 1; i <= 30; i++) {
-    for (let j = 1; j <= 30; j++) {
-      turnos_total.dias.push({
-        dia: i,
-        paciente: "Gonzalo Martin Berro " + j,
-        horario: "0" + j + ":00",
-      });
-    }
-  }
-  return turnos_total;
-};
+import {
+  SET_TURNOS_VISTA_MENSUAL,
+  SET_TURNOS_VISTA_SEMANAL,
+} from "../actions/types";
 
 const initialState = {
-  turnos: make_data(),
+  turnos: {},
 };
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case VISTAMENSUALSEMANAL:
+    case SET_TURNOS_VISTA_MENSUAL:
+      return {
+        ...state,
+        turnos: action.payload,
+      };
+    case SET_TURNOS_VISTA_SEMANAL:
       return {
         ...state,
         turnos: action.payload,

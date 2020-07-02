@@ -1,18 +1,26 @@
-import React, { useState } from "react";
+import React from "react";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
-
+import {
+  setRepetir,
+  setCantidad,
+  setDia,
+} from "actions/ProgramarAgendaActions";
+import { useDispatch, useSelector } from "react-redux";
 export default function RepetirMensualmente(props) {
   const classes = useStyles();
-  const [espacioRepeticion, setEspacioRepeticion] = useState(1);
-  const [diaRepeticion, setDiaRepeticion] = useState(1);
+  const dispatch = useDispatch();
+  const programarAgenda = useSelector((state) => state.programarAgenda);
 
   const changeEspacioRepeticion = (value) => {
-    if (value >= 1) setEspacioRepeticion(value);
+    if (value >= 1) dispatch(setRepetir(value));
   };
   const changeDiaRepeticion = (value) => {
-    if (value >= 1 && value <= 31) setDiaRepeticion(value);
+    if (value >= 1 && value <= 31) dispatch(setDia(value));
+  };
+  const changeCantidadRepeticion = (value) => {
+    if (value >= 1 && value <= 31) dispatch(setCantidad(value));
   };
   return (
     <>
@@ -22,9 +30,9 @@ export default function RepetirMensualmente(props) {
             <Grid xs={6}>
               <TextField
                 id="espacio_repeticion"
-                label={"Repetir Cada " + espacioRepeticion + " mes(es)"}
+                label={"Repetir Cada " + programarAgenda.repetir + " mes(es)"}
                 type="number"
-                value={espacioRepeticion}
+                value={programarAgenda.repetir}
                 onChange={(event) =>
                   changeEspacioRepeticion(event.target.value)
                 }
@@ -41,8 +49,12 @@ export default function RepetirMensualmente(props) {
                 id="cantidad_repeticiones"
                 label="Cantidad de Repeticiones"
                 type="number"
+                value={programarAgenda.cantidad}
                 defaultValue={new Date()}
                 variant="outlined"
+                onChange={(event) =>
+                  changeCantidadRepeticion(event.target.value)
+                }
                 className={classes.formControl}
                 InputLabelProps={{
                   shrink: true,
@@ -54,8 +66,12 @@ export default function RepetirMensualmente(props) {
             <Grid xs={6}>
               <TextField
                 id="dia_repeticion"
-                label={"Repetir el dia nro '" + diaRepeticion + "' del mes"}
-                value={diaRepeticion}
+                label={
+                  "Repetir el dia nro '" +
+                  programarAgenda.numeroDia +
+                  "' del mes"
+                }
+                value={programarAgenda.numeroDia}
                 onChange={(event) => changeDiaRepeticion(event.target.value)}
                 type="number"
                 defaultValue={new Date()}

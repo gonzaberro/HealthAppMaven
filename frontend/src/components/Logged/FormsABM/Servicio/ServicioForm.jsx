@@ -31,6 +31,7 @@ export default function ServicioForm() {
             variant: "success",
           });
           dispatch(getListaServicios());
+          nuevServicio();
         } else {
           enqueueSnackbar("Error al guardar el Servicio", {
             variant: "error",

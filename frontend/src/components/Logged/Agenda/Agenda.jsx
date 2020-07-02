@@ -6,20 +6,29 @@ import { getListaPacientes } from "actions/PacienteActions";
 import { getListaServicios } from "actions/ServicioActions";
 import { getListaTipoServicios } from "actions/TipoServicioActions";
 import { setHorariosAgenda } from "actions/AgendaActions";
+import { setDefault } from "actions/EditTurnoActions";
 import ItemAgendaContainer from "./ItemsAgendaContainer";
-import { makeStyles } from "@material-ui/core/styles";
-import { useDispatch } from "react-redux";
 
-export default function Agenda() {
+import { makeStyles } from "@material-ui/core/styles";
+import { useDispatch, useSelector } from "react-redux";
+
+export default function Agenda(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const profesional_seleccionado = useSelector(
+    (state) => state.agenda_reducer.profesional_seleccionado
+  );
   useEffect(() => {
     dispatch(setHorariosAgenda());
-    dispatch(getListaProfesionales());
+    if (profesional_seleccionado === "") dispatch(getListaProfesionales());
     dispatch(getListaPacientes());
     dispatch(getListaServicios());
     dispatch(getListaTipoServicios());
-  }, [dispatch]);
+  }, [dispatch, profesional_seleccionado]);
+
+  useEffect(() => {
+    if (props.limpiar) dispatch(setDefault());
+  }, [dispatch, props.limpiar]);
 
   return (
     <Grid container style={{ height: "100%" }}>

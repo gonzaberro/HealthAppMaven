@@ -17,7 +17,7 @@ export default function EditAgendaHeader() {
       <Grid item lg={8} md={8} sm={12} xs={12}>
         <div className={classes.headerSpan}>Crear/Modificar Turnos</div>
       </Grid>
-      <Grid item item lg={4} md={4} sm={12} xs={12}>
+      <Grid item lg={4} md={4} sm={12} xs={12}>
         <Button
           variant="contained"
           onClick={() => nuevoTurno()}
@@ -33,7 +33,7 @@ export default function EditAgendaHeader() {
 const useStyles = makeStyles((theme) => ({
   headerGrid: {
     borderBottom: "1px solid #ccc",
-    height: "5vh",
+    minHeight: "5%",
     textAlign: "center",
     color: "#0000008a",
     fontWeight: "bold",

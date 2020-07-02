@@ -55,6 +55,7 @@ export default function CostoServicioForm() {
           enqueueSnackbar("Se asigno el costo al servicio", {
             variant: "success",
           });
+          nuevoCostoServicio();
           dispatch(getListaCostoServicios());
         } else {
           enqueueSnackbar("Error al asignar el costo al servicio", {
