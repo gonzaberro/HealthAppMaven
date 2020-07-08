@@ -214,7 +214,12 @@ export default function CostoServicioForm() {
         </Grid>
 
         <Grid item xs={12} md={12} sm={12} lg={12}>
-          <Button variant="contained" color="primary" onClick={guardarPlan}>
+          <Button
+            variant="contained"
+            fullWidth
+            color="primary"
+            onClick={guardarPlan}
+          >
             Guardar
           </Button>
         </Grid>
@@ -229,6 +234,7 @@ const useStyles = makeStyles((theme) => ({
   },
   buttonForm: {
     paddingTop: 10,
+    paddingRight: 10,
   },
   gridForm: {
     padding: 10,

@@ -34,7 +34,7 @@ export default function CostoServicioTable() {
       message: "",
       buttons: [
         {
-          label: "Confirmar",
+          label: "Eliminar",
           onClick: () =>
             dispatch(
               eliminarCostoServicio(

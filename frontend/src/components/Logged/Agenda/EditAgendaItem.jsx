@@ -136,7 +136,6 @@ export default function EditAgendaItem() {
     }
   };
   const guardarTurno = () => {
-    console.log(fechaString(new Date()));
     if (fechaString(fechaCalendario) >= fechaString(new Date())) {
       if (
         turno_info.paciente !== "" &&
@@ -147,7 +146,6 @@ export default function EditAgendaItem() {
       ) {
         grabarTurno(
           turno_info,
-          enqueueSnackbar,
           dispatch,
           fechaString(fechaCalendario),
           profesional_seleccionado,
@@ -331,7 +329,7 @@ export default function EditAgendaItem() {
             Eliminar
           </Button>
         </Grid>
-        <Grid item md={8} xs={12}>
+        <Grid item md={8} xs={12} style={{ paddingLeft: 5 }}>
           <Button
             variant="contained"
             color="primary"

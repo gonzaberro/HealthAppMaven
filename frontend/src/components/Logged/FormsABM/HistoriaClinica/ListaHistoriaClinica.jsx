@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
@@ -8,36 +8,70 @@ import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { formatDateString } from "Utils/functions";
+import { faEye, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   getListaHistoriaClinica,
   setHistoriaClinica,
   setModalHistoriaClinica,
+  eliminarHistoriaClinica,
 } from "actions/HistoriaClinicaActions";
+import { especialidadesPaciente } from "actions/EspecialidadActions";
 import Alert from "@material-ui/lab/Alert";
+import { confirmAlert } from "react-confirm-alert"; // Import
 
 export default function ListaHistoriaClinica() {
-  const paciente = useSelector((state) => state.buscarTurnos.paciente);
   const listaHistoriaClinica = useSelector(
     (state) => state.historiaClinica.listaHistoriaClinica
   );
+  const paciente = useSelector((state) => state.buscarTurnos.paciente);
   const historiaClinicaSeleccionada = useSelector(
     (state) => state.historiaClinica.historiaClinica
   );
+  const especialidad = useSelector((state) => state.especialidad.especialidad);
   const classes = useStyles();
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getListaHistoriaClinica(paciente));
-  }, [dispatch, paciente]);
   const seleccionarHistoriaClinica = (historia_clinica) => {
     dispatch(setHistoriaClinica(historia_clinica));
     dispatch(setModalHistoriaClinica(true));
   };
-  const nuevaHistoriaClinica = () => {
-    dispatch(setHistoriaClinica({}));
-    dispatch(setModalHistoriaClinica(true));
+  const deleteHistoriaClinica = (historiaClinica) => {
+    confirmAlert({
+      title: `Historia Clínica #${historiaClinica.id_historia_clinica}`,
+      message:
+        "Paciente: " +
+        historiaClinica.paciente.nombre +
+        " " +
+        historiaClinica.paciente.apellido +
+        " - " +
+        historiaClinica.paciente.dni,
+      buttons: [
+        {
+          label: "Eliminar",
+          onClick: () =>
+            dispatch(
+              eliminarHistoriaClinica(
+                historiaClinica.id_historia_clinica,
+                () =>
+                  dispatch(
+                    getListaHistoriaClinica(
+                      paciente,
+                      especialidad.cd_especialidad
+                    )
+                  ),
+                () => dispatch(especialidadesPaciente(paciente))
+              )
+            ),
+        },
+        {
+          label: "Cancelar",
+        },
+      ],
+    });
   };
+
   const armarListaHistoriaClinica = () => {
     return listaHistoriaClinica.map((historia_clinica, index) => {
       return (
@@ -61,7 +95,7 @@ export default function ListaHistoriaClinica() {
               component="h2"
               gutterBottom
             >
-              Ingreso:{" "}
+              #{historia_clinica.id_historia_clinica} - Ingreso:{" "}
               {formatDateString(new Date(historia_clinica.fechaIngreso))}
             </Typography>
             <Typography variant="h6" component="h2" gutterBottom>
@@ -100,13 +134,28 @@ export default function ListaHistoriaClinica() {
             </Typography>
           </CardContent>
           <CardActions>
-            <Button
-              size="small"
-              color="primary"
-              onClick={() => seleccionarHistoriaClinica(historia_clinica)}
-            >
-              Editar
-            </Button>
+            <Grid container>
+              <Grid item lg={2} md={2} sm={3} xs={6}>
+                <Button
+                  size="small"
+                  color="primary"
+                  variant="contained"
+                  onClick={() => seleccionarHistoriaClinica(historia_clinica)}
+                >
+                  <FontAwesomeIcon icon={faEye} />
+                </Button>
+              </Grid>
+              <Grid item lg={2} md={2} sm={3} xs={6}>
+                <Button
+                  size="small"
+                  color="primary"
+                  variant="contained"
+                  onClick={() => deleteHistoriaClinica(historia_clinica)}
+                >
+                  <FontAwesomeIcon icon={faTrash} />
+                </Button>
+              </Grid>
+            </Grid>
           </CardActions>
         </Card>
       );
@@ -116,19 +165,6 @@ export default function ListaHistoriaClinica() {
   const cardsTurnos = () => {
     return (
       <Grid container>
-        <Grid item md={9} sm={6} xs={12}></Grid>
-        <Grid item md={3} sm={6} xs={12}>
-          <Button
-            variant="contained"
-            color="primary"
-            disabled={paciente ? false : true}
-            style={{ width: "100%" }}
-            onClick={() => nuevaHistoriaClinica()}
-          >
-            Nueva Historia Clínica
-          </Button>
-        </Grid>
-
         <Grid item xs={12} style={{ marginTop: 10 }}>
           {listaHistoriaClinica && listaHistoriaClinica.length > 0 ? (
             armarListaHistoriaClinica()
@@ -155,8 +191,10 @@ const useStyles = makeStyles((theme) => ({
   root: {
     minWidth: 275,
     margin: 5,
+    border: "1px solid #fff",
     "&:hover": {
       border: "1px solid #4051b5",
+      cursor: "pointer",
     },
   },
   rootSeleccionado: {
@@ -185,7 +223,8 @@ const useStyles = makeStyles((theme) => ({
   containerTurnos: {
     padding: 20,
     paddingTop: 10,
-    maxHeight: "95vh",
+    maxHeight: "85vh",
+    minHeight: "85vh",
     overflowY: "auto",
     backgroundColor: "#f1f1f1",
   },

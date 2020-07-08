@@ -239,7 +239,12 @@ export default function PacienteForm() {
         </Grid>
 
         <Grid item lg={12} md={12} sm={12} xs={12}>
-          <Button variant="contained" color="primary" onClick={guardarPaciente}>
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            onClick={guardarPaciente}
+          >
             Guardar
           </Button>
         </Grid>
@@ -254,6 +259,7 @@ const useStyles = makeStyles(() => ({
     paddingTop: 20,
   },
   buttonForm: {
+    paddingRight: 10,
     paddingTop: 10,
   },
   gridForm: {

@@ -34,7 +34,7 @@ export default function TipoServicioTable() {
       message: "",
       buttons: [
         {
-          label: "Confirmar",
+          label: "Eliminar",
           onClick: () =>
             dispatch(eliminarTipoServicio(tipoServicio.cdTipoServicio)),
         },

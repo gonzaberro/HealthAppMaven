@@ -35,25 +35,27 @@ export function buscarTurnosPaciente(dni, activos) {
   };
 }
 
+export function cleanTurnos() {
+  return (dispatch) => {
+    dispatch({
+      type: BUSCAR_TURNOS,
+      payload: [],
+    });
+  };
+}
+
 export function buscarTurnosProfesinal(dni, activos) {
   return (dispatch) => {
-    if (dni === 0) {
-      dispatch({
-        type: BUSCAR_TURNOS,
-        payload: [],
-      });
-    } else {
-      fetch(url_servidor + "turnos/profesional/" + dni + "/" + activos, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      })
-        .then((response) => response.json())
-        .then((data) =>
-          dispatch({
-            type: BUSCAR_TURNOS,
-            payload: data,
-          })
-        );
-    }
+    fetch(url_servidor + "turnos/profesional/" + dni + "/" + activos, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((response) => response.json())
+      .then((data) =>
+        dispatch({
+          type: BUSCAR_TURNOS,
+          payload: data,
+        })
+      );
   };
 }

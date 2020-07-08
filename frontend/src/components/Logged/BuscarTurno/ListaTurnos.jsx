@@ -11,6 +11,8 @@ import {
   setDiaMesSeleccionado,
   selectProfesionalAgenda,
 } from "actions/AgendaActions";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { SWITCH_MENU } from "actions/types";
 import { menuOptions } from "Utils/constants";
 import Alert from "@material-ui/lab/Alert";
@@ -72,12 +74,13 @@ export default function ListaTurnos() {
           <CardActions>
             <Button
               size="small"
+              variant="contained"
               color="primary"
               onClick={() =>
                 gotoDiaCalendario(new Date(turno.fecha), turno.profesional.dni)
               }
             >
-              Ver en Agenda
+              <FontAwesomeIcon icon={faEye} />
             </Button>
           </CardActions>
         </Card>

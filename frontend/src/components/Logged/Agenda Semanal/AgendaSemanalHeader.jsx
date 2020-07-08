@@ -122,7 +122,7 @@ export default function AgendaSemanalHeader() {
             disabled={semanaActual()}
             onClick={setDateToday}
           >
-            Semana Actual
+            Hoy
           </Button>
         </Grid>
         <Grid

@@ -29,7 +29,7 @@ export default function ServicioTable() {
       message: "",
       buttons: [
         {
-          label: "Confirmar",
+          label: "Eliminar",
           onClick: () => dispatch(eliminarServicio(servicio.cd_servicio)),
         },
         {

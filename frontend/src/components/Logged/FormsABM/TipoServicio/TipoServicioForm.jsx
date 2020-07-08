@@ -97,11 +97,12 @@ export default function TipoServicioForm() {
             onChange={(event) => setNombre(event.target.value)}
           />
         </Grid>
-        <Grid item>
+        <Grid item xs={12} md={12} sm={12} lg={12}>
           <Button
             variant="contained"
             color="primary"
             onClick={guardarTipoServicio}
+            fullWidth
           >
             Guardar
           </Button>
@@ -116,6 +117,7 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 20,
   },
   buttonForm: {
+    paddingRight: 10,
     paddingTop: 10,
   },
   gridForm: {

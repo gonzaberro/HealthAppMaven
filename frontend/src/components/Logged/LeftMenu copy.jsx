@@ -18,50 +18,29 @@ import { menuOptions } from "Utils/constants";
 export default function LeftMenu() {
   const dispatch = useDispatch();
   const menuSelected = useSelector((state) => state.globalReducer.menuSelected);
-  const [clickedMenu, setClickedMenu] = useState(0);
   const [expanded, setExpanded] = useState(false);
-
-  const clickOnMenu = (menu) => {
-    if (clickedMenu === menu) {
-      setExpanded(expanded ? false : true);
-    } else {
-      setExpanded(true);
-    }
-    setClickedMenu(menu);
+  const selectOptionMenu = (selected) => {
+    setExpanded(false);
+    dispatch({
+      type: SWITCH_MENU,
+      payload: { menu: selected, limpiar: true },
+    });
   };
-
   return (
     <SideNav
-      onMouseLeave={() => setExpanded(false)}
-      onSelect={(selected) => {
-        dispatch({
-          type: SWITCH_MENU,
-          payload: { menu: selected, limpiar: true },
-        });
-        setExpanded(false);
-      }}
-      expanded={false}
+      expanded={expanded}
+      onToggle={(expanded) => setExpanded(expanded)}
+      onSelect={(selected) => selectOptionMenu(selected)}
     >
-      <SideNav.Nav selected={menuSelected}>
-        <NavItem
-          eventKey={menuSelected}
-          navitemStyle={{ backgroundColor: "#db3d44" }}
-        ></NavItem>
-        <NavItem
-          onMouseOver={() => clickOnMenu(1)}
-          navitemStyle={{ cursor: "pointer" }}
-          subnavStyle={
-            clickedMenu === 1 && expanded
-              ? { display: "block" }
-              : { display: "none" }
-          }
-          eventKey={menuOptions.AGENDA}
-          title="Agenda"
-        >
+      <SideNav.Toggle expanded={expanded} />
+      <SideNav.Nav expanded={expanded} selected={menuSelected}>
+        <NavItem expanded={expanded}>
           <NavIcon>
             <FontAwesomeIcon icon={faCalendarAlt} />
           </NavIcon>
+
           <NavText>Agenda</NavText>
+
           <NavItem eventKey={menuOptions.Agenda_DIARIA}>
             <NavText>Agenda Diaria</NavText>
           </NavItem>
@@ -72,43 +51,31 @@ export default function LeftMenu() {
             <NavText>Agenda Mensual</NavText>
           </NavItem>
         </NavItem>
-        <NavItem eventKey={menuOptions.BUSCAR_TURNO} title="Buscar Turno">
-          <NavIcon eventKey={menuOptions.BUSCAR_TURNO}>
+        <NavItem eventKey={menuOptions.BUSCAR_TURNO}>
+          <NavIcon>
             <FontAwesomeIcon icon={faSearch} />
           </NavIcon>
           <NavText>Buscar Turno</NavText>
         </NavItem>
-        <NavItem eventKey={menuOptions.PROFESIONALES} title="Profesionales">
-          <NavIcon eventKey={menuOptions.PROFESIONALES}>
+        <NavItem eventKey={menuOptions.PROFESIONALES}>
+          <NavIcon>
             <FontAwesomeIcon icon={faUserMd} />
           </NavIcon>
           <NavText>Profesionales</NavText>
         </NavItem>
-        <NavItem eventKey={menuOptions.PACIENTES} title="Pacientes">
-          <NavIcon eventKey={menuOptions.PACIENTES}>
+        <NavItem eventKey={menuOptions.PACIENTES}>
+          <NavIcon>
             <FontAwesomeIcon icon={faUser} />
           </NavIcon>
           <NavText>Pacientes</NavText>
         </NavItem>
-        <NavItem
-          eventKey={menuOptions.HISTORIA_CLINICA}
-          title="Historia Clínica"
-        >
-          <NavIcon eventKey={menuOptions.HISTORIA_CLINICA}>
+        <NavItem eventKey={menuOptions.HISTORIA_CLINICA}>
+          <NavIcon>
             <FontAwesomeIcon icon={faFileMedical} />
           </NavIcon>
           <NavText>Historia Clínica</NavText>
         </NavItem>
-        <NavItem
-          onMouseOver={() => clickOnMenu(2)}
-          navitemStyle={{ cursor: "pointer" }}
-          subnavStyle={
-            clickedMenu === 2 && expanded
-              ? { display: "block" }
-              : { display: "none" }
-          }
-          title="Información Empresa"
-        >
+        <NavItem eventKey={menuOptions.CHARTS}>
           <NavIcon>
             <FontAwesomeIcon icon={faBook} />
           </NavIcon>

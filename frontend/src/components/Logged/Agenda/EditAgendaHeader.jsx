@@ -33,6 +33,7 @@ export default function EditAgendaHeader() {
 const useStyles = makeStyles((theme) => ({
   headerGrid: {
     borderBottom: "1px solid #ccc",
+    paddingBottom: 17,
     minHeight: "5%",
     textAlign: "center",
     color: "#0000008a",

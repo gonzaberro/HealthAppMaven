@@ -1,5 +1,5 @@
-import { SET_PACIENTE, SET_LISTA_PACIENTE } from "./types";
-import { url_servidor } from "Utils/constants";
+import { SET_PACIENTE, SET_LISTA_PACIENTE, ERROR_MESSAGE } from "./types";
+import { url_servidor, error_generico } from "Utils/constants";
 
 export function setPaciente(paciente) {
   return (dispatch) => {
@@ -16,11 +16,33 @@ export function eliminarPaciente(dni) {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.status !== 200) {
+          throw new Error(
+            response.status !== 500
+              ? error_generico
+              : "Error " + response.status + " al intentar eliminar el paciente"
+          );
+        }
+        return response.json();
+      })
       .then((data) => {
         dispatch({
           type: SET_LISTA_PACIENTE,
           payload: data,
+        });
+        dispatch({
+          type: ERROR_MESSAGE,
+          payload: {
+            message: "Se eliminó el paciente",
+            tipo: "success",
+          },
+        });
+      })
+      .catch((error) => {
+        dispatch({
+          type: ERROR_MESSAGE,
+          payload: { message: error.message, tipo: "error" },
         });
       });
   };

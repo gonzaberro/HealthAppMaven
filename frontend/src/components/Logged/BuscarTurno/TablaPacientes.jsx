@@ -69,7 +69,7 @@ export default function TablaPaciente() {
   }, [listaPacientes, filterText, filteredItems]);
 
   useEffect(() => {
-    if (buscarInfo.paciente !== 0) {
+    if (buscarInfo.paciente !== 0 && buscarInfo.actuales !== undefined) {
       dispatch(buscarTurnosPaciente(buscarInfo.paciente, buscarInfo.actuales));
     }
   }, [dispatch, buscarInfo.actuales, buscarInfo.paciente]);

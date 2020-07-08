@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Agenda from "./Agenda/Agenda";
 import ObraSocial from "./FormsABM/ObraSocial/ObraSocial";
 import Plan from "./FormsABM/Plan/Plan";
@@ -16,12 +16,22 @@ import CostoServicio from "./FormsABM/CostoServicio/CostoServicio";
 import Profesional from "./FormsABM/Profesional/Profesional";
 import Paciente from "./FormsABM/Paciente/Paciente";
 import HistoriaClinica from "./FormsABM/HistoriaClinica/HistoriaClinica";
+import { useSnackbar } from "notistack";
 
 export default function PrimaryContainer() {
-  const menuSelected = useSelector((state) => state.globalReducer);
+  const { enqueueSnackbar } = useSnackbar();
+  const menuSelected = useSelector((state) => state.globalReducer.menuSelected);
+  const errorMessage = useSelector((state) => state.errorMessage.error);
+  useEffect(() => {
+    if (errorMessage.tipo !== undefined) {
+      enqueueSnackbar(errorMessage.message, {
+        variant: errorMessage.tipo,
+      });
+    }
+  }, [enqueueSnackbar, errorMessage]);
 
   const switchMenu = () => {
-    switch (menuSelected.menuSelected) {
+    switch (menuSelected) {
       case menuOptions.Agenda_DIARIA:
         return (
           <div style={{ height: "100%" }}>

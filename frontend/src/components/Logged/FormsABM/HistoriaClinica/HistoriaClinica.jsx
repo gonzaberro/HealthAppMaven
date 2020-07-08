@@ -1,12 +1,14 @@
 import React, { useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
 import {
-  getListaHistoriaClinica,
   setModalHistoriaClinica,
+  setHistoriaClinica,
+  cleanHistoriaClinica,
 } from "actions/HistoriaClinicaActions";
 import { getListaProfesionales } from "actions/ProfesionalActions";
 import { getListaPacientes } from "actions/PacienteActions";
 import TablaPacientes from "../../BuscarTurno/TablaPacientes";
+import HeaderListaHistoriaClinica from "./HeaderListaHistoriaClinica";
 import ListaHistoriaClinica from "./ListaHistoriaClinica";
 import { useDispatch, useSelector } from "react-redux";
 import HistoriaClinicaForm from "./HistoriaClinicaForm";
@@ -17,19 +19,20 @@ export default function HistoriaClinica() {
   const dispatch = useDispatch();
   const open_modal = useSelector((state) => state.historiaClinica.open_modal);
   useEffect(() => {
-    dispatch(getListaHistoriaClinica());
     dispatch(getListaProfesionales());
     dispatch(getListaPacientes());
     dispatch(setBuscarPaciente(0));
+    dispatch(cleanHistoriaClinica());
   }, [dispatch]);
 
   const handleClose = () => {
     dispatch(setModalHistoriaClinica(false));
+    dispatch(setHistoriaClinica({}));
   };
 
   return (
     <>
-      <Grid container style={{ height: "100%" }}>
+      <Grid container style={{ height: "100vh" }}>
         <Grid item xs={12} style={{ height: "100vh" }}>
           <Grid container>
             <Grid item xs={12} md={3}>
@@ -42,6 +45,7 @@ export default function HistoriaClinica() {
               md={9}
               style={{ height: "100vh", borderLeft: "1px solid #ccc" }}
             >
+              <HeaderListaHistoriaClinica />
               <ListaHistoriaClinica />
             </Grid>
           </Grid>
@@ -53,8 +57,13 @@ export default function HistoriaClinica() {
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
-        <div style={{ backgroundColor: "#fff", margin: 20, height: "50vh" }}>
-          {" "}
+        <div
+          style={{
+            backgroundColor: "#fff",
+            margin: 20,
+            minHeight: "50vh",
+          }}
+        >
           <HistoriaClinicaForm />
         </div>
       </Modal>

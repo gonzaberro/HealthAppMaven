@@ -44,6 +44,7 @@ export default function FilterDoctorAgenda() {
       );
       dispatch(selectProfesionalAgenda(profesional.dni));
       dispatch(getTurnos(fechaString(fecha_agenda), profesional.dni));
+      setOpen(false);
     },
     [dispatch, fecha_agenda]
   );

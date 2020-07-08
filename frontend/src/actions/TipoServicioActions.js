@@ -1,5 +1,9 @@
-import { SET_TIPO_SERVICIO, SET_LISTA_TIPO_SERVICIO } from "./types";
-import { url_servidor } from "Utils/constants";
+import {
+  SET_TIPO_SERVICIO,
+  SET_LISTA_TIPO_SERVICIO,
+  ERROR_MESSAGE,
+} from "./types";
+import { url_servidor, error_generico } from "Utils/constants";
 
 export function setTipoServicio(servicio) {
   //Set de la obraSocial que quiero editar
@@ -17,13 +21,37 @@ export function eliminarTipoServicio(cd_tipo_servicio) {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
     })
-      .then((response) => response.json())
-      .then((data) =>
+      .then((response) => {
+        if (response.status !== 200) {
+          throw new Error(
+            response.status !== 500
+              ? error_generico
+              : "Error " +
+                response.status +
+                " al intentar eliminar el tipo de servicio"
+          );
+        }
+        return response.json();
+      })
+      .then((data) => {
         dispatch({
           type: SET_LISTA_TIPO_SERVICIO,
           payload: data,
-        })
-      );
+        });
+        dispatch({
+          type: ERROR_MESSAGE,
+          payload: {
+            message: "Se eliminó el tipo de servicio",
+            tipo: "success",
+          },
+        });
+      })
+      .catch((error) => {
+        dispatch({
+          type: ERROR_MESSAGE,
+          payload: { message: error.message, tipo: "error" },
+        });
+      });
   };
 }
 export function getListaTipoServicios() {

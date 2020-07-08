@@ -39,7 +39,7 @@ export default function EspecialidadTable() {
       message: "",
       buttons: [
         {
-          label: "Confirmar",
+          label: "Eliminar",
           onClick: () => dispatch(eliminarEspecialidad(cd_especialidad)),
         },
         {

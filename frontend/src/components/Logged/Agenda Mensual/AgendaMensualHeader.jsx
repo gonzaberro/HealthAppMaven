@@ -80,24 +80,24 @@ export default function AgendaMensualHeader() {
         >
           <FontAwesomeIcon style={{ color: "#db3d44" }} icon={faChevronLeft} />
         </Grid>
-        <Grid item md={1} xs={2} className={classes.gridButtonHoy}>
+        <Grid item md={2} xs={2} className={classes.gridButtonHoy}>
           <Button
             variant="contained"
             onClick={setDateToday}
             disabled={mesActual()}
           >
-            Mes Actual
+            Hoy
           </Button>
         </Grid>
         <Grid
           item
-          md={3}
-          xs={5}
+          md={4}
+          xs={12}
           className={mesActual() ? classes.fechaAgendaHoy : classes.fechaAgenda}
         >
           {fechaString()}
         </Grid>
-        <Grid item md={6} xs={5} className={classes.gridFilterDoctor}>
+        <Grid item md={4} xs={12} className={classes.gridFilterDoctor}>
           <FilterDoctorAgenda />
         </Grid>
         <Grid

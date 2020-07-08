@@ -36,7 +36,7 @@ export default function ObraSocialTable() {
       message: "",
       buttons: [
         {
-          label: "Confirmar",
+          label: "Eliminar",
           onClick: () => dispatch(eliminarObraSocial(cd_os)),
         },
         {

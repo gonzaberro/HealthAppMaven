@@ -1,15 +1,15 @@
-import { SET_LOGIN } from "../actions/types";
+import { ERROR_MESSAGE } from "../actions/types";
 
 const initialState = {
-  login: 1, // 0 significa que no estoy logueado en el sistema
+  error: {},
 };
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case SET_LOGIN:
+    case ERROR_MESSAGE:
       return {
         ...state,
-        login: action.payload,
+        error: action.payload,
       };
 
     default:

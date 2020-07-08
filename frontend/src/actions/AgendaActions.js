@@ -4,6 +4,7 @@ import {
   SET_HORARIOS,
   SET_TURNOS,
   SELECT_PROFESIONAL,
+  ERROR_MESSAGE,
 } from "../actions/types";
 import { url_servidor } from "Utils/constants/";
 
@@ -42,6 +43,11 @@ export function borrarTurno(cdTurno, cleanProgramar, cleanEditTurno, callback) {
         cleanProgramar();
         cleanEditTurno();
         callback();
+
+        dispatch({
+          type: ERROR_MESSAGE,
+          payload: { message: "Se eliminó el turno", tipo: "success" },
+        });
       }
     });
   };

@@ -29,7 +29,7 @@ export default function PrestadoraTable() {
       message: "",
       buttons: [
         {
-          label: "Confirmar",
+          label: "Eliminar",
           onClick: () => dispatch(eliminarPrestadora(prestadora.cd_prestadora)),
         },
         {

@@ -228,8 +228,13 @@ export default function PrestadoraForm() {
             onChange={(event) => setLogo(event.target.value)}
           />
         </Grid>
-        <Grid item>
-          <Button variant="contained" color="primary" onClick={guardarHorario}>
+        <Grid item xs={12} md={12} sm={12} lg={12}>
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            onClick={guardarHorario}
+          >
             Guardar
           </Button>
         </Grid>

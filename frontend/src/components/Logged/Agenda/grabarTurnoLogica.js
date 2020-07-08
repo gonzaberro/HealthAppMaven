@@ -2,7 +2,7 @@ import { url_servidor } from "Utils/constants";
 import { getTurnos } from "../../../actions/AgendaActions";
 import { setDefault } from "../../../actions/EditTurnoActions";
 import { cleanProgramar } from "actions/ProgramarAgendaActions";
-
+import { ERROR_MESSAGE } from "actions/types";
 const sendTurno = (data) => {
   fetch(url_servidor + "turno", {
     method: "POST",
@@ -20,8 +20,12 @@ const sendTurno = (data) => {
     }),
   }).then(function (response) {
     if (response.status === 200) {
-      data.enqueueSnackbar("Se guardó el turno", {
-        variant: "success",
+      data.dispatch({
+        type: ERROR_MESSAGE,
+        payload: {
+          message: "Se guardó el turno",
+          tipo: "success",
+        },
       });
 
       data.dispatch(
@@ -30,8 +34,12 @@ const sendTurno = (data) => {
       data.dispatch(cleanProgramar());
       data.dispatch(setDefault());
     } else {
-      data.enqueueSnackbar("Error al guardar el turno", {
-        variant: "error",
+      data.dispatch({
+        type: ERROR_MESSAGE,
+        payload: {
+          message: "Error al guardar el turno",
+          tipo: "error",
+        },
       });
     }
   });
@@ -39,8 +47,6 @@ const sendTurno = (data) => {
 
 export const grabarTurno = (
   turnoInfo,
-
-  enqueueSnackbar,
   dispatch,
   fechaCalendario,
   profesional_seleccionado,
@@ -48,13 +54,12 @@ export const grabarTurno = (
 ) => {
   const data = {
     turnoInfo: turnoInfo,
-    enqueueSnackbar: enqueueSnackbar,
     dispatch: dispatch,
     fechaCalendario: fechaCalendario,
     profesional_seleccionado: profesional_seleccionado,
     programarAgenda: programarAgenda,
   };
-
+  console.log(data.programar);
   data.programarAgenda.tipo =
     data.turnoInfo.programar === 0 ? 0 : data.programarAgenda.tipo;
 

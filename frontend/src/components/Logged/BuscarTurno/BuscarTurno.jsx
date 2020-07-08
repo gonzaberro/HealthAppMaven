@@ -3,7 +3,7 @@ import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import { getListaProfesionales } from "actions/ProfesionalActions";
 import { getListaPacientes } from "actions/PacienteActions";
-import { buscarTurnosProfesinal } from "actions/BuscarTurnosActions";
+import { cleanTurnos } from "actions/BuscarTurnosActions";
 import BuscarTurnoTabla from "./BuscarTurnoTabla";
 import ListaTurnos from "./ListaTurnos";
 import { useDispatch } from "react-redux";
@@ -14,7 +14,7 @@ export default function BuscarTurno() {
   useEffect(() => {
     dispatch(getListaProfesionales());
     dispatch(getListaPacientes());
-    dispatch(buscarTurnosProfesinal(0, 1));
+    dispatch(cleanTurnos());
   }, [dispatch]);
 
   return (

@@ -267,6 +267,7 @@ export default function ProfesionalForm() {
           <Button
             variant="contained"
             color="primary"
+            fullWidth
             onClick={guardarProfesional}
           >
             Guardar
@@ -283,6 +284,7 @@ const useStyles = makeStyles(() => ({
     paddingTop: 20,
   },
   buttonForm: {
+    paddingRight: 10,
     paddingTop: 10,
   },
   gridForm: {

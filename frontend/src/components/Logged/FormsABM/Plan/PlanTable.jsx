@@ -38,7 +38,7 @@ export default function PlanTable() {
       message: "",
       buttons: [
         {
-          label: "Confirmar",
+          label: "Eliminar",
           onClick: () => dispatch(eliminarPlan(cd_plan)),
         },
         {

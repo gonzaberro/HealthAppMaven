@@ -133,7 +133,12 @@ export default function PlanForm() {
         </Grid>
 
         <Grid item xs={12} md={12} sm={12} lg={12}>
-          <Button variant="contained" color="primary" onClick={guardarPlan}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={guardarPlan}
+            fullWidth
+          >
             Guardar
           </Button>
         </Grid>
@@ -147,6 +152,7 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 20,
   },
   buttonForm: {
+    paddingRight: 10,
     paddingTop: 10,
   },
   gridForm: {

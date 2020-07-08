@@ -17,8 +17,9 @@ export const menuOptions = {
   HISTORIA_CLINICA: "HISTORIA_CLINICA",
   BUSCAR_TURNO: "BUSCAR_TURNO",
 };
-export const url_servidor = "http://190.190.115.14:8580/HealthBackApp/";
-//export const url_servidor = "http://localhost:8080/HealthBackApp/";
+//export const url_servidor = "http://190.190.115.14:8580/HealthBackApp/";
+export const url_servidor = "http://localhost:8080/HealthBackApp/";
+export const error_generico = "Error interno en el servidor";
 export const horarios = [
   "00:00",
   "00:30",

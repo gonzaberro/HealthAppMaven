@@ -6,7 +6,7 @@ import { getListaPacientes } from "actions/PacienteActions";
 import { getListaServicios } from "actions/ServicioActions";
 import { getListaTipoServicios } from "actions/TipoServicioActions";
 import { setHorariosAgenda } from "actions/AgendaActions";
-import { setDefault } from "actions/EditTurnoActions";
+import { setDefault, setDoctor } from "actions/EditTurnoActions";
 import ItemAgendaContainer from "./ItemsAgendaContainer";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -24,6 +24,7 @@ export default function Agenda(props) {
     dispatch(getListaPacientes());
     dispatch(getListaServicios());
     dispatch(getListaTipoServicios());
+    dispatch(setDoctor(profesional_seleccionado));
   }, [dispatch, profesional_seleccionado]);
 
   useEffect(() => {
@@ -43,36 +44,6 @@ export default function Agenda(props) {
 }
 
 const useStyles = makeStyles((theme) => ({
-  formControl: {
-    margin: 10,
-  },
-  container: {
-    margin: 10,
-    marginRight: 0,
-    paddingRight: 0,
-    width: "100%",
-  },
-  textField: {
-    width: "100%",
-  },
-  spanRepetir: {
-    paddingTop: 20,
-  },
-  checkBoxContainer: {
-    margin: 10,
-    color: "#0000008a",
-    borderTop: "1px solid #ccc",
-    width: "100%",
-  },
-  textArea: {
-    width: "100%",
-    minHeight: 100,
-    maxHeight: 100,
-    borderColor: "#c4c4c4",
-    borderRadius: 5,
-    marginTop: 5,
-  },
-
   gridContainer: {
     border: "1px solid #ccc",
     padding: 30,

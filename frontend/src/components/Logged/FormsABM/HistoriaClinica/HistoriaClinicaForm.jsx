@@ -8,12 +8,13 @@ import Button from "@material-ui/core/Button";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import { useSelector, useDispatch } from "react-redux";
+import { especialidadesPaciente } from "actions/EspecialidadActions";
+import Select from "react-select";
 import {
   setHistoriaClinica,
   getListaHistoriaClinica,
   setModalHistoriaClinica,
 } from "actions/HistoriaClinicaActions";
-import FormSelect from "../../FormSelect";
 import { fechaString, validateForm } from "Utils/functions";
 import { useSnackbar } from "notistack";
 import { url_servidor } from "Utils/constants";
@@ -30,12 +31,42 @@ const defaultState = {
   cdValidacion: "",
 };
 
+const optionsProfesional = (listaProfesionales) => {
+  const options = [];
+
+  listaProfesionales.map((profesional) => {
+    return options.push({
+      value: profesional.dni,
+      label:
+        profesional.nombre +
+        " " +
+        profesional.apellido +
+        " (" +
+        profesional.especialidad.nombre +
+        ")",
+    });
+  });
+  return options;
+};
+const optionsPaciente = (listaPacientes) => {
+  const options = [];
+
+  listaPacientes.map((paciente) => {
+    return options.push({
+      value: paciente.dni,
+      label: paciente.dni + " " + paciente.nombre + " " + paciente.apellido,
+    });
+  });
+  return options;
+};
+
 export default function HistoriaClinicaForm() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [cirugia, setCirugia] = useState(true);
   const paciente = useSelector((state) => state.buscarTurnos.paciente);
+  const especialidad = useSelector((state) => state.especialidad.especialidad);
   const [historiaClinicaForm, setHistoriaClinicaForm] = useReducer(
     (state, newState) => ({ ...state, ...newState }),
     {
@@ -53,18 +84,6 @@ export default function HistoriaClinicaForm() {
   const listaProfesionales = useSelector(
     (state) => state.profesional.listaProfesionales
   );
-
-  const pacientesOptions = listaPacientes
-    ? listaPacientes.map((p) => {
-        return { name: `${p.nombre} ${p.apellido} - ${p.dni}`, value: p.dni };
-      })
-    : [];
-
-  const profesionalesOptions = listaProfesionales
-    ? listaProfesionales.map((p) => {
-        return { name: `${p.nombre} ${p.apellido}`, value: p.dni };
-      })
-    : [];
 
   useEffect(() => {
     if (Object.keys(historiaClinicaSeleccionada).length !== 0) {
@@ -95,6 +114,9 @@ export default function HistoriaClinicaForm() {
     if (cirugia) {
       historiaClinica.fechaQuirurgica = fechaString(new Date());
       setHistoriaClinicaForm(historiaClinica);
+    } else {
+      historiaClinica.fechaQuirurgica = null;
+      setHistoriaClinicaForm(historiaClinica);
     }
     setCirugia(cirugia);
   };
@@ -115,8 +137,8 @@ export default function HistoriaClinicaForm() {
     }
   };
 
-  const handleProfesional = (e) => {
-    setProfesional({ dni: e.target.value });
+  const handleProfesional = (value) => {
+    setProfesional({ dni: value });
   };
 
   const guardarHistoriaClinica = () => {
@@ -135,7 +157,10 @@ export default function HistoriaClinicaForm() {
           enqueueSnackbar("Se guardó la Historia Clínica", {
             variant: "success",
           });
-          dispatch(getListaHistoriaClinica(paciente));
+          dispatch(
+            getListaHistoriaClinica(paciente, especialidad.cd_especialidad)
+          );
+          dispatch(especialidadesPaciente(paciente));
           nuevaHistoriaClinica();
         } else {
           enqueueSnackbar("Error al guardar la Historia Clínica", {
@@ -161,21 +186,31 @@ export default function HistoriaClinicaForm() {
     <div>
       <Grid container className={classes.gridForm}>
         <Grid item xs={12} md={6} className={classes.gridInputs}>
-          <FormSelect
-            name="paciente"
-            label="Paciente"
-            options={pacientesOptions}
-            disabled={true}
-            value={paciente}
+          <Select
+            options={optionsPaciente(listaPacientes)}
+            isSearchable={true}
+            placeholder={<div>Paciente</div>}
+            styles={colourStyles}
+            isDisabled={true}
+            value={optionsPaciente(listaPacientes).filter(
+              (option) => option.value === paciente
+            )}
           />
         </Grid>
         <Grid item xs={12} md={6} className={classes.gridInputs}>
-          <FormSelect
-            name="profesional"
-            label="Profesional"
-            options={profesionalesOptions}
-            value={(profesional && profesional.dni) || ""}
-            handleChange={handleProfesional}
+          <Select
+            options={optionsProfesional(listaProfesionales)}
+            isSearchable={true}
+            placeholder={<div>Profesional</div>}
+            styles={colourStyles}
+            onChange={(value) => handleProfesional(value.value)}
+            value={
+              profesional
+                ? optionsProfesional(listaProfesionales).filter(
+                    (option) => option.value === profesional.dni
+                  )
+                : ""
+            }
           />
         </Grid>
         <Grid item xs={12} md={6} className={classes.gridInputs}>
@@ -299,13 +334,28 @@ export default function HistoriaClinicaForm() {
         </Grid>
 
         <Grid item xs={6} lg={9} md={7} className={classes.gridInputs}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={guardarHistoriaClinica}
-          >
-            Guardar
-          </Button>
+          <Grid container>
+            <Grid item xs={6} md={2}>
+              <Button
+                variant="contained"
+                color="primary"
+                fullWidth
+                onClick={guardarHistoriaClinica}
+              >
+                Guardar
+              </Button>
+            </Grid>
+            <Grid item xs={6} md={2} style={{ paddingLeft: 5 }}>
+              <Button
+                fullWidth
+                variant="contained"
+                color="default"
+                onClick={() => dispatch(setModalHistoriaClinica(false))}
+              >
+                Cerrar
+              </Button>
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
     </div>
@@ -331,5 +381,14 @@ const useStyles = makeStyles(() => ({
     borderColor: "#c4c4c4",
     borderRadius: 5,
   },
-  gridInputs: { paddingLeft: 10, paddingRight: 10 },
+  gridInputs: { paddingLeft: 10, paddingRight: 10, backgroundColor: "white" },
 }));
+const colourStyles = {
+  control: (base) => ({
+    ...base,
+    height: 56,
+    minHeight: 35,
+    marginTop: 10,
+    marginBottom: 10,
+  }),
+};
