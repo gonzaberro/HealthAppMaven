@@ -323,7 +323,12 @@ export default function EditAgendaItem() {
             variant="contained"
             color="default"
             fullWidth
-            disabled={turno_info.cdTurno > 0 ? false : true}
+            disabled={
+              turno_info.cdTurno > 0 &&
+              fechaString(fechaCalendario) < fechaString(new Date())
+                ? false
+                : true
+            }
             onClick={() => eliminarTurno(turno_info)}
           >
             Eliminar

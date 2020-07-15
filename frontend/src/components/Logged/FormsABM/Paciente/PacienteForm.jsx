@@ -6,7 +6,7 @@ import Button from "@material-ui/core/Button";
 import { useSelector, useDispatch } from "react-redux";
 import { setPaciente, getListaPacientes } from "actions/PacienteActions";
 
-import FormSelect from "components/Logged/FormSelect";
+import FormSelect from "components/Logged/FormsABM/FormSelect";
 import { useSnackbar } from "notistack";
 import { url_servidor } from "Utils/constants";
 import { fechaString, validateForm } from "Utils/functions";

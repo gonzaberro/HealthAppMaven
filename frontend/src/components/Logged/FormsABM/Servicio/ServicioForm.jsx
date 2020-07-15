@@ -17,7 +17,12 @@ export default function ServicioForm() {
   const servicio = useSelector((state) => state.servicio.servicio);
 
   const guardarServicio = () => {
-    if (nombre !== "" && cdServicio !== "") {
+    if (
+      nombre !== undefined &&
+      nombre !== "" &&
+      cdServicio !== undefined &&
+      cdServicio !== ""
+    ) {
       fetch(url_servidor + "servicio", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -51,7 +56,7 @@ export default function ServicioForm() {
   }, [servicio]);
 
   const nuevServicio = () => {
-    setCdServicio(0);
+    setCdServicio("");
     setNombre("");
     dispatch(setServicio({}));
   };

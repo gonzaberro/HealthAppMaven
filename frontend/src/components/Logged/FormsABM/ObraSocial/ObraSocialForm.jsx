@@ -17,7 +17,7 @@ export default function ObraSocialForm() {
   const obra_social = useSelector((state) => state.obra_social.obraSocial);
 
   const guardarObraSocial = () => {
-    if (nombreObraSocial !== "") {
+    if (nombreObraSocial !== undefined && nombreObraSocial !== "") {
       fetch(url_servidor + "obraSocial", {
         method: cdObraSocial !== 0 ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
@@ -28,6 +28,7 @@ export default function ObraSocialForm() {
             variant: "success",
           });
           dispatch(getListaObrasSocial());
+          nuevaObraSocial();
         } else {
           enqueueSnackbar("Error al guardar la Obra Social", {
             variant: "error",

@@ -14,10 +14,10 @@ export default function ObraSocial() {
 
   return (
     <Grid container>
-      <Grid item xs={12} sm={12} md={8} lg={8} className={classes.lista}>
+      <Grid item xs={12} sm={12} md={12} lg={8} className={classes.lista}>
         <TipoServicioTable />
       </Grid>
-      <Grid item xs={12} sm={12} md={4} lg={4} className={classes.borderForm}>
+      <Grid item xs={12} sm={12} md={12} lg={4} className={classes.borderForm}>
         <TipoServicioForm />
       </Grid>
     </Grid>

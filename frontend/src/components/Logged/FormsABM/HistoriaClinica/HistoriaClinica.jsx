@@ -56,6 +56,7 @@ export default function HistoriaClinica() {
         onClose={handleClose}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
+        style={{ zIndex: 11000 }}
       >
         <div
           style={{

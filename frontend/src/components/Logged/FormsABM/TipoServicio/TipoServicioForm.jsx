@@ -20,7 +20,7 @@ export default function TipoServicioForm() {
   const tipoServicio = useSelector((state) => state.tipoServicio.tipoServicio);
 
   const guardarTipoServicio = () => {
-    if (nombre !== "" && cdTipoServicio !== "") {
+    if (nombre !== undefined && nombre !== "") {
       fetch(url_servidor + "tipoServicio", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

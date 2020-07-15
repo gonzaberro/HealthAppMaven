@@ -23,7 +23,7 @@ export default function PlanForm() {
   );
 
   const guardarPlan = () => {
-    if (nombrePlan !== "" && obraSocial !== 0) {
+    if (nombrePlan !== undefined && nombrePlan !== "" && obraSocial !== 0) {
       fetch(url_servidor + "plan", {
         method: cdPlan !== 0 ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },

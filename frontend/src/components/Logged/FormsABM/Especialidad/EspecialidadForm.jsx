@@ -20,7 +20,7 @@ export default function EspecialidadForm() {
   const especialidad = useSelector((state) => state.especialidad.especialidad);
 
   const guardarEspecialidad = () => {
-    if (nombreEspecialidad !== "") {
+    if (nombreEspecialidad !== undefined && nombreEspecialidad !== "") {
       fetch(url_servidor + "especialidad", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -34,6 +34,7 @@ export default function EspecialidadForm() {
             variant: "success",
           });
           dispatch(getListaEspecialidad());
+          nuevaEspecialidad();
         } else {
           enqueueSnackbar("Error al guardar la Especialidad", {
             variant: "error",

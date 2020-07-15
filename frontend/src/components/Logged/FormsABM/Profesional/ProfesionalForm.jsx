@@ -9,7 +9,7 @@ import {
   getListaProfesionales,
 } from "actions/ProfesionalActions";
 
-import FormSelect from "../../FormSelect";
+import FormSelect from "../FormSelect";
 import { validateForm } from "Utils/functions";
 import { useSnackbar } from "notistack";
 import { url_servidor } from "Utils/constants";

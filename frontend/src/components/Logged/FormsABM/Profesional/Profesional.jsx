@@ -17,14 +17,14 @@ export default function Profesional() {
 
   return (
     <Grid container>
-      <Grid item xs={12} sm={12} md={8} lg={9} className={classes.lista}>
+      <Grid item xs={12} sm={12} md={12} lg={9} className={classes.lista}>
         <ProfesionalTable />
       </Grid>
       <Grid
         item
         xs={12}
         sm={12}
-        md={4}
+        md={12}
         lg={3}
         style={{ width: "100%" }}
         className={classes.borderForm}

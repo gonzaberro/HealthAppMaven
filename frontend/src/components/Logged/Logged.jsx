@@ -1,7 +1,7 @@
 import React from "react";
-import LeftMenu from "./LeftMenu";
-import PrimaryContainer from "./PrimaryContainer";
-import MenuLeft from "./Menu/MenuLeft";
+import MediaQuery from "react-responsive";
+import BigMenu from "./Menu/BigMenu/BigMenu";
+import SmallMenu from "./Menu/SmallMenu/SmallMenu";
 
 export default function Logged() {
   return (
@@ -11,27 +11,12 @@ export default function Logged() {
         width: "100vw",
       }}
     >
-      <div
-        style={{
-          float: "left",
-          width: "5%",
-          minHeight: "100%",
-          backgroundColor: "#333",
-          zIndex: 20,
-        }}
-      >
-        <MenuLeft />
-      </div>
-      <div
-        style={{
-          float: "right",
-          width: "95%",
-          minHeight: "100%",
-          zIndex: 10,
-        }}
-      >
-        <PrimaryContainer></PrimaryContainer>
-      </div>
+      <MediaQuery minDeviceWidth={1300}>
+        <BigMenu />
+      </MediaQuery>
+      <MediaQuery maxDeviceWidth={1300}>
+        <SmallMenu />
+      </MediaQuery>
     </div>
   );
 }

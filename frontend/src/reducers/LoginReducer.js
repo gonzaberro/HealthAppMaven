@@ -1,7 +1,7 @@
 import { SET_LOGIN } from "../actions/types";
 
 const initialState = {
-  login: 1, // 0 significa que no estoy logueado en el sistema
+  login: 0, // 0 significa que no estoy logueado en el sistema
 };
 
 export default function (state = initialState, action) {

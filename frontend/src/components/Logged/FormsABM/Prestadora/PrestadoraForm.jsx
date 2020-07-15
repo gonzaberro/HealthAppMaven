@@ -137,6 +137,7 @@ export default function PrestadoraForm() {
                 variant="outlined"
                 margin="normal"
                 label={"Telefono"}
+                type="number"
                 fullWidth
                 value={telefono}
                 onChange={(event) => setTelefono(event.target.value)}
@@ -163,6 +164,7 @@ export default function PrestadoraForm() {
             variant="outlined"
             margin="normal"
             label={"Intervalo (en minutos)"}
+            type="number"
             fullWidth
             value={intervalo}
             onChange={(event) => setIntervalo(event.target.value)}
@@ -248,6 +250,7 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 20,
   },
   buttonForm: {
+    paddingRight: 10,
     paddingTop: 10,
   },
   gridForm: {

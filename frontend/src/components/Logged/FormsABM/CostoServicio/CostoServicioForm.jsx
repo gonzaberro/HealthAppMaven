@@ -32,7 +32,8 @@ export default function CostoServicioForm() {
 
   const guardarPlan = () => {
     if (
-      costo !== 0 &&
+      costo !== undefined &&
+      costo > 0 &&
       cdPlan !== 0 &&
       cdServicio !== 0 &&
       cdTipoServicio !== 0

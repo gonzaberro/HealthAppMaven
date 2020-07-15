@@ -2,6 +2,7 @@ import React from "react";
 import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useSelector } from "react-redux";
+import MediaQuery from "react-responsive";
 
 export default function TurnosDiaAgendaMensual(props) {
   const classes = useStyles();
@@ -20,13 +21,17 @@ export default function TurnosDiaAgendaMensual(props) {
             <Grid key={"grid_row_" + index_dia} item md={12} xs={12}>
               <div key={"turno" + index_dia} className={classes.divTurno}>
                 <Grid container>
-                  <Grid item lg={2} md={2} sm={4} xs={4}>
+                  <Grid item lg={3} md={3} sm={4} xs={4}>
                     <span key={"span_horario_" + index_dia}>{turno.hora}</span>
                   </Grid>
-                  <Grid item lg={10} md={10} sm={8} xs={8}>
+                  <Grid item lg={9} md={9} sm={8} xs={8}>
                     <span key={"span_paciente_" + index_dia}>
-                      {turno.paciente.dni} - {turno.paciente.nombre}{" "}
-                      {turno.paciente.apellido} ({turno.tipoServicio.nombre})
+                      {turno.paciente.nombre} {turno.paciente.apellido} -{" "}
+                      {turno.paciente.dni}
+                      <MediaQuery minDeviceWidth={1300}>
+                        {" "}
+                        ({turno.tipoServicio.nombre})
+                      </MediaQuery>
                     </span>
                   </Grid>
                 </Grid>
