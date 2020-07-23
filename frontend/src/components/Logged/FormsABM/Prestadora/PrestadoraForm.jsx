@@ -11,6 +11,7 @@ import { url_servidor } from "Utils/constants";
 import { horarios } from "Utils/constants";
 export default function PrestadoraForm() {
   const classes = useStyles();
+
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -40,7 +41,10 @@ export default function PrestadoraForm() {
     if (validarCampos) {
       fetch(url_servidor + "prestadora", {
         method: cdPrestadora !== 0 ? "PUT" : "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
         body: JSON.stringify({
           cd_prestadora: cdPrestadora,
           nombre: nombre,

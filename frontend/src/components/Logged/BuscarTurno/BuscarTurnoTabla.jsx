@@ -14,6 +14,7 @@ import { BUSCAR_ACTUALES } from "actions/types";
 
 export default function BuscarTurnoTabla() {
   const buscarActivos = useSelector((state) => state.buscarTurnos.actuales);
+
   const [tabSeleccionada, setValue] = React.useState(0);
   const dispatch = useDispatch();
   const classes = useStyles();

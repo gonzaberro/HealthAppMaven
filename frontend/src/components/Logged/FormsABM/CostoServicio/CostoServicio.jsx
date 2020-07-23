@@ -10,6 +10,7 @@ import CostoServicioTable from "./CostoServicioTable";
 import { useDispatch } from "react-redux";
 export default function ObraSocial() {
   const classes = useStyles();
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getListaPlanes());

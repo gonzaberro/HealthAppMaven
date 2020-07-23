@@ -17,6 +17,7 @@ export default function FilterDoctorAgenda() {
   const [open, setOpen] = useState(false);
   const anchorRef = React.useRef(null);
   const dispatch = useDispatch();
+
   const listaProfesionales = useSelector(
     (state) => state.profesional.listaProfesionales
   );

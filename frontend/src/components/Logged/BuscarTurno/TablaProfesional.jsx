@@ -49,6 +49,7 @@ export default function TablaProfesional() {
   const listaProfesionales = useSelector(
     (state) => state.profesional.listaProfesionales
   );
+
   const dispatch = useDispatch();
   const [pending, setPending] = React.useState(true);
   const [rows, setRows] = React.useState([]);
@@ -78,7 +79,6 @@ export default function TablaProfesional() {
       );
     }
   }, [dispatch, buscarInfo.actuales, buscarInfo.profesional]);
-
   /** ROW FILTROS DE TABLA */
   const subHeaderComponentMemo = React.useMemo(() => {
     const handleClear = () => {

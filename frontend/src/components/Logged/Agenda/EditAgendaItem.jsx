@@ -100,6 +100,7 @@ const optionsHorarios = (horarios) => {
 export default function EditAgendaItem() {
   const classes = useStyles();
   const dispatch = useDispatch();
+
   const turno_info = useSelector((state) => state.editTurnoReducer);
   const horarios = useSelector((state) => state.agenda_reducer.horarios);
   const { enqueueSnackbar } = useSnackbar();
@@ -325,7 +326,7 @@ export default function EditAgendaItem() {
             fullWidth
             disabled={
               turno_info.cdTurno > 0 &&
-              fechaString(fechaCalendario) < fechaString(new Date())
+              fechaString(fechaCalendario) <= fechaString(new Date())
                 ? false
                 : true
             }

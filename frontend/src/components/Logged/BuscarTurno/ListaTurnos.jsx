@@ -20,7 +20,6 @@ import Alert from "@material-ui/lab/Alert";
 export default function ListaTurnos() {
   const listaTurnos = useSelector((state) => state.buscarTurnos.turnos);
   const classes = useStyles();
-
   const dispatch = useDispatch();
   const gotoDiaCalendario = (fecha_seleccionada, profesional) => {
     const ye = new Intl.DateTimeFormat("es", { year: "numeric" }).format(

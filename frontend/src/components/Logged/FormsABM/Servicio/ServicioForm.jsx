@@ -11,6 +11,7 @@ import { getListaServicios, setServicio } from "actions/ServicioActions";
 export default function ServicioForm() {
   const classes = useStyles();
   const dispatch = useDispatch();
+
   const { enqueueSnackbar } = useSnackbar();
   const [nombre, setNombre] = useState("");
   const [cdServicio, setCdServicio] = useState("");
@@ -25,7 +26,10 @@ export default function ServicioForm() {
     ) {
       fetch(url_servidor + "servicio", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
         body: JSON.stringify({
           cd_servicio: cdServicio,
           nombre: nombre,

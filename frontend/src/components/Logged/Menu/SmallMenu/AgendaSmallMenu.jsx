@@ -2,18 +2,13 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
 import { menuOptions } from "Utils/constants";
-import { SWITCH_MENU } from "actions/types";
 import Grid from "@material-ui/core/Grid";
+import { gotoMenu } from "../MenuFunctions";
+
 export default function AgendaMenu(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const menuSelected = useSelector((state) => state.globalReducer.menuSelected);
-  const gotoMenu = (selected) => {
-    dispatch({
-      type: SWITCH_MENU,
-      payload: { menu: selected, limpiar: true },
-    });
-  };
 
   return (
     <>
@@ -22,7 +17,7 @@ export default function AgendaMenu(props) {
         <Grid
           item
           xs={9}
-          onClick={() => gotoMenu(menuOptions.Agenda_DIARIA)}
+          onClick={() => gotoMenu(menuOptions.Agenda_DIARIA, dispatch)}
           className={
             menuSelected === menuOptions.Agenda_DIARIA
               ? classes.selectedSubMenu
@@ -38,7 +33,7 @@ export default function AgendaMenu(props) {
         <Grid
           item
           xs={9}
-          onClick={() => gotoMenu(menuOptions.Agenda_SEMANAL)}
+          onClick={() => gotoMenu(menuOptions.Agenda_SEMANAL, dispatch)}
           className={
             menuSelected === menuOptions.Agenda_SEMANAL
               ? classes.selectedSubMenu
@@ -54,7 +49,7 @@ export default function AgendaMenu(props) {
         <Grid
           item
           xs={9}
-          onClick={() => gotoMenu(menuOptions.Agenda_MENSUAL)}
+          onClick={() => gotoMenu(menuOptions.Agenda_MENSUAL, dispatch)}
           className={
             menuSelected === menuOptions.Agenda_MENSUAL
               ? classes.selectedSubMenu

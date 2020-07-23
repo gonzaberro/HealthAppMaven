@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
+import Button from "@material-ui/core/Button";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
@@ -76,15 +77,19 @@ export default function EspecialidadTable() {
                     {especialidad.nombre}
                   </TableCell>
                   <TableCell align="right">
-                    <FontAwesomeIcon
-                      icon={faTrash}
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      button
                       onClick={() =>
                         deleteEspecialidad(
                           especialidad.cd_especialidad,
                           especialidad.nombre
                         )
                       }
-                    />
+                    >
+                      <FontAwesomeIcon icon={faTrash} />
+                    </Button>
                   </TableCell>
                 </TableRow>
               );

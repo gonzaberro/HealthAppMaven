@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -13,13 +13,61 @@ import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import { useDispatch } from "react-redux";
 import { setLogin } from "../../actions/LoginActions";
+import { url_servidor } from "Utils/constants";
+import { useSnackbar } from "notistack";
+import { refreshToken, calcularTimer } from "Utils/functions";
 
 export default function LeftSideLogin() {
+  const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
   const dispatch = useDispatch();
+  const [password, setPassword] = useState("Gunsandrose");
+  const [usuario, setUsuario] = useState("gonzalo");
 
   const gotoLogin = () => {
-    dispatch(setLogin(1)); //Voy a marcar el login
+    validateLogin();
+  };
+
+  const validateLogin = () => {
+    if (
+      password !== undefined &&
+      password !== "" &&
+      usuario !== undefined &&
+      usuario !== ""
+    ) {
+      fetch(url_servidor + "login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: usuario,
+          password: password,
+        }),
+      }).then(function (res) {
+        if (res.status === 200) {
+          for (var pair of res.headers.entries()) {
+            if (pair[0] === "access-token") {
+              localStorage.setItem("token", pair[1]);
+              localStorage.setItem("usuario", usuario);
+              dispatch(setLogin(1)); //Voy a marcar el login
+            } else if (pair[0] === "expiration-time") {
+              localStorage.setItem("expiration-time", pair[1]);
+            }
+          }
+
+          setTimeout(() => {
+            refreshToken();
+          }, calcularTimer());
+        } else {
+          enqueueSnackbar("Usuario o contraseña incorrectos.", {
+            variant: "error",
+          });
+        }
+      });
+    } else {
+      enqueueSnackbar("No puede dejar campos en blanco.", {
+        variant: "warning",
+      });
+    }
   };
 
   return (
@@ -30,7 +78,7 @@ export default function LeftSideLogin() {
       <Typography component="h1" variant="h5">
         Ingresar
       </Typography>
-      <form className={classes.form} noValidate>
+      <div className={classes.form}>
         <FormControl
           variant="outlined"
           fullWidth
@@ -56,6 +104,8 @@ export default function LeftSideLogin() {
           id="usuario"
           label="Usuario"
           name="usuario"
+          value={usuario}
+          onChange={(event) => setUsuario(event.target.value)}
         />
         <TextField
           variant="outlined"
@@ -66,10 +116,12 @@ export default function LeftSideLogin() {
           label="Contraseña"
           type="password"
           id="password"
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
         />
 
         <Button
-          type="submit"
+          type="button"
           fullWidth
           variant="contained"
           color="secondary"
@@ -91,7 +143,7 @@ export default function LeftSideLogin() {
             </Link>
           </Grid>
         </Grid>
-      </form>
+      </div>
     </div>
   );
 }

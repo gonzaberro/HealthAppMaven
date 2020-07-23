@@ -37,7 +37,10 @@ export function borrarTurno(cdTurno, cleanProgramar, cleanEditTurno, callback) {
   return (dispatch) => {
     fetch(url_servidor + "turno/" + cdTurno, {
       method: "DELETE",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
     }).then((response) => {
       if (response.status === 200 && callback) {
         cleanProgramar();
@@ -56,7 +59,10 @@ export function setHorariosAgenda() {
   return (dispatch) => {
     fetch(url_servidor + "prestadora/1/horarios", {
       method: "GET",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
     })
       .then((response) => response.json())
       .then((data) =>
@@ -73,7 +79,10 @@ export function getTurnos(fecha, profesional) {
   return (dispatch) => {
     fetch(url_servidor + "turnos/" + profesional + "/" + fecha, {
       method: "GET",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
     })
       .then((response) => response.json())
       .then((data) => {

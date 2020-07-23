@@ -26,7 +26,10 @@ export function eliminarCostoServicio(cd_servicio, cd_plan, cd_tipo_servicio) {
         cd_tipo_servicio,
       {
         method: "DELETE",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
       }
     )
       .then((response) => {
@@ -66,7 +69,10 @@ export function getListaCostoServicios() {
   return (dispatch) => {
     fetch(url_servidor + "costoServicio", {
       method: "GET",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
     })
       .then((response) => response.json())
       .then((data) =>

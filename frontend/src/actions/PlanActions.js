@@ -14,7 +14,10 @@ export function eliminarPlan(cd_plan) {
   return (dispatch) => {
     fetch(url_servidor + "plan/" + cd_plan, {
       method: "DELETE",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
     })
       .then((response) => {
         if (response.status !== 200) {
@@ -51,7 +54,10 @@ export function getListaPlanes() {
   return (dispatch) => {
     fetch(url_servidor + "plan", {
       method: "GET",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
     })
       .then((response) => response.json())
       .then((data) =>

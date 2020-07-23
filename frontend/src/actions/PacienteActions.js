@@ -14,7 +14,10 @@ export function eliminarPaciente(dni) {
   return (dispatch) => {
     fetch(`${url_servidor}paciente/${dni}`, {
       method: "DELETE",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
     })
       .then((response) => {
         if (response.status !== 200) {
@@ -52,7 +55,10 @@ export function getListaPacientes() {
   return (dispatch) => {
     fetch(`${url_servidor}paciente`, {
       method: "GET",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
     })
       .then((response) => response.json())
       .then((data) =>

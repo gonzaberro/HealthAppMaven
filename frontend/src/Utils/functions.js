@@ -1,28 +1,6 @@
-/* const getAllInputNames = () => {
-  const form = document.getElementById("form");
-  if (form == null) return [];
-
-  let arrayOfInputNames = [];
-  const inputs = form.getElementsByTagName("input");
-  for (let i = 0; i < inputs.length; i++) {
-    arrayOfInputNames.push(inputs[i].name);
-  }
-  return arrayOfInputNames;
-};
-
-export const setDefaultFormInput = () => {
-  const names = getAllInputNames();
-
-  let state = {};
-  if (names != null && names.length > 0) {
-    state = names.reduce((acc, curr) => {
-      acc[curr] = "";
-      return acc;
-    }, {});
-  }
-  return state;
-}; */
-
+import { url_servidor } from "Utils/constants";
+import { parse, differenceInSeconds } from "date-fns";
+import { setLogin } from "actions/LoginActions";
 export function parseISOString(s, format) {
   let b = s.split(/\D+/);
   const date = new Date(Date.UTC(b[0], --b[1], b[2], b[3], b[4], b[5], b[6]));
@@ -62,4 +40,50 @@ export const formatDateString = (date) => {
     "/" +
     date.getFullYear()
   );
+};
+export const refreshToken = (dispatch) => {
+  fetch(`${url_servidor}refreshToken/${localStorage.getItem("usuario")}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: localStorage.getItem("token"),
+    },
+  }).then(function (res) {
+    if (res.status === 200) {
+      for (var pair of res.headers.entries()) {
+        if (pair[0] === "access-token") {
+          localStorage.setItem("token", pair[1]);
+        } else if (pair[0] === "expiration-time") {
+          localStorage.setItem("expiration-time", pair[1]);
+        }
+      }
+      setTimeout(() => {
+        refreshToken();
+      }, calcularTimer());
+    } else {
+      localStorage.removeItem("token");
+      localStorage.removeItem("usuario");
+      localStorage.removeItem("expiration-time");
+      dispatch(setLogin(0));
+    }
+  });
+};
+export const calcularTimer = () => {
+  const hora_actual = new Date();
+
+  const fecha_expiracion = parse(
+    localStorage.getItem("expiration-time"),
+    "dd/MM/yyyy HH:mm:ss",
+    new Date()
+  );
+
+  let timer = differenceInSeconds(fecha_expiracion, hora_actual);
+
+  if (timer * 1000 - 120000 >= 120000) {
+    //Si el timer queda configurado para ejecutarse 2 minutos antes de vencerse, acepto
+    return timer * 1000 - 120000;
+  } else {
+    // Si me queda menos de 2 minutos, lo ejecuto en ese momento
+    return 10;
+  }
 };

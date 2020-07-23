@@ -26,7 +26,10 @@ export default function PlanForm() {
     if (nombrePlan !== undefined && nombrePlan !== "" && obraSocial !== 0) {
       fetch(url_servidor + "plan", {
         method: cdPlan !== 0 ? "PUT" : "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
         body: JSON.stringify({
           cd_plan: cdPlan,
           nombre: nombrePlan,

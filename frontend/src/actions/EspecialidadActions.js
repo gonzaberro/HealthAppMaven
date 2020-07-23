@@ -18,7 +18,10 @@ export function especialidadesPaciente(dni) {
   return (dispatch) => {
     fetch(url_servidor + "especialidad/paciente/" + dni, {
       method: "GET",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
     })
       .then((response) => response.json())
       .then((data) => {
@@ -30,11 +33,14 @@ export function especialidadesPaciente(dni) {
   };
 }
 
-export function eliminarEspecialidad(cd_especialidad) {
+export function eliminarEspecialidad(cd_especialidad, token) {
   return (dispatch) => {
     fetch(url_servidor + "especialidad/" + cd_especialidad, {
       method: "DELETE",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
     })
       .then((response) => {
         if (response.status !== 200) {
@@ -71,7 +77,10 @@ export function getListaEspecialidad() {
   return (dispatch) => {
     fetch(url_servidor + "especialidad", {
       method: "GET",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
     })
       .then((response) => response.json())
       .then((data) =>

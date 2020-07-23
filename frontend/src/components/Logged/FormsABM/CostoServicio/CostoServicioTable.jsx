@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
+import Button from "@material-ui/core/Button";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
@@ -38,8 +39,8 @@ export default function CostoServicioTable() {
           onClick: () =>
             dispatch(
               eliminarCostoServicio(
-                costoServicio.id.cdServicio,
-                costoServicio.id.cdPlan,
+                costoServicio.id.servicio.cd_servicio,
+                costoServicio.id.plan.cd_plan,
                 costoServicio.id.tipoServicio.cdTipoServicio
               )
             ),
@@ -77,15 +78,15 @@ export default function CostoServicioTable() {
                     scope="row"
                     style={{ textAlign: "center" }}
                   >
-                    {costoServicio.plan.obraSocial.nombre} -{" "}
-                    {costoServicio.plan.nombre}
+                    {costoServicio.id.plan.obraSocial.nombre} -{" "}
+                    {costoServicio.id.plan.nombre}
                   </TableCell>
                   <TableCell
                     component="th"
                     scope="row"
                     style={{ textAlign: "center" }}
                   >
-                    {costoServicio.servicio.nombre}
+                    {costoServicio.id.servicio.nombre}
                   </TableCell>
                   <TableCell
                     component="th"
@@ -102,10 +103,14 @@ export default function CostoServicioTable() {
                     ${costoServicio.costo}
                   </TableCell>
                   <TableCell align="right">
-                    <FontAwesomeIcon
-                      icon={faTrash}
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      button
                       onClick={() => deleteCostoServicio(costoServicio)}
-                    />
+                    >
+                      <FontAwesomeIcon icon={faTrash} />
+                    </Button>
                   </TableCell>
                 </TableRow>
               );

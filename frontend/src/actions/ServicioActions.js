@@ -15,7 +15,10 @@ export function eliminarServicio(cd_servicio) {
   return (dispatch) => {
     fetch(url_servidor + "servicio/" + cd_servicio, {
       method: "DELETE",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
     })
       .then((response) => {
         if (response.status !== 200) {
@@ -52,7 +55,10 @@ export function getListaServicios() {
   return (dispatch) => {
     fetch(url_servidor + "servicio", {
       method: "GET",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
     })
       .then((response) => response.json())
       .then((data) =>

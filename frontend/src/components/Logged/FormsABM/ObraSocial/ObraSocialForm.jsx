@@ -12,6 +12,7 @@ export default function ObraSocialForm() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
+
   const [nombreObraSocial, setNombreObraSocial] = useState("");
   const [cdObraSocial, setCdObraSocial] = useState(0);
   const obra_social = useSelector((state) => state.obra_social.obraSocial);
@@ -20,7 +21,10 @@ export default function ObraSocialForm() {
     if (nombreObraSocial !== undefined && nombreObraSocial !== "") {
       fetch(url_servidor + "obraSocial", {
         method: cdObraSocial !== 0 ? "PUT" : "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
         body: JSON.stringify({ cd_os: cdObraSocial, nombre: nombreObraSocial }),
       }).then(function (response) {
         if (response.status === 200) {

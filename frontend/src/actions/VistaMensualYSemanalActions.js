@@ -6,7 +6,10 @@ export function getTurnosMensual(fecha, profesional) {
   return (dispatch) => {
     fetch(url_servidor + "turnos/mes/" + profesional + "/" + fecha, {
       method: "GET",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
     })
       .then((response) => response.json())
       .then((data) => {
@@ -23,7 +26,10 @@ export function getTurnosSemana(fecha, profesional) {
   return (dispatch) => {
     fetch(url_servidor + "turnos/semana/" + profesional + "/" + fecha, {
       method: "GET",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
     })
       .then((response) => response.json())
       .then((data) => {

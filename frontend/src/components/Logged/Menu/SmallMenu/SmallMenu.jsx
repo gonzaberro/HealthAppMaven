@@ -24,10 +24,10 @@ export default function SmallMenu(props) {
     <>
       <div className={classes.container}>
         <Grid container className={classes.gridHeader}>
-          <Grid item xs={1} onClick={() => gotoMenu(menuOptions.MENU)}>
+          <Grid item xs={2} sm={1} onClick={() => gotoMenu(menuOptions.MENU)}>
             <FontAwesomeIcon icon={faBars} />
           </Grid>
-          <Grid item xs={10}>
+          <Grid item xs={9} sm={10}>
             <span style={{ fontSize: 27 }}>{menuSelected}</span>
           </Grid>
         </Grid>
@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
   container: {
     float: "left",
     width: "100%",
-    height: "5%",
+    minHeight: "6%",
     backgroundColor: "#de3444",
     zIndex: 20,
     paddingLeft: 20,
@@ -60,5 +60,5 @@ const useStyles = makeStyles((theme) => ({
     minHeight: "100%",
     zIndex: 10,
   },
-  gridHeader: { height: "100%", fontSize: 35, color: "white", marginTop: 10 },
+  gridHeader: { height: "100%", fontSize: 35, color: "white", marginTop: "1%" },
 }));

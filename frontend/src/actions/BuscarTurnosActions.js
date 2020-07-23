@@ -19,11 +19,14 @@ export function setBuscarProfesional(dni, actuales) {
   };
 }
 
-export function buscarTurnosPaciente(dni, activos) {
+export function getPacientes(dni, activos) {
   return (dispatch) => {
     fetch(url_servidor + "turnos/paciente/" + dni + "/" + activos, {
       method: "GET",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
     })
       .then((response) => response.json())
       .then((data) =>
@@ -48,7 +51,10 @@ export function buscarTurnosProfesinal(dni, activos) {
   return (dispatch) => {
     fetch(url_servidor + "turnos/profesional/" + dni + "/" + activos, {
       method: "GET",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
     })
       .then((response) => response.json())
       .then((data) =>

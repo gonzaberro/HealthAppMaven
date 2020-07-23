@@ -19,6 +19,7 @@ import HistoriaClinicaReducer from "./HistoriaClinicaReducer";
 import BuscarTurnos from "./BuscarTurnoReducer";
 import ProgramarAgenda from "./ProgramarAgendaReducer";
 import ErrorMessageReducer from "./ErrorMessageReducer";
+import UsuariosReducer from "./UsuariosReducer";
 
 export default combineReducers({
   login_state: LoginReducer,
@@ -40,4 +41,5 @@ export default combineReducers({
   buscarTurnos: BuscarTurnos,
   programarAgenda: ProgramarAgenda,
   errorMessage: ErrorMessageReducer,
+  usuarios: UsuariosReducer,
 });

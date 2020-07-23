@@ -12,16 +12,17 @@ import Prestadora from "./FormsABM/Prestadora/Prestadora";
 import TipoServicio from "./FormsABM/TipoServicio/TipoServicio";
 import BuscarTurno from "./BuscarTurno/BuscarTurno";
 import CostoServicio from "./FormsABM/CostoServicio/CostoServicio";
-
-import Profesional from "./FormsABM/Profesional/Profesional";
-import Paciente from "./FormsABM/Paciente/Paciente";
-import HistoriaClinica from "./FormsABM/HistoriaClinica/HistoriaClinica";
+import Usuarios from "./FormsABM/Usuarios/Usuarios";
+import Profesional from "./Profesional/Profesional";
+import Paciente from "./Paciente/Paciente";
+import HistoriaClinica from "./HistoriaClinica/HistoriaClinica";
 import { useSnackbar } from "notistack";
 
 export default function PrimaryContainer() {
   const { enqueueSnackbar } = useSnackbar();
   const menuSelected = useSelector((state) => state.globalReducer.menuSelected);
   const errorMessage = useSelector((state) => state.errorMessage.error);
+
   useEffect(() => {
     if (errorMessage.tipo !== undefined) {
       enqueueSnackbar(errorMessage.message, {
@@ -120,11 +121,19 @@ export default function PrimaryContainer() {
             <HistoriaClinica limpiar={menuSelected.limpiar} />
           </div>
         );
+      case menuOptions.USUARIOS:
+        return (
+          <div style={{ height: "100%" }}>
+            <Usuarios />
+          </div>
+        );
 
       default:
         return <></>;
     }
   };
 
-  return <div>{switchMenu()}</div>;
+  return (
+    <div>{localStorage.getItem("token") !== null ? switchMenu() : ""}</div>
+  );
 }

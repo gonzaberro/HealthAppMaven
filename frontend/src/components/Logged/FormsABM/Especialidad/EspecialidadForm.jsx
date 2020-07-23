@@ -14,6 +14,7 @@ import { url_servidor } from "Utils/constants";
 export default function EspecialidadForm() {
   const classes = useStyles();
   const dispatch = useDispatch();
+
   const { enqueueSnackbar } = useSnackbar();
   const [nombreEspecialidad, setNombreEspecialidad] = useState("");
   const [cdEspecialidad, setCdEspecialidad] = useState(0);
@@ -23,7 +24,10 @@ export default function EspecialidadForm() {
     if (nombreEspecialidad !== undefined && nombreEspecialidad !== "") {
       fetch(url_servidor + "especialidad", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
         body: JSON.stringify({
           cd_especialidad: cdEspecialidad,
           nombre: nombreEspecialidad,

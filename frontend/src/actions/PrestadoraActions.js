@@ -15,7 +15,10 @@ export function getPrestadoras() {
   return (dispatch) => {
     fetch(url_servidor + "prestadora/", {
       method: "GET",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
     })
       .then((response) => response.json())
       .then((data) =>
@@ -31,7 +34,10 @@ export function eliminarPrestadora(cd_prestadora) {
   return (dispatch) => {
     fetch(url_servidor + "prestadora/" + cd_prestadora, {
       method: "DELETE",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
     })
       .then((response) => {
         if (response.status !== 200) {

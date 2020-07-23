@@ -8,71 +8,24 @@ import {
   faUser,
   faCalendarAlt,
   faBook,
+  faSignOutAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { makeStyles } from "@material-ui/core/styles";
-import { SWITCH_MENU } from "actions/types";
 import { useDispatch, useSelector } from "react-redux";
 import { menuOptions } from "Utils/constants";
 import AgendaSmallMenu from "./AgendaSmallMenu";
 import InformacionEmpresaSmallMenu from "./InformacionEmpresaSmallMenu";
-
-const AgendaSeleccionada = (menuSelected) => {
-  switch (menuSelected) {
-    case menuOptions.Agenda_DIARIA:
-      return true;
-
-    case menuOptions.Agenda_MENSUAL:
-      return true;
-
-    case menuOptions.Agenda_SEMANAL:
-      return true;
-    case menuOptions.AGENDA:
-      return true;
-
-    default:
-      return false;
-  }
-};
-const InformacionEmpresaSeleccionada = (menuSelected) => {
-  switch (menuSelected) {
-    case menuOptions.INFORMACION_EMPRESA:
-      return true;
-    case menuOptions.ESPECIALIDADES:
-      return true;
-    case menuOptions.OBRAS_SOCIALES:
-      return true;
-
-    case menuOptions.PLAN:
-      return true;
-
-    case menuOptions.SERVICIOS:
-      return true;
-
-    case menuOptions.TIPO_SERVICIO:
-      return true;
-
-    case menuOptions.PRESTADORA:
-      return true;
-
-    case menuOptions.COSTO_SERVICIO:
-      return true;
-
-    default:
-      return false;
-  }
-};
+import {
+  gotoMenu,
+  agendaSeleccionada,
+  informacionEmpresaSeleccionada,
+  closeSession,
+} from "../MenuFunctions";
 
 export default function ContainerSmallMenu() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const menuSelected = useSelector((state) => state.globalReducer.menuSelected);
-
-  const gotoMenu = (selected) => {
-    dispatch({
-      type: SWITCH_MENU,
-      payload: { menu: selected, limpiar: true },
-    });
-  };
 
   return (
     <div className={classes.mainContainer}>
@@ -82,9 +35,9 @@ export default function ContainerSmallMenu() {
           xs={12}
           className={[
             classes.gridItemMenu,
-            AgendaSeleccionada(menuSelected) ? classes.gridSelected : "",
+            agendaSeleccionada(menuSelected) ? classes.gridSelected : "",
           ]}
-          onClick={() => gotoMenu(menuOptions.AGENDA)}
+          onClick={() => gotoMenu(menuOptions.AGENDA, dispatch)}
         >
           <Grid container>
             <Grid item xs={3}>
@@ -96,7 +49,7 @@ export default function ContainerSmallMenu() {
             </Grid>
           </Grid>
         </Grid>
-        {AgendaSeleccionada(menuSelected) ? (
+        {agendaSeleccionada(menuSelected) ? (
           <Grid item xs={12} style={{ padding: 10 }}>
             <AgendaSmallMenu />
           </Grid>
@@ -110,7 +63,7 @@ export default function ContainerSmallMenu() {
               ? classes.gridSelected
               : "",
           ]}
-          onClick={() => gotoMenu(menuOptions.BUSCAR_TURNO)}
+          onClick={() => gotoMenu(menuOptions.BUSCAR_TURNO, dispatch)}
         >
           <Grid container>
             <Grid item xs={3}>
@@ -131,7 +84,7 @@ export default function ContainerSmallMenu() {
               ? classes.gridSelected
               : "",
           ]}
-          onClick={() => gotoMenu(menuOptions.PROFESIONALES)}
+          onClick={() => gotoMenu(menuOptions.PROFESIONALES, dispatch)}
         >
           <Grid container>
             <Grid item xs={3}>
@@ -149,7 +102,7 @@ export default function ContainerSmallMenu() {
             classes.gridItemMenu,
             menuOptions.PACIENTES === menuSelected ? classes.gridSelected : "",
           ]}
-          onClick={() => gotoMenu(menuOptions.PACIENTES)}
+          onClick={() => gotoMenu(menuOptions.PACIENTES, dispatch)}
         >
           <Grid container>
             <Grid item xs={3}>
@@ -169,7 +122,7 @@ export default function ContainerSmallMenu() {
               ? classes.gridSelected
               : "",
           ]}
-          onClick={() => gotoMenu(menuOptions.HISTORIA_CLINICA)}
+          onClick={() => gotoMenu(menuOptions.HISTORIA_CLINICA, dispatch)}
         >
           <Grid container>
             <Grid item xs={3}>
@@ -186,11 +139,11 @@ export default function ContainerSmallMenu() {
           xs={12}
           className={[
             classes.gridItemMenu,
-            InformacionEmpresaSeleccionada(menuSelected)
+            informacionEmpresaSeleccionada(menuSelected)
               ? classes.gridSelected
               : "",
           ]}
-          onClick={() => gotoMenu(menuOptions.INFORMACION_EMPRESA)}
+          onClick={() => gotoMenu(menuOptions.INFORMACION_EMPRESA, dispatch)}
         >
           <Grid container>
             <Grid item xs={3}>
@@ -202,11 +155,31 @@ export default function ContainerSmallMenu() {
             </Grid>
           </Grid>
         </Grid>
-        {InformacionEmpresaSeleccionada(menuSelected) ? (
+        {informacionEmpresaSeleccionada(menuSelected) ? (
           <Grid item xs={12} style={{ padding: 10 }}>
             <InformacionEmpresaSmallMenu />
           </Grid>
         ) : null}
+        <Grid
+          item
+          xs={12}
+          className={[
+            classes.gridItemMenu,
+            menuOptions.HISTORIA_CLINICA === menuSelected
+              ? classes.gridSelected
+              : "",
+          ]}
+          onClick={() => closeSession(dispatch)}
+        >
+          <Grid container>
+            <Grid item xs={3}>
+              <FontAwesomeIcon icon={faSignOutAlt} style={{ width: "100%" }} />
+            </Grid>
+            <Grid item xs={9} className={classes.textMenu}>
+              {menuOptions.CERRAR_SESION}
+            </Grid>
+          </Grid>
+        </Grid>
       </Grid>
     </div>
   );

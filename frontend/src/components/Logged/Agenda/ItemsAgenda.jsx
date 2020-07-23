@@ -13,6 +13,7 @@ import { makeStyles } from "@material-ui/core/styles";
 export default function ItemsAgendaHeader() {
   const turnos = useSelector((state) => state.agenda_reducer.turnos);
   const horarios = useSelector((state) => state.agenda_reducer.horarios);
+
   const fecha_agenda = useSelector(
     (state) => state.agenda_reducer.fecha_agenda
   );

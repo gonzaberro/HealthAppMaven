@@ -3,7 +3,7 @@ import React, { useReducer, useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 
-import FormSelect from "components/Logged/FormsABM/FormSelect";
+import FormSelect from "components/Logged/Paciente/node_modules/components/Logged/FormsABM/FormSelect";
 // import { setDefaultFormInput } from "Utils/functions";
 
 export default function Form({ inputs, options }) {

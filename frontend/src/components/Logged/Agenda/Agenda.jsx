@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 export default function Agenda(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
+
   const profesional_seleccionado = useSelector(
     (state) => state.agenda_reducer.profesional_seleccionado
   );

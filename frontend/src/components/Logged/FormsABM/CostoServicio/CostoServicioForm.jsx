@@ -40,15 +40,19 @@ export default function CostoServicioForm() {
     ) {
       fetch(url_servidor + "costoServicio", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
         body: JSON.stringify({
           id: {
-            cdPlan: cdPlan,
-            cdServicio: cdServicio,
+            servicio: { cd_servicio: cdServicio, nombre: "" },
+            plan: {
+              cd_plan: cdPlan,
+              nombre: "",
+            },
             tipoServicio: { cdTipoServicio: cdTipoServicio, nombre: "" },
           },
-          servicio: { cd_servicio: cdServicio, nombre: "" },
-          plan: { cd_plan: cdPlan, nombre: "" },
           costo: costo,
         }),
       }).then(function (response) {
@@ -73,11 +77,11 @@ export default function CostoServicioForm() {
 
   useEffect(() => {
     setCosto(costoServicio.costo);
-    if (costoServicio.plan) setCdPlan(costoServicio.plan.cd_plan);
-    if (costoServicio.id)
+    if (costoServicio.id) {
+      setCdPlan(costoServicio.id.plan.cd_plan);
       setCdTipoServicio(costoServicio.id.tipoServicio.cdTipoServicio);
-    if (costoServicio.servicio)
-      setCdServicio(costoServicio.servicio.cd_servicio);
+      setCdServicio(costoServicio.id.servicio.cd_servicio);
+    }
   }, [costoServicio]);
 
   const nuevoCostoServicio = () => {

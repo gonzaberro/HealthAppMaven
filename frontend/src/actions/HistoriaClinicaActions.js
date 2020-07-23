@@ -26,7 +26,10 @@ export function eliminarHistoriaClinica(id, callBack, especialidadPaciente) {
   return (dispatch) => {
     fetch(`${url_servidor}historiaClinica/${id}`, {
       method: "DELETE",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
     }).then((response) => {
       if (response.status === 200) {
         callBack();
@@ -49,7 +52,10 @@ export function getListaHistoriaClinica(dni, especialidad) {
       `${url_servidor}historiaClinica/dni/${dni}/especialidad/${especialidad}`,
       {
         method: "GET",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
       }
     )
       .then((response) => response.json())

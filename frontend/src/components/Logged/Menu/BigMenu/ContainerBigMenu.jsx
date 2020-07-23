@@ -6,59 +6,21 @@ import {
   faSearch,
   faUserMd,
   faUser,
+  faSignOutAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { makeStyles } from "@material-ui/core/styles";
-
-import { SWITCH_MENU } from "actions/types";
 import { useDispatch, useSelector } from "react-redux";
 import { menuOptions } from "Utils/constants";
 import InformacionEmpresaMenu from "./InformacionEmpresaMenu";
 import AgendaMenu from "./AgendaMenu";
+import {
+  gotoMenu,
+  agendaSeleccionada,
+  informacionEmpresaSeleccionada,
+  closeSession,
+} from "../MenuFunctions";
 
-const AgendaSeleccionada = (menuSelected) => {
-  switch (menuSelected) {
-    case menuOptions.Agenda_DIARIA:
-      return true;
-
-    case menuOptions.Agenda_MENSUAL:
-      return true;
-
-    case menuOptions.Agenda_SEMANAL:
-      return true;
-
-    default:
-      return false;
-  }
-};
-const InformacionEmpresaSeleccionada = (menuSelected) => {
-  switch (menuSelected) {
-    case menuOptions.ESPECIALIDADES:
-      return true;
-
-    case menuOptions.OBRAS_SOCIALES:
-      return true;
-
-    case menuOptions.PLAN:
-      return true;
-
-    case menuOptions.SERVICIOS:
-      return true;
-
-    case menuOptions.TIPO_SERVICIO:
-      return true;
-
-    case menuOptions.PRESTADORA:
-      return true;
-
-    case menuOptions.COSTO_SERVICIO:
-      return true;
-
-    default:
-      return false;
-  }
-};
-
-export default function MenuLeft() {
+export default function ContainerBigMenu() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [openAgenda, setOpenAgenda] = useState(false);
@@ -70,13 +32,6 @@ export default function MenuLeft() {
     setOpenInformacionEmpresa(false);
   }, [menuSelected]);
 
-  const gotoMenu = (selected) => {
-    dispatch({
-      type: SWITCH_MENU,
-      payload: { menu: selected, limpiar: true },
-    });
-  };
-
   return (
     <div className={classes.mainContainer}>
       <Grid container>
@@ -85,7 +40,7 @@ export default function MenuLeft() {
           xs={12}
           className={[
             classes.gridItemMenu,
-            AgendaSeleccionada(menuSelected) ? classes.gridSelected : "",
+            agendaSeleccionada(menuSelected) ? classes.gridSelected : "",
           ]}
           onMouseLeave={() => setOpenAgenda(false)}
           onMouseOver={() => setOpenAgenda(true)}
@@ -101,7 +56,7 @@ export default function MenuLeft() {
               ? classes.gridSelected
               : "",
           ]}
-          onClick={() => gotoMenu(menuOptions.BUSCAR_TURNO)}
+          onClick={() => gotoMenu(menuOptions.BUSCAR_TURNO, dispatch)}
         >
           <Grid container>
             <Grid item xs={12}>
@@ -122,7 +77,7 @@ export default function MenuLeft() {
               ? classes.gridSelected
               : "",
           ]}
-          onClick={() => gotoMenu(menuOptions.PROFESIONALES)}
+          onClick={() => gotoMenu(menuOptions.PROFESIONALES, dispatch)}
         >
           <Grid container>
             <Grid item xs={12}>
@@ -140,7 +95,7 @@ export default function MenuLeft() {
             classes.gridItemMenu,
             menuOptions.PACIENTES === menuSelected ? classes.gridSelected : "",
           ]}
-          onClick={() => gotoMenu(menuOptions.PACIENTES)}
+          onClick={() => gotoMenu(menuOptions.PACIENTES, dispatch)}
         >
           <Grid container>
             <Grid item xs={12}>
@@ -160,7 +115,7 @@ export default function MenuLeft() {
               ? classes.gridSelected
               : "",
           ]}
-          onClick={() => gotoMenu(menuOptions.HISTORIA_CLINICA)}
+          onClick={() => gotoMenu(menuOptions.HISTORIA_CLINICA, dispatch)}
         >
           <Grid container>
             <Grid item xs={12}>
@@ -178,7 +133,7 @@ export default function MenuLeft() {
           onMouseOver={() => setOpenInformacionEmpresa(true)}
           className={[
             classes.gridItemMenu,
-            InformacionEmpresaSeleccionada(menuSelected)
+            informacionEmpresaSeleccionada(menuSelected)
               ? classes.gridSelected
               : "",
           ]}
@@ -187,6 +142,21 @@ export default function MenuLeft() {
             open={openInformacionEmpresa}
             classes={classes}
           />
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          className={classes.gridItemMenu}
+          onClick={() => closeSession(dispatch)}
+        >
+          <Grid container>
+            <Grid item xs={12}>
+              <FontAwesomeIcon icon={faSignOutAlt} style={{ width: "100%" }} />
+            </Grid>
+            <Grid item xs={12} className={classes.textMenu}>
+              {menuOptions.CERRAR_SESION}
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
     </div>

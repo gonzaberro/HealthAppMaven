@@ -14,6 +14,7 @@ import {
 export default function TipoServicioForm() {
   const classes = useStyles();
   const dispatch = useDispatch();
+
   const { enqueueSnackbar } = useSnackbar();
   const [nombre, setNombre] = useState("");
   const [cdTipoServicio, setCdTipoServicio] = useState(0);
@@ -23,7 +24,10 @@ export default function TipoServicioForm() {
     if (nombre !== undefined && nombre !== "") {
       fetch(url_servidor + "tipoServicio", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
         body: JSON.stringify({
           cdTipoServicio: cdTipoServicio,
           nombre: nombre,

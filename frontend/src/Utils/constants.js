@@ -16,9 +16,12 @@ export const menuOptions = {
   COSTO_SERVICIO: "Costo del Servicio",
   HISTORIA_CLINICA: "Historia Clínica",
   BUSCAR_TURNO: "Buscar Turno",
+  CERRAR_SESION: "Cerrar Sesión",
+  USUARIOS: "Usuarios",
 };
-export const url_servidor = "http://190.190.115.14:8580/HealthBackApp/";
-//export const url_servidor = "http://localhost:8080/HealthBackApp/";
+//export const url_servidor = "http://190.190.115.14:8580/HealthBackApp/";
+export const url_servidor = "http://localhost:8080/HealthBackApp/";
+
 export const error_generico = "Error interno en el servidor";
 export const horarios = [
   "00:00",

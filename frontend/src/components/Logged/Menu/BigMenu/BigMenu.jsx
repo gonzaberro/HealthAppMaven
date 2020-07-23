@@ -1,13 +1,13 @@
 import React from "react";
 import PrimaryContainer from "../../PrimaryContainer";
-import MenuLeft from "./ContainerBigMenu";
+import ContainerBigMenu from "./ContainerBigMenu";
 import { makeStyles } from "@material-ui/core/styles";
 export default function BigMenu(props) {
   const classes = useStyles();
   return (
     <>
       <div className={classes.container}>
-        <MenuLeft />
+        <ContainerBigMenu />
       </div>
 
       <div className={classes.containerPrimary}>

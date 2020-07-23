@@ -6,6 +6,7 @@ import { getListaProfesionales } from "actions/ProfesionalActions";
 import { useDispatch, useSelector } from "react-redux";
 export default function AgendaSemanal() {
   const dispatch = useDispatch();
+
   const profesional_seleccionado = useSelector(
     (state) => state.agenda_reducer.profesional_seleccionado
   );

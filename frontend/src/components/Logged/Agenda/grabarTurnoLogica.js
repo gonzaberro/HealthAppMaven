@@ -6,7 +6,7 @@ import { ERROR_MESSAGE } from "actions/types";
 const sendTurno = (data) => {
   fetch(url_servidor + "turno", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", Authorization: data.token },
     body: JSON.stringify({
       cdTurno: data.turnoInfo.cdTurno !== 0 ? data.turnoInfo.cdTurno : 0,
       hora: data.turnoInfo.horario,
@@ -29,7 +29,11 @@ const sendTurno = (data) => {
       });
 
       data.dispatch(
-        getTurnos(data.fechaCalendario, data.profesional_seleccionado)
+        getTurnos(
+          data.fechaCalendario,
+          data.profesional_seleccionado,
+          data.token
+        )
       );
       data.dispatch(cleanProgramar());
       data.dispatch(setDefault());
@@ -50,7 +54,8 @@ export const grabarTurno = (
   dispatch,
   fechaCalendario,
   profesional_seleccionado,
-  programarAgenda
+  programarAgenda,
+  token
 ) => {
   const data = {
     turnoInfo: turnoInfo,
@@ -58,8 +63,8 @@ export const grabarTurno = (
     fechaCalendario: fechaCalendario,
     profesional_seleccionado: profesional_seleccionado,
     programarAgenda: programarAgenda,
+    token: token,
   };
-  console.log(data.programar);
   data.programarAgenda.tipo =
     data.turnoInfo.programar === 0 ? 0 : data.programarAgenda.tipo;
 

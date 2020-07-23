@@ -1,9 +1,7 @@
 /* ACCIONES AL CARGAR UN NUEVO NEGOCIO */
 export const NEW_TURNO = "NEW_TURNO";
 export const SET_LOGIN = "SET_LOGIN";
-
 export const SWITCH_MENU = "SWITCH_MENU";
-
 export const EDIT_PACIENTE = "EDIT_PACIENTE";
 export const EDIT_SERVICIO = "EDIT_SERVICIO";
 export const EDIT_DOCTOR = "EDIT_DOCTOR";
@@ -17,7 +15,8 @@ export const EDIT_NOTA = "EDIT_NOTA";
 export const EDIT_TIPO_SERVICIO = "EDIT_TIPO_SERVICIO";
 export const EDIT_CD_TURNO = "EDIT_CD_TURNO";
 export const SET_DEFAULT = "SET_DEFAULT";
-
+export const SET_USUARIO = "SET_USUARIO";
+export const SET_LISTA_USUARIOS = "SET_LISTA_USUARIOS";
 export const SELECT_DIA_MES = "SELECT_DIA_MES";
 export const VISTAMENSUALSEMANAL = "VISTAMENSUALSEMANAL";
 

@@ -2,7 +2,7 @@ import React from "react";
 import { faBook } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { makeStyles } from "@material-ui/core/styles";
-import { SWITCH_MENU } from "actions/types";
+import { gotoMenu } from "../MenuFunctions";
 import { useDispatch, useSelector } from "react-redux";
 import { menuOptions } from "Utils/constants";
 import MediaQuery from "react-responsive";
@@ -11,12 +11,6 @@ export default function InformacionEmpresaMenu(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const menuSelected = useSelector((state) => state.globalReducer.menuSelected);
-  const gotoMenu = (selected) => {
-    dispatch({
-      type: SWITCH_MENU,
-      payload: { menu: selected, limpiar: true },
-    });
-  };
 
   return (
     <Grid container style={{ zIndex: 10000 }}>
@@ -45,7 +39,7 @@ export default function InformacionEmpresaMenu(props) {
                     ? classes.subMenuSelected
                     : "",
                 ]}
-                onClick={() => gotoMenu(menuOptions.COSTO_SERVICIO)}
+                onClick={() => gotoMenu(menuOptions.COSTO_SERVICIO, dispatch)}
               >
                 {menuOptions.COSTO_SERVICIO}
               </Grid>
@@ -58,7 +52,7 @@ export default function InformacionEmpresaMenu(props) {
                     ? classes.subMenuSelected
                     : "",
                 ]}
-                onClick={() => gotoMenu(menuOptions.ESPECIALIDADES)}
+                onClick={() => gotoMenu(menuOptions.ESPECIALIDADES, dispatch)}
               >
                 {menuOptions.ESPECIALIDADES}
               </Grid>
@@ -71,7 +65,7 @@ export default function InformacionEmpresaMenu(props) {
                     ? classes.subMenuSelected
                     : "",
                 ]}
-                onClick={() => gotoMenu(menuOptions.OBRAS_SOCIALES)}
+                onClick={() => gotoMenu(menuOptions.OBRAS_SOCIALES, dispatch)}
               >
                 {menuOptions.OBRAS_SOCIALES}
               </Grid>
@@ -84,7 +78,7 @@ export default function InformacionEmpresaMenu(props) {
                     ? classes.subMenuSelected
                     : "",
                 ]}
-                onClick={() => gotoMenu(menuOptions.PLAN)}
+                onClick={() => gotoMenu(menuOptions.PLAN, dispatch)}
               >
                 {menuOptions.PLAN}
               </Grid>
@@ -97,7 +91,7 @@ export default function InformacionEmpresaMenu(props) {
                     ? classes.subMenuSelected
                     : "",
                 ]}
-                onClick={() => gotoMenu(menuOptions.PRESTADORA)}
+                onClick={() => gotoMenu(menuOptions.PRESTADORA, dispatch)}
               >
                 {menuOptions.PRESTADORA}
               </Grid>
@@ -110,7 +104,7 @@ export default function InformacionEmpresaMenu(props) {
                     ? classes.subMenuSelected
                     : "",
                 ]}
-                onClick={() => gotoMenu(menuOptions.SERVICIOS)}
+                onClick={() => gotoMenu(menuOptions.SERVICIOS, dispatch)}
               >
                 {menuOptions.SERVICIOS}
               </Grid>
@@ -123,9 +117,22 @@ export default function InformacionEmpresaMenu(props) {
                     ? classes.subMenuSelected
                     : "",
                 ]}
-                onClick={() => gotoMenu(menuOptions.TIPO_SERVICIO)}
+                onClick={() => gotoMenu(menuOptions.TIPO_SERVICIO, dispatch)}
               >
                 {menuOptions.TIPO_SERVICIO}
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                className={[
+                  classes.subMenuOptions,
+                  menuOptions.USUARIOS === menuSelected
+                    ? classes.subMenuSelected
+                    : "",
+                ]}
+                onClick={() => gotoMenu(menuOptions.USUARIOS, dispatch)}
+              >
+                {menuOptions.USUARIOS}
               </Grid>
             </Grid>
           </div>
@@ -153,7 +160,7 @@ const useStyles = makeStyles((theme) => ({
   },
   subMenuContainer: {
     borderTopLeftRadius: 0,
-    paddingLeft: 10,
+    paddingLeft: 0,
     paddingRight: 10,
     backgroundColor: "white",
     position: "absolute",

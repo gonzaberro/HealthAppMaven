@@ -2,21 +2,16 @@ import React from "react";
 import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { makeStyles } from "@material-ui/core/styles";
-import { SWITCH_MENU } from "actions/types";
 import { useDispatch, useSelector } from "react-redux";
 import { menuOptions } from "Utils/constants";
 import MediaQuery from "react-responsive";
 import Grid from "@material-ui/core/Grid";
+import { gotoMenu } from "../MenuFunctions";
+
 export default function AgendaMenu(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const menuSelected = useSelector((state) => state.globalReducer.menuSelected);
-  const gotoMenu = (selected) => {
-    dispatch({
-      type: SWITCH_MENU,
-      payload: { menu: selected, limpiar: true },
-    });
-  };
 
   return (
     <div container style={{ zIndex: 10000 }}>
@@ -43,7 +38,7 @@ export default function AgendaMenu(props) {
                   ? classes.subMenuSelected
                   : "",
               ]}
-              onClick={() => gotoMenu(menuOptions.Agenda_DIARIA)}
+              onClick={() => gotoMenu(menuOptions.Agenda_DIARIA, dispatch)}
             >
               {menuOptions.Agenda_DIARIA}
             </Grid>
@@ -56,7 +51,7 @@ export default function AgendaMenu(props) {
                   ? classes.subMenuSelected
                   : "",
               ]}
-              onClick={() => gotoMenu(menuOptions.Agenda_SEMANAL)}
+              onClick={() => gotoMenu(menuOptions.Agenda_SEMANAL, dispatch)}
             >
               {menuOptions.Agenda_SEMANAL}
             </Grid>
@@ -69,7 +64,7 @@ export default function AgendaMenu(props) {
                   ? classes.subMenuSelected
                   : "",
               ]}
-              onClick={() => gotoMenu(menuOptions.Agenda_MENSUAL)}
+              onClick={() => gotoMenu(menuOptions.Agenda_MENSUAL, dispatch)}
             >
               {menuOptions.Agenda_MENSUAL}
             </Grid>
@@ -84,6 +79,7 @@ export default function AgendaMenu(props) {
 const useStyles = makeStyles((theme) => ({
   subMenuOptions: {
     padding: 10,
+
     color: "#333",
     fontSize: 12,
     fontWeight: "normal",
@@ -98,7 +94,7 @@ const useStyles = makeStyles((theme) => ({
   },
   subMenuContainer: {
     borderTopLeftRadius: 0,
-    paddingLeft: 10,
+    paddingLeft: 0,
     paddingRight: 10,
     backgroundColor: "white",
     position: "absolute",

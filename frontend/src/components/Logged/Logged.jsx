@@ -2,7 +2,6 @@ import React from "react";
 import MediaQuery from "react-responsive";
 import BigMenu from "./Menu/BigMenu/BigMenu";
 import SmallMenu from "./Menu/SmallMenu/SmallMenu";
-
 export default function Logged() {
   return (
     <div
