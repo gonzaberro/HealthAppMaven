@@ -200,7 +200,9 @@ export default function TablaUsuarios() {
 
 const useStyles = makeStyles((theme) => ({
   TagPerfil: {
-    backgroundColor: "green",
+    width: "100%",
+    textAlign: "center",
+    backgroundColor: "#1fc51f",
     color: "#fff",
     borderRadius: 5,
     padding: 5,

@@ -94,3 +94,11 @@ eeea11141617d9e4bb9c6901ee0cdbe25a4ed62b	{"key":"make-fetch-happen:request-cache
 804c99138ea4d6c42c48feb3798f65dbb3af4d0d	{"key":"make-fetch-happen:request-cache:https://registry.npmjs.org/-/npm/v1/security/audits/quick","integrity":null,"time":1595508767736}
 d6824d8d96af9585bf0a611d2ba219dfd35fc3b2	{"key":"make-fetch-happen:request-cache:https://registry.npmjs.org/-/npm/v1/security/audits/quick","integrity":null,"time":1595508861815}
 0309ead34454c4eb9d8641e85d735cb7311d426b	{"key":"make-fetch-happen:request-cache:https://registry.npmjs.org/-/npm/v1/security/audits/quick","integrity":null,"time":1595508871610}
+d31540422374bb928dbb9e83d5fa32c76e7d9af4	{"key":"make-fetch-happen:request-cache:https://registry.npmjs.org/-/npm/v1/security/audits/quick","integrity":null,"time":1595599638954}
+54348cce2cb529bf1e951d60dc1675933d9c27ba	{"key":"make-fetch-happen:request-cache:https://registry.npmjs.org/-/npm/v1/security/audits/quick","integrity":null,"time":1595599648450}
+c5d8261c17a1d77eb2b95536251bb26ce0bb11d7	{"key":"make-fetch-happen:request-cache:https://registry.npmjs.org/-/npm/v1/security/audits/quick","integrity":null,"time":1596033923526}
+40b0ec76348d2543a35bc5dfc403a998afe0e9df	{"key":"make-fetch-happen:request-cache:https://registry.npmjs.org/-/npm/v1/security/audits/quick","integrity":null,"time":1596033933353}
+5a07af20f47e22884fd75b907e6101e1128fee38	{"key":"make-fetch-happen:request-cache:https://registry.npmjs.org/-/npm/v1/security/audits/quick","integrity":null,"time":1596033963544}
+f4e0bdcf14e9bd2cf4d0b19eb3fc8ac4892df359	{"key":"make-fetch-happen:request-cache:https://registry.npmjs.org/-/npm/v1/security/audits/quick","integrity":null,"time":1596033973455}
+69fb4ce77386cfebf09f69176fbf2fec0b3ad958	{"key":"make-fetch-happen:request-cache:https://registry.npmjs.org/-/npm/v1/security/audits/quick","integrity":null,"time":1596210970547}
+3002e7d6f2e806c2b3e47478ad5c74b313452a3d	{"key":"make-fetch-happen:request-cache:https://registry.npmjs.org/-/npm/v1/security/audits/quick","integrity":null,"time":1596210980586}

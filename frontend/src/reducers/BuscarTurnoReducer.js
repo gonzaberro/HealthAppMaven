@@ -3,6 +3,7 @@ import {
   BUSCAR_PROFESIONAL,
   BUSCAR_PACIENTE,
   BUSCAR_ACTUALES,
+  CLEAN_BUSCAR_TURNOS,
 } from "../actions/types";
 
 const initialState = {
@@ -36,6 +37,14 @@ export default function (state = initialState, action) {
       return {
         ...state,
         actuales: action.payload,
+      };
+    case CLEAN_BUSCAR_TURNOS:
+      return {
+        ...state,
+        turnos: [],
+        profesional: 0,
+        paciente: 0,
+        actuales: 1,
       };
 
     default:

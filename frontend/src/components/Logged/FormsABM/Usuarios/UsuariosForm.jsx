@@ -1,11 +1,11 @@
-import React, { useEffect, useReducer } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { useSelector, useDispatch } from "react-redux";
 import { setUsuario, getListaUsuarios } from "actions/UsuariosActions";
-
+import { FormControl, InputLabel, Select, MenuItem } from "@material-ui/core";
 import { useSnackbar } from "notistack";
 import { url_servidor } from "Utils/constants";
 import { validateForm } from "Utils/functions";
@@ -22,8 +22,9 @@ export default function PacienteForm() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
-
+  const [perfil, setPerfil] = useState(0);
   const usuarioSeleccionado = useSelector((state) => state.usuarios.usuario);
+  const listaPerfiles = useSelector((state) => state.perfil.listaPerfiles);
 
   const [usuario, setUsuarioForm] = useReducer(
     (state, newState) => ({ ...state, ...newState }),
@@ -39,17 +40,19 @@ export default function PacienteForm() {
   const nuevoUsuario = () => {
     dispatch(setUsuario({}));
     setUsuarioForm(defaultState);
+    setPerfil(0);
   };
 
   useEffect(() => {
     if (Object.keys(usuarioSeleccionado).length !== 0) {
       setUsuarioForm(usuarioSeleccionado);
+      setPerfil(usuarioSeleccionado.perfil.cdPerfil);
     }
   }, [usuarioSeleccionado]);
 
   const guardarUsuario = () => {
-    const objPlan = { ...usuario, perfil: { cdPerfil: 1, dsPerfil: "" } };
-    if (validateForm(usuario)) {
+    const objPlan = { ...usuario, perfil: { cdPerfil: perfil, dsPerfil: "" } };
+    if (validateForm(usuario) && perfil > 0) {
       fetch(`${url_servidor}usuario`, {
         method: usuario.cd_usuario > 0 ? "PUT" : "POST",
         headers: {
@@ -95,6 +98,34 @@ export default function PacienteForm() {
         </Grid>
       </Grid>
       <Grid container className={classes.gridForm}>
+        <Grid item xs={12} md={12} sm={12} lg={12}>
+          <FormControl
+            variant="outlined"
+            fullWidth
+            className={classes.formControl}
+          >
+            <InputLabel id="demo-simple-select-outlined-label">
+              Perfil
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-outlined-label"
+              id="demo-simple-select-outlined"
+              label="Perfil"
+              fullWidth
+              value={perfil}
+              onChange={(event) => setPerfil(event.target.value)}
+            >
+              {listaPerfiles &&
+                listaPerfiles.map((perfil) => {
+                  return (
+                    <MenuItem value={perfil.cdPerfil}>
+                      {perfil.dsPerfil}
+                    </MenuItem>
+                  );
+                })}
+            </Select>
+          </FormControl>
+        </Grid>
         <Grid item lg={12} md={12} sm={12} xs={12}>
           <TextField
             variant="outlined"
@@ -107,7 +138,6 @@ export default function PacienteForm() {
             onChange={handleInputChange}
           />
         </Grid>
-
         <Grid item lg={12} md={12} sm={12} xs={12}>
           <TextField
             variant="outlined"

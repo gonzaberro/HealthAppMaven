@@ -1,12 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import MediaQuery from "react-responsive";
 import BigMenu from "./Menu/BigMenu/BigMenu";
 import SmallMenu from "./Menu/SmallMenu/SmallMenu";
+import { refreshRefreshToken, refreshToken } from "Utils/functions";
+import { useDispatch } from "react-redux";
 export default function Logged() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    refreshToken(dispatch);
+    refreshRefreshToken(dispatch);
+  });
+
   return (
     <div
       style={{
-        height: "100vh",
+        height: "99vh",
         width: "100vw",
       }}
     >

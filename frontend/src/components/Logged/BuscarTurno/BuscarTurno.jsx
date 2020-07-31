@@ -32,10 +32,10 @@ export default function BuscarTurno() {
 const useStyles = makeStyles((theme) => ({
   gridContainer: {
     border: "1px solid #ccc",
-
+    borderBottom: "none",
     paddingTop: 0,
-    height: "100vh",
-    maxHeight: "100vh",
+    height: "94vh",
+    maxHeight: "94vh",
     overflowY: "auto",
   },
 }));

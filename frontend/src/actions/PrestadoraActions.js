@@ -13,7 +13,7 @@ export function setPrestadora(prestadora) {
 
 export function getPrestadoras() {
   return (dispatch) => {
-    fetch(url_servidor + "prestadora/", {
+    fetch(url_servidor + "prestadora", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

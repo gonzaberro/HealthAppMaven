@@ -111,19 +111,20 @@ export default function AgendaSemanalDias() {
 const useStyles = makeStyles((theme) => ({
   gridDias: {
     border: "1px solid #eeeeee",
+    borderBottom: "none",
     padding: 10,
     paddingLeft: 15,
     borderLeft: "1px solid #eeeeee",
-    minHeight: "85vh",
+    minHeight: "81vh",
     "&:hover": {
       border: "1px solid #2c41b5",
-      // backgroundColor: "#eeeeee",
+      borderBottom: "none",
       color: theme.palette.primary.main,
       cursor: "pointer",
     },
   },
   gridTurnosDia: {
-    maxHeight: "85vh",
+    maxHeight: "81vh",
     overflowY: "auto",
     overflowX: "hidden",
   },

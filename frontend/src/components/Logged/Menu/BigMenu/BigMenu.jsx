@@ -4,14 +4,27 @@ import ContainerBigMenu from "./ContainerBigMenu";
 import { makeStyles } from "@material-ui/core/styles";
 export default function BigMenu(props) {
   const classes = useStyles();
+
+  const getPrestadora = () => {
+    const prestadora = JSON.parse(localStorage.getItem("prestadora"));
+
+    return prestadora.nombre;
+  };
+
   return (
     <>
       <div className={classes.container}>
         <ContainerBigMenu />
       </div>
-
-      <div className={classes.containerPrimary}>
-        <PrimaryContainer></PrimaryContainer>
+      <div>
+        <div className={classes.containerBar}>
+          <div className={classes.infoEmpresa}>
+            Prestadora: {getPrestadora()}
+          </div>
+        </div>
+        <div className={classes.containerPrimary}>
+          <PrimaryContainer></PrimaryContainer>
+        </div>
       </div>
     </>
   );
@@ -24,10 +37,26 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#333",
     zIndex: 20,
   },
+  infoEmpresa: {
+    width: "95%",
+    padding: 10,
+    paddingTop: 15,
+  },
+  containerBar: {
+    float: "right",
+    width: "95%",
+    height: "5vh",
+    minHeight: "10%",
+    borderBottom: "1px solid #de3444",
+    backgroundColor: "#fff",
+    fontWeight: "bold",
+    color: "#de3444",
+    zIndex: 20,
+  },
   containerPrimary: {
     float: "right",
     width: "95%",
-    minHeight: "100%",
+    height: "93vh",
     zIndex: 10,
   },
 }));

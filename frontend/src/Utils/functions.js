@@ -1,6 +1,7 @@
 import { url_servidor } from "Utils/constants";
 import { parse, differenceInSeconds } from "date-fns";
 import { setLogin } from "actions/LoginActions";
+import { closeSession } from "components/Logged/Menu/MenuFunctions";
 export function parseISOString(s, format) {
   let b = s.split(/\D+/);
   const date = new Date(Date.UTC(b[0], --b[1], b[2], b[3], b[4], b[5], b[6]));
@@ -42,48 +43,129 @@ export const formatDateString = (date) => {
   );
 };
 export const refreshToken = (dispatch) => {
-  fetch(`${url_servidor}refreshToken/${localStorage.getItem("usuario")}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: localStorage.getItem("token"),
-    },
-  }).then(function (res) {
-    if (res.status === 200) {
-      for (var pair of res.headers.entries()) {
-        if (pair[0] === "access-token") {
-          localStorage.setItem("token", pair[1]);
-        } else if (pair[0] === "expiration-time") {
-          localStorage.setItem("expiration-time", pair[1]);
-        }
-      }
-      setTimeout(() => {
-        refreshToken();
-      }, calcularTimer());
-    } else {
-      localStorage.removeItem("token");
-      localStorage.removeItem("usuario");
-      localStorage.removeItem("expiration-time");
-      dispatch(setLogin(0));
+  setTimeout(() => {
+    if (
+      localStorage.getItem("token") !== undefined &&
+      localStorage.getItem("refresh-token") !== undefined
+    ) {
+      fetch(`${url_servidor}refreshToken/${localStorage.getItem("usuario")}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+          "Refresh-Token": localStorage.getItem("refresh-token"),
+        },
+      })
+        .then(function (res) {
+          if (res.status === 200) {
+            setLocalStorage(res.headers.entries());
+            refreshToken(dispatch);
+          } else {
+            closeSession(dispatch);
+          }
+        })
+        .catch((error) => {
+          closeSession(dispatch);
+        });
     }
-  });
+  }, calcularTimer(localStorage.getItem("expiration-time")));
 };
-export const calcularTimer = () => {
+export const refreshRefreshToken = (dispatch) => {
+  setTimeout(() => {
+    if (
+      localStorage.getItem("token") !== undefined &&
+      localStorage.getItem("refresh-token") !== undefined
+    ) {
+      fetch(
+        `${url_servidor}refreshRefreshToken/${localStorage.getItem("usuario")}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token"),
+            "Refresh-Token": localStorage.getItem("refresh-token"),
+          },
+        }
+      )
+        .then(function (res) {
+          if (res.status === 200) {
+            setLocalStorage(res.headers.entries());
+            refreshRefreshToken(dispatch);
+          } else {
+            closeSession(dispatch);
+          }
+        })
+        .catch((error) => {
+          closeSession(dispatch);
+        });
+    }
+  }, calcularTimer(localStorage.getItem("refresh-expiration-time")));
+};
+
+export const setLocalStorage = (headers) => {
+  for (var pair of headers) {
+    switch (pair[0]) {
+      case "access-token": //Token para consultas
+        localStorage.setItem("token", pair[1]);
+        break;
+      case "expiration-time": //Expiration del token consultas
+        localStorage.setItem("expiration-time", pair[1]);
+        break;
+      case "refresh-token": //Token para refrezcar
+        localStorage.setItem("refresh-token", pair[1]);
+        break;
+      case "refresh-expiration-time":
+        localStorage.setItem("refresh-expiration-time", pair[1]);
+        break;
+
+      default:
+        console.log("Header Not Needed");
+    }
+  }
+};
+
+export const calcularTimer = (fechaExpiracion) => {
   const hora_actual = new Date();
 
   const fecha_expiracion = parse(
-    localStorage.getItem("expiration-time"),
+    fechaExpiracion,
     "dd/MM/yyyy HH:mm:ss",
     new Date()
   );
 
   let timer = differenceInSeconds(fecha_expiracion, hora_actual);
 
-  if (timer * 1000 - 120000 >= 120000) {
-    //Si el timer queda configurado para ejecutarse 2 minutos antes de vencerse, acepto
-    return timer * 1000 - 120000;
+  if (timer * 1000 - 60000 > 70000) {
+    //Dejo 10 segundos de espacio entre que se ejecuta y el tiempo en el que se venceria el token
+    //Si el timer queda configurado para ejecutarse 1 minuto antes de vencerse, acepto
+    return timer * 1000 - 60000;
   } else {
-    // Si me queda menos de 2 minutos, lo ejecuto en ese momento
+    // Si me queda menos de 1 minutos, lo ejecuto en ese momento
     return 10;
   }
+};
+
+export const isAlive = (dispatch, login) => {
+  fetch(url_servidor + "tokenALive", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: localStorage.getItem("token"),
+    },
+  }).then(function (res) {
+    if (res.status === 200) {
+      if (login === 0) dispatch(setLogin(1));
+    } else {
+      closeSession(dispatch);
+    }
+  });
+};
+export const prestadora = () => {
+  let prestadora = 0;
+
+  if (localStorage.getItem("prestadora") !== null) {
+    prestadora = JSON.parse(localStorage.getItem("prestadora")).cd_prestadora;
+  }
+
+  return prestadora;
 };

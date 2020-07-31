@@ -6,13 +6,17 @@ import { ERROR_MESSAGE } from "actions/types";
 const sendTurno = (data) => {
   fetch(url_servidor + "turno", {
     method: "POST",
-    headers: { "Content-Type": "application/json", Authorization: data.token },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: localStorage.getItem("token"),
+    },
     body: JSON.stringify({
       cdTurno: data.turnoInfo.cdTurno !== 0 ? data.turnoInfo.cdTurno : 0,
       hora: data.turnoInfo.horario,
       paciente: { dni: data.turnoInfo.paciente },
       profesional: { dni: data.turnoInfo.doctor },
       servicio: { cd_servicio: data.turnoInfo.servicio },
+      prestadora: JSON.parse(localStorage.getItem("prestadora")),
       tipoServicio: { cdTipoServicio: data.turnoInfo.tipoServicio },
       fecha: new Date(data.fechaCalendario + " " + data.turnoInfo.horario),
       notas: data.turnoInfo.nota,

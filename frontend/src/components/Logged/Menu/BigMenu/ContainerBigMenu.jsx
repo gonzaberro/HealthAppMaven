@@ -192,8 +192,8 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 10,
   },
   mainContainer: {
-    border: "2px solid #de3444",
-    minHeight: "100vh",
+    borderRight: "2px solid #de3444",
+    height: "100vh",
 
     backgroundColor: "#de3444",
   },

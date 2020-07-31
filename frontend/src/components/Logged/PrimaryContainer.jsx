@@ -15,11 +15,13 @@ import CostoServicio from "./FormsABM/CostoServicio/CostoServicio";
 import Usuarios from "./FormsABM/Usuarios/Usuarios";
 import Profesional from "./Profesional/Profesional";
 import Paciente from "./Paciente/Paciente";
+import Perfil from "./FormsABM/Perfil/Perfil";
 import HistoriaClinica from "./HistoriaClinica/HistoriaClinica";
 import { useSnackbar } from "notistack";
 
 export default function PrimaryContainer() {
   const { enqueueSnackbar } = useSnackbar();
+
   const menuSelected = useSelector((state) => state.globalReducer.menuSelected);
   const errorMessage = useSelector((state) => state.errorMessage.error);
 
@@ -125,6 +127,13 @@ export default function PrimaryContainer() {
         return (
           <div style={{ height: "100%" }}>
             <Usuarios />
+          </div>
+        );
+
+      case menuOptions.PERFIL:
+        return (
+          <div style={{ height: "100%" }}>
+            <Perfil />
           </div>
         );
 

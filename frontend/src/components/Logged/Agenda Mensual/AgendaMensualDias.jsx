@@ -133,7 +133,7 @@ const useStyles = makeStyles((theme) => ({
     padding: 10,
     paddingLeft: 15,
     borderLeft: "1px solid #eeeeee",
-    minHeight: "14vh",
+    minHeight: "13.5vh",
     "&:hover": {
       border: "1px solid #2c41b5",
       // backgroundColor: "#eeeeee",
@@ -142,7 +142,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   gridTurnosDia: {
-    maxHeight: "12vh",
+    maxHeight: "11vh",
     overflowY: "auto",
     overflowX: "hidden",
   },

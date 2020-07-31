@@ -64,6 +64,22 @@ export default function InformacionEmpresaSmallMenu(props) {
         <Grid
           item
           xs={9}
+          onClick={() => gotoMenu(menuOptions.PERFIL, dispatch)}
+          className={
+            menuSelected === menuOptions.PERFIL
+              ? classes.selectedSubMenu
+              : classes.textSubMenu
+          }
+        >
+          {menuOptions.PERFIL}
+        </Grid>
+      </Grid>
+      <Grid container>
+        <Grid item xs={3}></Grid>
+
+        <Grid
+          item
+          xs={9}
           onClick={() => gotoMenu(menuOptions.PLAN, dispatch)}
           className={
             menuSelected === menuOptions.PLAN
@@ -130,7 +146,7 @@ export default function InformacionEmpresaSmallMenu(props) {
           xs={9}
           onClick={() => gotoMenu(menuOptions.USUARIOS, dispatch)}
           className={
-            menuSelected === menuOptions.TIPO_SERVICIO
+            menuSelected === menuOptions.USUARIOS
               ? classes.selectedSubMenu
               : classes.textSubMenu
           }

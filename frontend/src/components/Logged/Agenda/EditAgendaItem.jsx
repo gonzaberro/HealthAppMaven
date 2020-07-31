@@ -97,6 +97,24 @@ const optionsHorarios = (horarios) => {
   });
   return options;
 };
+const validarCamposTurno = (turno_info) => {
+  if (
+    turno_info.paciente !== undefined &&
+    turno_info.paciente !== "" &&
+    turno_info.doctor !== undefined &&
+    turno_info.doctor !== "" &&
+    turno_info.horario !== undefined &&
+    turno_info.horario !== "" &&
+    turno_info.servicio !== undefined &&
+    turno_info.servicio !== "" &&
+    turno_info.tipoServicio !== undefined &&
+    turno_info.tipoServicio !== ""
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+};
 export default function EditAgendaItem() {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -138,13 +156,7 @@ export default function EditAgendaItem() {
   };
   const guardarTurno = () => {
     if (fechaString(fechaCalendario) >= fechaString(new Date())) {
-      if (
-        turno_info.paciente !== "" &&
-        turno_info.doctor !== "" &&
-        turno_info.horario !== "" &&
-        turno_info.servicio !== "" &&
-        turno_info.tipoServicio !== ""
-      ) {
+      if (validarCamposTurno(turno_info)) {
         grabarTurno(
           turno_info,
           dispatch,
@@ -152,11 +164,12 @@ export default function EditAgendaItem() {
           profesional_seleccionado,
           programarAgenda
         );
+      } else {
+        enqueueSnackbar("No puede dejar campos vacíos.", {
+          variant: "warning",
+        });
       }
     } else {
-      enqueueSnackbar("No puede seleccionar una fecha anterior al día de hoy", {
-        variant: "warning",
-      });
     }
   };
   const setFechaEsp = (fecha, hora) => {
@@ -326,7 +339,7 @@ export default function EditAgendaItem() {
             fullWidth
             disabled={
               turno_info.cdTurno > 0 &&
-              fechaString(fechaCalendario) <= fechaString(new Date())
+              fechaString(fechaCalendario) >= fechaString(new Date())
                 ? false
                 : true
             }

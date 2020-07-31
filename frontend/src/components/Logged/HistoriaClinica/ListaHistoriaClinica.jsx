@@ -190,7 +190,6 @@ export default function ListaHistoriaClinica() {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    minWidth: 275,
     margin: 5,
     border: "1px solid #fff",
     "&:hover": {
@@ -199,7 +198,6 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   rootSeleccionado: {
-    minWidth: 275,
     margin: 5,
     border: "2px solid  #4051b5",
   },
@@ -224,8 +222,8 @@ const useStyles = makeStyles((theme) => ({
   containerTurnos: {
     padding: 20,
     paddingTop: 10,
-    maxHeight: "85vh",
-    minHeight: "85vh",
+    maxHeight: "80vh",
+    minHeight: "80vh",
     overflowY: "auto",
     backgroundColor: "#f1f1f1",
   },

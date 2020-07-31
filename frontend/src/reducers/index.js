@@ -20,6 +20,7 @@ import BuscarTurnos from "./BuscarTurnoReducer";
 import ProgramarAgenda from "./ProgramarAgendaReducer";
 import ErrorMessageReducer from "./ErrorMessageReducer";
 import UsuariosReducer from "./UsuariosReducer";
+import PerfilReducer from "./PerfilReducer";
 
 export default combineReducers({
   login_state: LoginReducer,
@@ -42,4 +43,5 @@ export default combineReducers({
   programarAgenda: ProgramarAgenda,
   errorMessage: ErrorMessageReducer,
   usuarios: UsuariosReducer,
+  perfil: PerfilReducer,
 });

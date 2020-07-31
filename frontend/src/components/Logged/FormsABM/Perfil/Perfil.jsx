@@ -1,29 +1,25 @@
 import React, { useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
-
+import PerfilForm from "./PerfilForm";
 import { makeStyles } from "@material-ui/core/styles";
-import UsuariosForm from "./UsuariosForm";
-import TablaUsuarios from "./UsuariosTable";
-import { useDispatch } from "react-redux";
-import { getListaUsuarios } from "actions/UsuariosActions";
 import { getListaPerfil } from "actions/PerfilActions";
-
-export default function Usuarios() {
+import PerfilTable from "./PerfilTable";
+import { useDispatch } from "react-redux";
+export default function ObraSocial() {
   const classes = useStyles();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getListaUsuarios());
     dispatch(getListaPerfil());
   }, [dispatch]);
 
   return (
     <Grid container>
       <Grid item xs={12} sm={12} md={12} lg={8} className={classes.lista}>
-        <TablaUsuarios />
+        <PerfilTable />
       </Grid>
       <Grid item xs={12} sm={12} md={12} lg={4} className={classes.borderForm}>
-        <UsuariosForm />
+        <PerfilForm />
       </Grid>
     </Grid>
   );

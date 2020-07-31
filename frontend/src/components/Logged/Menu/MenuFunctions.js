@@ -57,5 +57,11 @@ export const informacionEmpresaSeleccionada = (menuSelected) => {
 };
 export const closeSession = (dispatch) => {
   localStorage.removeItem("token");
+  localStorage.removeItem("usuario");
+  localStorage.removeItem("expiration-time");
+  localStorage.removeItem("refresh-expiration-time");
+  localStorage.removeItem("refresh-token");
+  localStorage.removeItem("prestadora");
+
   dispatch(setLogin(0));
 };

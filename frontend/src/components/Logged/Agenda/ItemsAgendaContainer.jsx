@@ -12,7 +12,7 @@ export default function ItemsAgendaContainer() {
         item
         xs={12}
         md={12}
-        style={{ overflowY: "auto", maxHeight: "90vh" }}
+        style={{ overflowY: "auto", maxHeight: "84vh" }}
       >
         <ItemsAgenda />
       </Grid>

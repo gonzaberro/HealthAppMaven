@@ -74,6 +74,19 @@ export default function InformacionEmpresaMenu(props) {
                 xs={12}
                 className={[
                   classes.subMenuOptions,
+                  menuOptions.PERFIL === menuSelected
+                    ? classes.subMenuSelected
+                    : "",
+                ]}
+                onClick={() => gotoMenu(menuOptions.PERFIL, dispatch)}
+              >
+                {menuOptions.PERFIL}
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                className={[
+                  classes.subMenuOptions,
                   menuOptions.PLAN === menuSelected
                     ? classes.subMenuSelected
                     : "",

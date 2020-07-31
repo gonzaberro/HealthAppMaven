@@ -7,6 +7,7 @@ import {
   ERROR_MESSAGE,
 } from "../actions/types";
 import { url_servidor } from "Utils/constants/";
+import { prestadora } from "Utils/functions";
 
 export function setFechaAgenda(fecha) {
   return (dispatch) => {
@@ -57,7 +58,7 @@ export function borrarTurno(cdTurno, cleanProgramar, cleanEditTurno, callback) {
 }
 export function setHorariosAgenda() {
   return (dispatch) => {
-    fetch(url_servidor + "prestadora/1/horarios", {
+    fetch(url_servidor + "prestadora/" + prestadora() + "/horarios", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -77,13 +78,16 @@ export function setHorariosAgenda() {
 export function getTurnos(fecha, profesional) {
   //fecha en formato yyyy-MM-dd
   return (dispatch) => {
-    fetch(url_servidor + "turnos/" + profesional + "/" + fecha, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: localStorage.getItem("token"),
-      },
-    })
+    fetch(
+      url_servidor + "turnos/" + prestadora() + "/" + profesional + "/" + fecha,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
         dispatch({

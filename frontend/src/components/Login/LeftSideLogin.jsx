@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -11,11 +11,11 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
-import { useDispatch } from "react-redux";
-import { setLogin } from "../../actions/LoginActions";
-import { url_servidor } from "Utils/constants";
+import { useDispatch, useSelector } from "react-redux";
+
 import { useSnackbar } from "notistack";
-import { refreshToken, calcularTimer } from "Utils/functions";
+import { getPrestadoras } from "actions/PrestadoraActions";
+import { validarLogin } from "components/Login/LoginFunctions";
 
 export default function LeftSideLogin() {
   const { enqueueSnackbar } = useSnackbar();
@@ -23,51 +23,33 @@ export default function LeftSideLogin() {
   const dispatch = useDispatch();
   const [password, setPassword] = useState("Gunsandrose");
   const [usuario, setUsuario] = useState("gonzalo");
+  const prestadoras = useSelector((state) => state.prestadora.listaPrestadoras);
+  const [prestadora, selectPrestadora] = useState(0);
 
   const gotoLogin = () => {
     validateLogin();
   };
 
-  const validateLogin = () => {
-    if (
-      password !== undefined &&
-      password !== "" &&
-      usuario !== undefined &&
-      usuario !== ""
-    ) {
-      fetch(url_servidor + "login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username: usuario,
-          password: password,
-        }),
-      }).then(function (res) {
-        if (res.status === 200) {
-          for (var pair of res.headers.entries()) {
-            if (pair[0] === "access-token") {
-              localStorage.setItem("token", pair[1]);
-              localStorage.setItem("usuario", usuario);
-              dispatch(setLogin(1)); //Voy a marcar el login
-            } else if (pair[0] === "expiration-time") {
-              localStorage.setItem("expiration-time", pair[1]);
-            }
-          }
+  useEffect(() => {
+    dispatch(getPrestadoras());
+  }, [dispatch]);
 
-          setTimeout(() => {
-            refreshToken();
-          }, calcularTimer());
-        } else {
-          enqueueSnackbar("Usuario o contraseña incorrectos.", {
-            variant: "error",
-          });
-        }
-      });
+  const validateLogin = () => {
+    if (password !== "" && usuario !== "" && prestadora.cd_prestadora > 0) {
+      validarLogin(usuario, password, prestadora, dispatch, enqueueSnackbar);
     } else {
       enqueueSnackbar("No puede dejar campos en blanco.", {
         variant: "warning",
       });
     }
+  };
+
+  const changePrestadora = (cd_prestadora) => {
+    const prestadoraSeleccionada = prestadoras.find((prestadora) => {
+      return prestadora.cd_prestadora === cd_prestadora;
+    });
+
+    selectPrestadora(prestadoraSeleccionada);
   };
 
   return (
@@ -89,11 +71,22 @@ export default function LeftSideLogin() {
           </InputLabel>
           <Select
             labelId="demo-simple-select-outlined-label"
-            id="demo-simple-select-outlined"
             label="Institución"
             fullWidth
+            value={prestadora.cd_prestadora}
+            onChange={(event) => changePrestadora(event.target.value)}
           >
-            <MenuItem value={30}>FSINET</MenuItem>
+            {prestadoras.map((prestadora) => {
+              return (
+                <MenuItem
+                  key={prestadora.cd_prestadora}
+                  name={prestadora.nombre}
+                  value={prestadora.cd_prestadora}
+                >
+                  {prestadora.nombre}
+                </MenuItem>
+              );
+            })}
           </Select>
         </FormControl>
         <TextField

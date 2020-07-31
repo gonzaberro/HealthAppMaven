@@ -1,5 +1,11 @@
-import { BUSCAR_TURNOS, BUSCAR_PACIENTE, BUSCAR_PROFESIONAL } from "./types";
+import {
+  BUSCAR_TURNOS,
+  BUSCAR_PACIENTE,
+  BUSCAR_PROFESIONAL,
+  CLEAN_BUSCAR_TURNOS,
+} from "./types";
 import { url_servidor } from "Utils/constants";
+import { prestadora } from "Utils/functions";
 
 export function setBuscarPaciente(dni, actuales) {
   return (dispatch) => {
@@ -21,13 +27,22 @@ export function setBuscarProfesional(dni, actuales) {
 
 export function getPacientes(dni, activos) {
   return (dispatch) => {
-    fetch(url_servidor + "turnos/paciente/" + dni + "/" + activos, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: localStorage.getItem("token"),
-      },
-    })
+    fetch(
+      url_servidor +
+        "turnos/paciente/" +
+        prestadora() +
+        "/" +
+        dni +
+        "/" +
+        activos,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
+      }
+    )
       .then((response) => response.json())
       .then((data) =>
         dispatch({
@@ -41,7 +56,7 @@ export function getPacientes(dni, activos) {
 export function cleanTurnos() {
   return (dispatch) => {
     dispatch({
-      type: BUSCAR_TURNOS,
+      type: CLEAN_BUSCAR_TURNOS,
       payload: [],
     });
   };
@@ -49,13 +64,22 @@ export function cleanTurnos() {
 
 export function buscarTurnosProfesinal(dni, activos) {
   return (dispatch) => {
-    fetch(url_servidor + "turnos/profesional/" + dni + "/" + activos, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: localStorage.getItem("token"),
-      },
-    })
+    fetch(
+      url_servidor +
+        "turnos/profesional/" +
+        prestadora() +
+        "/" +
+        dni +
+        "/" +
+        activos,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
+      }
+    )
       .then((response) => response.json())
       .then((data) =>
         dispatch({

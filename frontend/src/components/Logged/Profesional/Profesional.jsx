@@ -40,7 +40,7 @@ const useStyles = makeStyles(() => ({
     height: "100%",
   },
   lista: {
-    maxHeight: "100vh",
+    maxHeight: "95vh",
     overflowY: "auto",
     borderRight: "1px solid #e4e4e4",
   },

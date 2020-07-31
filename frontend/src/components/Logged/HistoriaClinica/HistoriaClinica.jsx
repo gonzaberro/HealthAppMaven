@@ -33,8 +33,8 @@ export default function HistoriaClinica() {
 
   return (
     <>
-      <Grid container style={{ height: "100vh" }}>
-        <Grid item xs={12} style={{ height: "100vh" }}>
+      <Grid container>
+        <Grid item xs={12} style={{ height: "95vh" }}>
           <Grid container>
             <Grid item xs={12} md={3}>
               <TablaPacientes />
@@ -44,7 +44,7 @@ export default function HistoriaClinica() {
               item
               xs={12}
               md={9}
-              style={{ height: "100vh", borderLeft: "1px solid #ccc" }}
+              style={{ height: "95vh", borderLeft: "1px solid #ccc" }}
             >
               <HeaderListaHistoriaClinica />
               <ListaHistoriaClinica />
