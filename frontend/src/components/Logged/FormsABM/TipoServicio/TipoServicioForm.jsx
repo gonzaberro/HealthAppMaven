@@ -5,7 +5,8 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { useSelector, useDispatch } from "react-redux";
 import { useSnackbar } from "notistack";
-import { url_servidor } from "Utils/constants";
+import { url_servidor, error_generico } from "Utils/constants";
+import { ERROR_MESSAGE } from "actions/types";
 import {
   getListaTipoServicios,
   setTipoServicio,
@@ -32,19 +33,29 @@ export default function TipoServicioForm() {
           cdTipoServicio: cdTipoServicio,
           nombre: nombre,
         }),
-      }).then(function (response) {
-        if (response.status === 200) {
-          enqueueSnackbar("Se guardó el Tipo de Servicio", {
-            variant: "success",
+      })
+        .then(function (response) {
+          if (response.status === 200) {
+            enqueueSnackbar("Se guardó el Tipo de Servicio", {
+              variant: "success",
+            });
+            dispatch(getListaTipoServicios());
+            nuevoTipoServicio();
+          } else {
+            enqueueSnackbar("Error al guardar el Tipo de Servicio", {
+              variant: "error",
+            });
+          }
+        })
+        .catch(() => {
+          dispatch({
+            type: ERROR_MESSAGE,
+            payload: {
+              message: error_generico,
+              tipo: "error",
+            },
           });
-          dispatch(getListaTipoServicios());
-          nuevoTipoServicio();
-        } else {
-          enqueueSnackbar("Error al guardar el Tipo de Servicio", {
-            variant: "error",
-          });
-        }
-      });
+        });
     } else {
       enqueueSnackbar("No puede dejar el nombre en blanco", {
         variant: "warning",

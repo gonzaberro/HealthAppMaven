@@ -1,7 +1,9 @@
-import { url_servidor } from "Utils/constants";
+import { url_servidor, error_generico } from "Utils/constants";
 import { parse, differenceInSeconds } from "date-fns";
 import { setLogin } from "actions/LoginActions";
 import { closeSession } from "components/Logged/Menu/MenuFunctions";
+import { ERROR_MESSAGE } from "actions/types";
+
 export function parseISOString(s, format) {
   let b = s.split(/\D+/);
   const date = new Date(Date.UTC(b[0], --b[1], b[2], b[3], b[4], b[5], b[6]));
@@ -152,13 +154,23 @@ export const isAlive = (dispatch, login) => {
       "Content-Type": "application/json",
       Authorization: localStorage.getItem("token"),
     },
-  }).then(function (res) {
-    if (res.status === 200) {
-      if (login === 0) dispatch(setLogin(1));
-    } else {
-      closeSession(dispatch);
-    }
-  });
+  })
+    .then(function (res) {
+      if (res.status === 200) {
+        if (login === 0) dispatch(setLogin(1));
+      } else {
+        closeSession(dispatch);
+      }
+    })
+    .catch(() => {
+      dispatch({
+        type: ERROR_MESSAGE,
+        payload: {
+          message: error_generico,
+          tipo: "error",
+        },
+      });
+    });
 };
 export const prestadora = () => {
   let prestadora = 0;
@@ -168,4 +180,9 @@ export const prestadora = () => {
   }
 
   return prestadora;
+};
+export const getPrestadora = () => {
+  const prestadora = JSON.parse(localStorage.getItem("prestadora"));
+
+  return prestadora.nombre;
 };

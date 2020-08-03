@@ -16,9 +16,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { SWITCH_MENU } from "actions/types";
 import { menuOptions } from "Utils/constants";
 import Alert from "@material-ui/lab/Alert";
-
 export default function ListaTurnos() {
   const listaTurnos = useSelector((state) => state.buscarTurnos.turnos);
+
   const classes = useStyles();
   const dispatch = useDispatch();
   const gotoDiaCalendario = (fecha_seleccionada, profesional) => {
@@ -41,7 +41,7 @@ export default function ListaTurnos() {
   const armarListaTurnos = () => {
     return listaTurnos.map((turno) => {
       return (
-        <Card className={classes.root}>
+        <Card className={classes.root} key={turno.cd_turno}>
           <CardContent>
             <Typography
               variant="h5"
@@ -67,7 +67,7 @@ export default function ListaTurnos() {
               {turno.profesional.apellido} | Mn. {turno.profesional.matricula}
             </Typography>
             <Typography variant="body2" component="p">
-              Notas: {turno.notas}
+              Notas: {turno.notas} {turno.estadoTurno.dsEstado}
             </Typography>
           </CardContent>
           <CardActions>
@@ -82,6 +82,16 @@ export default function ListaTurnos() {
               <FontAwesomeIcon icon={faEye} />
             </Button>
           </CardActions>
+          <div
+            style={{
+              height: 5,
+              borderRadius: 5,
+              background: turno.estadoTurno.colorHexa,
+              marginBottom: 4,
+              marginLeft: 5,
+              marginRight: 5,
+            }}
+          ></div>
         </Card>
       );
     });
@@ -133,7 +143,7 @@ const useStyles = makeStyles((theme) => ({
   },
   containerTurnos: {
     padding: 20,
-    maxHeight: "95vh",
+    maxHeight: "85vh",
     overflowY: "auto",
     backgroundColor: "#f1f1f1",
   },

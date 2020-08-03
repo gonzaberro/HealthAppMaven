@@ -9,6 +9,7 @@ import {
   EDIT_NOTA,
   EDIT_TIPO_SERVICIO,
   SET_DEFAULT,
+  EDIT_ESTADO_TURNO,
 } from "../actions/types";
 
 export function setDefault() {
@@ -35,7 +36,14 @@ export function setServicio(data) {
     });
   };
 }
-
+export function setEstadoTurno(data) {
+  return (dispatch) => {
+    dispatch({
+      type: EDIT_ESTADO_TURNO,
+      payload: data,
+    });
+  };
+}
 export function setNota(data) {
   return (dispatch) => {
     dispatch({

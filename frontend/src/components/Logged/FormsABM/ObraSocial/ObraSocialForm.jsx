@@ -6,8 +6,8 @@ import Button from "@material-ui/core/Button";
 import { useSelector, useDispatch } from "react-redux";
 import { setObraSocial, getListaObrasSocial } from "actions/ObraSocialActions";
 import { useSnackbar } from "notistack";
-import { url_servidor } from "Utils/constants";
-
+import { url_servidor, error_generico } from "Utils/constants";
+import { ERROR_MESSAGE } from "actions/types";
 export default function ObraSocialForm() {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -26,19 +26,29 @@ export default function ObraSocialForm() {
           Authorization: localStorage.getItem("token"),
         },
         body: JSON.stringify({ cd_os: cdObraSocial, nombre: nombreObraSocial }),
-      }).then(function (response) {
-        if (response.status === 200) {
-          enqueueSnackbar("Se guardó la Obra Social", {
-            variant: "success",
+      })
+        .then(function (response) {
+          if (response.status === 200) {
+            enqueueSnackbar("Se guardó la Obra Social", {
+              variant: "success",
+            });
+            dispatch(getListaObrasSocial());
+            nuevaObraSocial();
+          } else {
+            enqueueSnackbar("Error al guardar la Obra Social", {
+              variant: "error",
+            });
+          }
+        })
+        .catch(() => {
+          dispatch({
+            type: ERROR_MESSAGE,
+            payload: {
+              message: error_generico,
+              tipo: "error",
+            },
           });
-          dispatch(getListaObrasSocial());
-          nuevaObraSocial();
-        } else {
-          enqueueSnackbar("Error al guardar la Obra Social", {
-            variant: "error",
-          });
-        }
-      });
+        });
     } else {
       enqueueSnackbar("No puede dejar el nombre en blanco", {
         variant: "warning",

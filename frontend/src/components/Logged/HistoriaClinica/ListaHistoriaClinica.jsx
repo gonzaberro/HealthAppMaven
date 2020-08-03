@@ -103,7 +103,10 @@ export default function ListaHistoriaClinica() {
               Profesional:{" "}
               {historia_clinica.profesional.nombre +
                 " " +
-                historia_clinica.profesional.apellido}
+                historia_clinica.profesional.apellido +
+                " (" +
+                historia_clinica.profesional.especialidad.nombre +
+                ")"}
             </Typography>
             <Typography variant="body2" component="p">
               Cantidad de Sesiones: {historia_clinica.cantidadSesiones}

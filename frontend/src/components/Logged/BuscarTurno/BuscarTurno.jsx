@@ -6,15 +6,17 @@ import { getListaPacientes } from "actions/PacienteActions";
 import { cleanTurnos } from "actions/BuscarTurnosActions";
 import BuscarTurnoTabla from "./BuscarTurnoTabla";
 import ListaTurnos from "./ListaTurnos";
+import HeaderListaTurnos from "./HeaderListaTurnos";
 import { useDispatch } from "react-redux";
+
 export default function BuscarTurno() {
   const classes = useStyles();
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(cleanTurnos());
     dispatch(getListaProfesionales());
     dispatch(getListaPacientes());
-    dispatch(cleanTurnos());
   }, [dispatch]);
 
   return (
@@ -23,6 +25,7 @@ export default function BuscarTurno() {
         <BuscarTurnoTabla />
       </Grid>
       <Grid item xs={12} md={7} style={{ height: "100%" }}>
+        <HeaderListaTurnos />
         <ListaTurnos />
       </Grid>
     </Grid>

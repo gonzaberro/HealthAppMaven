@@ -65,6 +65,15 @@ export function getListaPlanes() {
           type: SET_LISTA_PLANES,
           payload: data,
         })
-      );
+      )
+      .catch(() => {
+        dispatch({
+          type: ERROR_MESSAGE,
+          payload: {
+            message: error_generico,
+            tipo: "error",
+          },
+        });
+      });
   };
 }

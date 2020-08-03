@@ -71,6 +71,15 @@ export function getListaObrasSocial() {
           type: SET_LISTA_OBRA_SOCIAL,
           payload: data,
         })
-      );
+      )
+      .catch(() => {
+        dispatch({
+          type: ERROR_MESSAGE,
+          payload: {
+            message: error_generico,
+            tipo: "error",
+          },
+        });
+      });
   };
 }

@@ -72,6 +72,15 @@ export function getListaTipoServicios() {
           type: SET_LISTA_TIPO_SERVICIO,
           payload: data,
         })
-      );
+      )
+      .catch(() => {
+        dispatch({
+          type: ERROR_MESSAGE,
+          payload: {
+            message: error_generico,
+            tipo: "error",
+          },
+        });
+      });
   };
 }

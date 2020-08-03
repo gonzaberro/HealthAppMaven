@@ -26,7 +26,16 @@ export function getPrestadoras() {
           type: SET_LISTA_PRESTADORA,
           payload: data,
         })
-      );
+      )
+      .catch(() => {
+        dispatch({
+          type: ERROR_MESSAGE,
+          payload: {
+            message: error_generico,
+            tipo: "error",
+          },
+        });
+      });
   };
 }
 

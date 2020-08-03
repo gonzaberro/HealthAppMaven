@@ -1,4 +1,4 @@
-import { url_servidor } from "Utils/constants";
+import { url_servidor, error_generico } from "Utils/constants";
 import { getTurnos } from "../../../actions/AgendaActions";
 import { setDefault } from "../../../actions/EditTurnoActions";
 import { cleanProgramar } from "actions/ProgramarAgendaActions";
@@ -20,37 +20,52 @@ const sendTurno = (data) => {
       tipoServicio: { cdTipoServicio: data.turnoInfo.tipoServicio },
       fecha: new Date(data.fechaCalendario + " " + data.turnoInfo.horario),
       notas: data.turnoInfo.nota,
+      estadoTurno: {
+        cdEstado: data.turnoInfo.estadoTurno,
+        dsEstasdo: "",
+        colorHexa: "",
+      },
       programarAgenda: data.programarAgenda,
     }),
-  }).then(function (response) {
-    if (response.status === 200) {
-      data.dispatch({
-        type: ERROR_MESSAGE,
-        payload: {
-          message: "Se guardó el turno",
-          tipo: "success",
-        },
-      });
+  })
+    .then(function (response) {
+      if (response.status === 200) {
+        data.dispatch({
+          type: ERROR_MESSAGE,
+          payload: {
+            message: "Se guardó el turno",
+            tipo: "success",
+          },
+        });
 
-      data.dispatch(
-        getTurnos(
-          data.fechaCalendario,
-          data.profesional_seleccionado,
-          data.token
-        )
-      );
-      data.dispatch(cleanProgramar());
-      data.dispatch(setDefault());
-    } else {
+        data.dispatch(
+          getTurnos(
+            data.fechaCalendario,
+            data.profesional_seleccionado,
+            data.token
+          )
+        );
+        data.dispatch(cleanProgramar());
+        data.dispatch(setDefault());
+      } else {
+        data.dispatch({
+          type: ERROR_MESSAGE,
+          payload: {
+            message: "Error al guardar el turno",
+            tipo: "error",
+          },
+        });
+      }
+    })
+    .catch(() => {
       data.dispatch({
         type: ERROR_MESSAGE,
         payload: {
-          message: "Error al guardar el turno",
+          message: error_generico,
           tipo: "error",
         },
       });
-    }
-  });
+    });
 };
 
 export const grabarTurno = (

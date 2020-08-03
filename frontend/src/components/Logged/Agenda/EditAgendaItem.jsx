@@ -12,6 +12,16 @@ import EditAgendaHeader from "./EditAgendaHeader";
 import ProgramarAgenda from "./ProgramarAgenda";
 import { useSelector, useDispatch } from "react-redux";
 import Select from "react-select";
+import {
+  optionsTipoServicios,
+  optionsEstadosTurno,
+  optionsHorarios,
+  optionsProfesional,
+  optionsPaciente,
+  optionsServicios,
+  validarCamposTurno,
+  setFechaEsp,
+} from "./editAgendaFunctions";
 
 import {
   getTurnos,
@@ -26,6 +36,8 @@ import {
   setServicio,
   setNota,
   setTipoServicio,
+  setEstadoTurno,
+  setFecha,
 } from "../../../actions/EditTurnoActions";
 import { setFechaAgenda } from "../../../actions/AgendaActions";
 import { useSnackbar } from "notistack";
@@ -35,86 +47,8 @@ import { grabarTurno } from "./grabarTurnoLogica";
 import { cleanProgramar } from "actions/ProgramarAgendaActions";
 import { setDefault } from "../../../actions/EditTurnoActions";
 import { CLEAN_GLOBAL } from "actions/types";
+import { setProfesional } from "actions/ProfesionalActions";
 
-const optionsProfesional = (listaProfesionales) => {
-  const options = [];
-
-  listaProfesionales.map((profesional) => {
-    return options.push({
-      value: profesional.dni,
-      label:
-        profesional.nombre +
-        " " +
-        profesional.apellido +
-        " (" +
-        profesional.especialidad.nombre +
-        ")",
-    });
-  });
-  return options;
-};
-const optionsPaciente = (listaPacientes) => {
-  const options = [];
-
-  listaPacientes.map((paciente) => {
-    return options.push({
-      value: paciente.dni,
-      label: paciente.dni + " " + paciente.nombre + " " + paciente.apellido,
-    });
-  });
-  return options;
-};
-const optionsServicios = (listaServicios) => {
-  const options = [];
-
-  listaServicios.map((servicio) => {
-    return options.push({
-      value: servicio.cd_servicio,
-      label: servicio.cd_servicio + " - " + servicio.nombre,
-    });
-  });
-  return options;
-};
-const optionsTipoServicios = (listaTipoServicios) => {
-  const options = [];
-
-  listaTipoServicios.map((tipoServicio) => {
-    return options.push({
-      value: tipoServicio.cdTipoServicio,
-      label: tipoServicio.nombre,
-    });
-  });
-  return options;
-};
-const optionsHorarios = (horarios) => {
-  const options = [];
-
-  horarios.map((horarios) => {
-    return options.push({
-      value: horarios,
-      label: horarios,
-    });
-  });
-  return options;
-};
-const validarCamposTurno = (turno_info) => {
-  if (
-    turno_info.paciente !== undefined &&
-    turno_info.paciente !== "" &&
-    turno_info.doctor !== undefined &&
-    turno_info.doctor !== "" &&
-    turno_info.horario !== undefined &&
-    turno_info.horario !== "" &&
-    turno_info.servicio !== undefined &&
-    turno_info.servicio !== "" &&
-    turno_info.tipoServicio !== undefined &&
-    turno_info.tipoServicio !== ""
-  ) {
-    return true;
-  } else {
-    return false;
-  }
-};
 export default function EditAgendaItem() {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -131,6 +65,9 @@ export default function EditAgendaItem() {
     (state) => state.profesional.listaProfesionales
   );
   const listaServicios = useSelector((state) => state.servicio.listaServicios);
+  const listaEstadosTurno = useSelector(
+    (state) => state.estadosTurno.listaEstadosTurno
+  );
   const listaTipoServicios = useSelector(
     (state) => state.tipoServicio.listaTipoServicios
   );
@@ -138,9 +75,17 @@ export default function EditAgendaItem() {
     (state) => state.agenda_reducer.profesional_seleccionado
   );
 
-  useEffect(() => {
+  /*useEffect(() => {
     dispatch(cleanProgramar());
-  }, [dispatch, turno_info, fechaCalendario]);
+  }, [dispatch, turno_info, fechaCalendario]);*/
+
+  useEffect(() => {
+    dispatch(setFecha(fechaCalendario));
+  }, [dispatch, fechaCalendario]);
+
+  useEffect(() => {
+    dispatch(setProfesional(profesional_seleccionado));
+  }, [dispatch, profesional_seleccionado]);
 
   const changeProgramar = () => {
     dispatch(setProgramar(turno_info.programar === 0 ? 1 : 0));
@@ -170,14 +115,12 @@ export default function EditAgendaItem() {
         });
       }
     } else {
+      enqueueSnackbar("Debe seleccionar una fecha mayor a hoy.", {
+        variant: "warning",
+      });
     }
   };
-  const setFechaEsp = (fecha, hora) => {
-    fecha = fecha + " " + hora;
-    return new Date(fecha).toLocaleString("es-ES", {
-      timeZone: "America/Argentina/Buenos_Aires",
-    });
-  };
+
   const eliminarTurno = (turno) => {
     let pacienteTurno = listaPacientes.filter(
       (paciente) => paciente.dni === turno.paciente
@@ -276,6 +219,17 @@ export default function EditAgendaItem() {
         onChange={(value) => dispatch(setTipoServicio(value.value))}
         value={optionsTipoServicios(listaTipoServicios).filter(
           (option) => option.value === turno_info.tipoServicio
+        )}
+      />
+      <Select
+        options={optionsEstadosTurno(listaEstadosTurno)}
+        isSearchable={true}
+        placeholder={<div>Estado del Turno</div>}
+        isDisabled={turno_info.cdTurno === 0}
+        styles={colourStyles}
+        onChange={(value) => dispatch(setEstadoTurno(value.value))}
+        value={optionsEstadosTurno(listaEstadosTurno).filter(
+          (option) => option.value === turno_info.estadoTurno
         )}
       />
       <Grid container>

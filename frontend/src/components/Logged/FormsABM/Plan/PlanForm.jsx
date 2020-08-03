@@ -8,8 +8,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { setPlan, getListaPlanes } from "actions/PlanActions";
 
 import { useSnackbar } from "notistack";
-import { url_servidor } from "Utils/constants";
-
+import { url_servidor, error_generico } from "Utils/constants";
+import { ERROR_MESSAGE } from "actions/types";
 export default function PlanForm() {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -35,19 +35,29 @@ export default function PlanForm() {
           nombre: nombrePlan,
           obraSocial: { cd_os: obraSocial, nombre: "" },
         }),
-      }).then(function (response) {
-        if (response.status === 200) {
-          enqueueSnackbar("Se guardó el Plan", {
-            variant: "success",
+      })
+        .then(function (response) {
+          if (response.status === 200) {
+            enqueueSnackbar("Se guardó el Plan", {
+              variant: "success",
+            });
+            dispatch(getListaPlanes());
+            nuevoPlan();
+          } else {
+            enqueueSnackbar("Error al guardar el Plan", {
+              variant: "error",
+            });
+          }
+        })
+        .catch(() => {
+          dispatch({
+            type: ERROR_MESSAGE,
+            payload: {
+              message: error_generico,
+              tipo: "error",
+            },
           });
-          dispatch(getListaPlanes());
-          nuevoPlan();
-        } else {
-          enqueueSnackbar("Error al guardar el Plan", {
-            variant: "error",
-          });
-        }
-      });
+        });
     } else {
       enqueueSnackbar(
         "No puede dejar el nombre, ni la obra social, en blanco",

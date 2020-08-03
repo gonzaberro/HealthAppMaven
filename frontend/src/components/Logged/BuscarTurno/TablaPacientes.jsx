@@ -5,8 +5,7 @@ import DataTable from "react-data-table-component";
 import { useSelector, useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
-import { getPacientes, setBuscarPaciente } from "actions/BuscarTurnosActions";
-import { useEffect } from "react";
+import { setBuscarPaciente } from "actions/BuscarTurnosActions";
 
 const FilterComponent = ({ filterText, onFilter, onClear }) => (
   <>
@@ -64,12 +63,6 @@ export default function TablaPaciente() {
     });
     return () => clearTimeout(timeout);
   }, [listaPacientes, filterText, filteredItems]);
-
-  useEffect(() => {
-    if (buscarInfo.paciente !== 0 && buscarInfo.actuales !== undefined) {
-      dispatch(getPacientes(buscarInfo.paciente, buscarInfo.actuales));
-    }
-  }, [dispatch, buscarInfo.actuales, buscarInfo.paciente]);
 
   /** ROW FILTROS DE TABLA */
   const subHeaderComponentMemo = React.useMemo(() => {

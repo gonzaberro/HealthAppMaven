@@ -20,8 +20,8 @@ export const menuOptions = {
   USUARIOS: "Usuarios",
   PERFIL: "Perfiles",
 };
-export const url_servidor = "http://190.190.115.14:8580/HealthBackApp/";
-//export const url_servidor = "http://localhost:8080/HealthBackApp/";
+//export const url_servidor = "http://190.190.115.14:8580/HealthBackApp/";
+export const url_servidor = "http://localhost:8080/HealthBackApp/";
 
 export const error_generico = "Error interno en el servidor";
 export const horarios = [

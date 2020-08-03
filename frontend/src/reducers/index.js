@@ -21,6 +21,7 @@ import ProgramarAgenda from "./ProgramarAgendaReducer";
 import ErrorMessageReducer from "./ErrorMessageReducer";
 import UsuariosReducer from "./UsuariosReducer";
 import PerfilReducer from "./PerfilReducer";
+import EstadosTurnoReducer from "./EstadosTurnoReducer";
 
 export default combineReducers({
   login_state: LoginReducer,
@@ -44,4 +45,5 @@ export default combineReducers({
   errorMessage: ErrorMessageReducer,
   usuarios: UsuariosReducer,
   perfil: PerfilReducer,
+  estadosTurno: EstadosTurnoReducer,
 });

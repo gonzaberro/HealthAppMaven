@@ -70,9 +70,9 @@ export default function ItemsAgendaHeader() {
                       <Chip
                         clickable={true}
                         key={index}
+                        style={{ background: turno.estadoTurno.colorHexa }}
                         className={classes.chipTurnos}
                         onClick={() => editTurno(turno)}
-                        color="primary"
                         label={
                           turno.paciente.dni +
                           " - " +
@@ -106,11 +106,11 @@ const useStyles = makeStyles((theme) => ({
   chipTurnos: {
     margin: 5,
     zIndex: 0,
+    color: "#fff",
     boxShadow: "2px 2px 3px 1px #cdcdcd",
     "&:hover": {
-      border: "1px solid #2c41b5",
-      backgroundColor: "#eeeeee",
-      color: theme.palette.primary.main,
+      color: "#fff",
+      border: "1px solid #eee",
     },
   },
   labelHorario: {

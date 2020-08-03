@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 import ContainerSmallMenu from "./ContainerSmallMenu";
 import { menuOptions } from "Utils/constants";
 import { SWITCH_MENU } from "actions/types";
+import { getPrestadora } from "Utils/functions";
+
 export default function SmallMenu(props) {
   const dispatch = useDispatch();
   const menuSelected = useSelector((state) => state.globalReducer.menuSelected);
@@ -27,8 +29,11 @@ export default function SmallMenu(props) {
           <Grid item xs={2} sm={1} onClick={() => gotoMenu(menuOptions.MENU)}>
             <FontAwesomeIcon icon={faBars} />
           </Grid>
-          <Grid item xs={9} sm={10}>
+          <Grid item xs={6} sm={6}>
             <span style={{ fontSize: 27 }}>{menuSelected}</span>
+          </Grid>
+          <Grid item xs={4} sm={5}>
+            <span style={{ fontSize: 27 }}>Prestadora: {getPrestadora()}</span>
           </Grid>
         </Grid>
       </div>

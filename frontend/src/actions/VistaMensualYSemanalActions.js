@@ -1,5 +1,9 @@
-import { SET_TURNOS_VISTA_MENSUAL, SET_TURNOS_VISTA_SEMANAL } from "./types";
-import { url_servidor } from "Utils/constants/";
+import {
+  SET_TURNOS_VISTA_MENSUAL,
+  SET_TURNOS_VISTA_SEMANAL,
+  ERROR_MESSAGE,
+} from "./types";
+import { url_servidor, error_generico } from "Utils/constants";
 import { prestadora } from "Utils/functions";
 
 export function getTurnosMensual(fecha, profesional) {
@@ -26,6 +30,15 @@ export function getTurnosMensual(fecha, profesional) {
         dispatch({
           type: SET_TURNOS_VISTA_MENSUAL,
           payload: data,
+        });
+      })
+      .catch(() => {
+        dispatch({
+          type: ERROR_MESSAGE,
+          payload: {
+            message: error_generico,
+            tipo: "error",
+          },
         });
       });
   };
@@ -55,6 +68,15 @@ export function getTurnosSemana(fecha, profesional) {
         dispatch({
           type: SET_TURNOS_VISTA_SEMANAL,
           payload: data,
+        });
+      })
+      .catch(() => {
+        dispatch({
+          type: ERROR_MESSAGE,
+          payload: {
+            message: error_generico,
+            tipo: "error",
+          },
         });
       });
   };

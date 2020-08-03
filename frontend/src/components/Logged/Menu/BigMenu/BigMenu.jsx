@@ -2,14 +2,10 @@ import React from "react";
 import PrimaryContainer from "../../PrimaryContainer";
 import ContainerBigMenu from "./ContainerBigMenu";
 import { makeStyles } from "@material-ui/core/styles";
+import { getPrestadora } from "Utils/functions";
+
 export default function BigMenu(props) {
   const classes = useStyles();
-
-  const getPrestadora = () => {
-    const prestadora = JSON.parse(localStorage.getItem("prestadora"));
-
-    return prestadora.nombre;
-  };
 
   return (
     <>

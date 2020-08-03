@@ -4,6 +4,7 @@ import {
   BUSCAR_PACIENTE,
   BUSCAR_ACTUALES,
   CLEAN_BUSCAR_TURNOS,
+  SET_ESTADOS_TURNO,
 } from "../actions/types";
 
 const initialState = {
@@ -11,6 +12,10 @@ const initialState = {
   profesional: 0,
   paciente: 0,
   actuales: 1,
+  estadoRecepcionado: false,
+  estadoAsignado: false,
+  estadoAtendido: false,
+  estadoCancelado: false,
 };
 
 export default function (state = initialState, action) {
@@ -25,12 +30,22 @@ export default function (state = initialState, action) {
         ...state,
         profesional: action.payload.dni,
         actuales: action.payload.actuales,
+        paciente: 0,
       };
     case BUSCAR_PACIENTE:
       return {
         ...state,
         paciente: action.payload.dni,
         actuales: action.payload.actuales,
+        profesional: 0,
+      };
+    case SET_ESTADOS_TURNO:
+      return {
+        ...state,
+        estadoRecepcionado: action.payload.estadoRecepcionado,
+        estadoAsignado: action.payload.estadoAsignado,
+        estadoAtendido: action.payload.estadoAtendido,
+        estadoCancelado: action.payload.estadoCancelado,
       };
 
     case BUSCAR_ACTUALES:
@@ -45,6 +60,10 @@ export default function (state = initialState, action) {
         profesional: 0,
         paciente: 0,
         actuales: 1,
+        estadoRecepcionado: false,
+        estadoAsignado: false,
+        estadoAtendido: false,
+        estadoCancelado: false,
       };
 
     default:

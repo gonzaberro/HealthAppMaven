@@ -17,8 +17,8 @@ import {
 } from "actions/HistoriaClinicaActions";
 import { fechaString, validateForm } from "Utils/functions";
 import { useSnackbar } from "notistack";
-import { url_servidor } from "Utils/constants";
-
+import { url_servidor, error_generico } from "Utils/constants";
+import { ERROR_MESSAGE } from "actions/types";
 const defaultState = {
   id_historia_clinica: 0,
   diagnostico: "",
@@ -156,22 +156,32 @@ export default function HistoriaClinicaForm() {
           Authorization: localStorage.getItem("token"),
         },
         body: JSON.stringify(objHistoriaClinica),
-      }).then(function (response) {
-        if (response.status === 200) {
-          enqueueSnackbar("Se guardó la Historia Clínica", {
-            variant: "success",
+      })
+        .then(function (response) {
+          if (response.status === 200) {
+            enqueueSnackbar("Se guardó la Historia Clínica", {
+              variant: "success",
+            });
+            dispatch(
+              getListaHistoriaClinica(paciente, especialidad.cd_especialidad)
+            );
+            dispatch(especialidadesPaciente(paciente));
+            nuevaHistoriaClinica();
+          } else {
+            enqueueSnackbar("Error al guardar la Historia Clínica", {
+              variant: "error",
+            });
+          }
+        })
+        .catch(() => {
+          dispatch({
+            type: ERROR_MESSAGE,
+            payload: {
+              message: error_generico,
+              tipo: "error",
+            },
           });
-          dispatch(
-            getListaHistoriaClinica(paciente, especialidad.cd_especialidad)
-          );
-          dispatch(especialidadesPaciente(paciente));
-          nuevaHistoriaClinica();
-        } else {
-          enqueueSnackbar("Error al guardar la Historia Clínica", {
-            variant: "error",
-          });
-        }
-      });
+        });
     } else {
       enqueueSnackbar("No puede dejar ningún campo en blanco", {
         variant: "warning",

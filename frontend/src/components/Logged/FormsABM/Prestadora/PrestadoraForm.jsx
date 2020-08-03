@@ -7,7 +7,8 @@ import { FormControl, InputLabel, Select, MenuItem } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 import { setPrestadora, getPrestadoras } from "actions/PrestadoraActions";
 import { useSnackbar } from "notistack";
-import { url_servidor } from "Utils/constants";
+import { url_servidor, error_generico } from "Utils/constants";
+import { ERROR_MESSAGE } from "actions/types";
 import { horarios } from "Utils/constants";
 export default function PrestadoraForm() {
   const classes = useStyles();
@@ -55,19 +56,29 @@ export default function PrestadoraForm() {
           horaDesde: horaDesde,
           horaHasta: horaHasta,
         }),
-      }).then(function (response) {
-        if (response.status === 200) {
-          enqueueSnackbar("Se guardó la Prestadora", {
-            variant: "success",
+      })
+        .then(function (response) {
+          if (response.status === 200) {
+            enqueueSnackbar("Se guardó la Prestadora", {
+              variant: "success",
+            });
+            dispatch(getPrestadoras());
+            nuevaPrestadora();
+          } else {
+            enqueueSnackbar("Error al guardar la Prestadora", {
+              variant: "error",
+            });
+          }
+        })
+        .catch(() => {
+          dispatch({
+            type: ERROR_MESSAGE,
+            payload: {
+              message: error_generico,
+              tipo: "error",
+            },
           });
-          dispatch(getPrestadoras());
-          nuevaPrestadora();
-        } else {
-          enqueueSnackbar("Error al guardar la Prestadora", {
-            variant: "error",
-          });
-        }
-      });
+        });
     } else {
       enqueueSnackbar("No puede dejar campos en blanco", {
         variant: "warning",

@@ -12,8 +12,8 @@ import {
 import FormSelect from "../FormsABM/FormSelect";
 import { validateForm } from "Utils/functions";
 import { useSnackbar } from "notistack";
-import { url_servidor } from "Utils/constants";
-
+import { url_servidor, error_generico } from "Utils/constants";
+import { ERROR_MESSAGE } from "actions/types";
 const defaultState = {
   dni: "",
   nombre: "",
@@ -88,19 +88,29 @@ export default function ProfesionalForm() {
           Authorization: localStorage.getItem("token"),
         },
         body: JSON.stringify(objProfesional),
-      }).then(function (response) {
-        if (response.status === 200) {
-          enqueueSnackbar("Se guardó el Profesional", {
-            variant: "success",
+      })
+        .then(function (response) {
+          if (response.status === 200) {
+            enqueueSnackbar("Se guardó el Profesional", {
+              variant: "success",
+            });
+            dispatch(getListaProfesionales());
+            nuevoProfesional();
+          } else {
+            enqueueSnackbar("Error al guardar el Profesional", {
+              variant: "error",
+            });
+          }
+        })
+        .catch(() => {
+          dispatch({
+            type: ERROR_MESSAGE,
+            payload: {
+              message: error_generico,
+              tipo: "error",
+            },
           });
-          dispatch(getListaProfesionales());
-          nuevoProfesional();
-        } else {
-          enqueueSnackbar("Error al guardar el Profesional", {
-            variant: "error",
-          });
-        }
-      });
+        });
     } else {
       enqueueSnackbar("No puede dejar ningún campo en blanco", {
         variant: "warning",

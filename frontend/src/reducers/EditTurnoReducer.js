@@ -11,6 +11,7 @@ import {
   EDIT_TIPO_SERVICIO,
   EDIT_CD_TURNO,
   SET_DEFAULT,
+  EDIT_ESTADO_TURNO,
 } from "../actions/types";
 
 const initialState = {
@@ -23,6 +24,7 @@ const initialState = {
   nota: "",
   tipoServicio: "",
   cdTurno: 0,
+  estadoTurno: 1,
 };
 
 export default function (state = initialState, action) {
@@ -38,6 +40,7 @@ export default function (state = initialState, action) {
         nota: action.payload.notas,
         tipoServicio: action.payload.tipoServicio.cdTipoServicio,
         cdTurno: action.payload.cdTurno,
+        estadoTurno: action.payload.estadoTurno.cdEstado,
       };
 
     case SET_DEFAULT:
@@ -52,6 +55,7 @@ export default function (state = initialState, action) {
         nota: "",
         tipoServicio: "",
         cdTurno: 0,
+        estadoTurno: 1,
       };
 
     case BORRAR_TURNO:
@@ -116,6 +120,11 @@ export default function (state = initialState, action) {
       return {
         ...state,
         tipoServicio: action.payload,
+      };
+    case EDIT_ESTADO_TURNO:
+      return {
+        ...state,
+        estadoTurno: action.payload,
       };
 
     default:

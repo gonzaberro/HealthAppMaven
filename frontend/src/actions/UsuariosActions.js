@@ -66,6 +66,15 @@ export function getListaUsuarios() {
           type: SET_LISTA_USUARIOS,
           payload: data,
         })
-      );
+      )
+      .catch(() => {
+        dispatch({
+          type: ERROR_MESSAGE,
+          payload: {
+            message: error_generico,
+            tipo: "error",
+          },
+        });
+      });
   };
 }

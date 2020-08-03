@@ -1,14 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Grid, TextField, CircularProgress } from "@material-ui/core";
 import DataTable from "react-data-table-component";
 import { useSelector, useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
-import {
-  setBuscarProfesional,
-  buscarTurnosProfesinal,
-} from "actions/BuscarTurnosActions";
+import { setBuscarProfesional } from "actions/BuscarTurnosActions";
 const FilterComponent = ({ filterText, onFilter }) => (
   <>
     <TextField
@@ -45,11 +42,10 @@ const buscarEnTabla = (listaProfesionales, filterText) => {
 };
 
 export default function TablaProfesional() {
-  const buscarInfo = useSelector((state) => state.buscarTurnos);
   const listaProfesionales = useSelector(
     (state) => state.profesional.listaProfesionales
   );
-
+  const buscarInfo = useSelector((state) => state.buscarTurnos);
   const dispatch = useDispatch();
   const [pending, setPending] = React.useState(true);
   const [rows, setRows] = React.useState([]);
@@ -72,13 +68,6 @@ export default function TablaProfesional() {
     return () => clearTimeout(timeout);
   }, [listaProfesionales, filterText, filteredItems]);
 
-  useEffect(() => {
-    if (buscarInfo.profesional !== 0) {
-      dispatch(
-        buscarTurnosProfesinal(buscarInfo.profesional, buscarInfo.actuales)
-      );
-    }
-  }, [dispatch, buscarInfo.actuales, buscarInfo.profesional]);
   /** ROW FILTROS DE TABLA */
   const subHeaderComponentMemo = React.useMemo(() => {
     const handleClear = () => {

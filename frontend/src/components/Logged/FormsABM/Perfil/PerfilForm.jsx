@@ -6,8 +6,8 @@ import Button from "@material-ui/core/Button";
 import { useSelector, useDispatch } from "react-redux";
 import { setPerfil, getListaPerfil } from "actions/PerfilActions";
 import { useSnackbar } from "notistack";
-import { url_servidor } from "Utils/constants";
-
+import { url_servidor, error_generico } from "Utils/constants";
+import { ERROR_MESSAGE } from "actions/types";
 export default function PerfilForm() {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -29,19 +29,29 @@ export default function PerfilForm() {
           cdPerfil: cdPerfil,
           dsPerfil: nombrePerfil,
         }),
-      }).then(function (response) {
-        if (response.status === 200) {
-          enqueueSnackbar("Se guardó el Perfil", {
-            variant: "success",
+      })
+        .then(function (response) {
+          if (response.status === 200) {
+            enqueueSnackbar("Se guardó el Perfil", {
+              variant: "success",
+            });
+            dispatch(getListaPerfil());
+            nuevoPerfil();
+          } else {
+            enqueueSnackbar("Error al guardar el Perfil", {
+              variant: "error",
+            });
+          }
+        })
+        .catch(() => {
+          dispatch({
+            type: ERROR_MESSAGE,
+            payload: {
+              message: error_generico,
+              tipo: "error",
+            },
           });
-          dispatch(getListaPerfil());
-          nuevoPerfil();
-        } else {
-          enqueueSnackbar("Error al guardar el Perfil", {
-            variant: "error",
-          });
-        }
-      });
+        });
     } else {
       enqueueSnackbar("No puede dejar el nombre en blanco", {
         variant: "warning",

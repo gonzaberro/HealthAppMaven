@@ -8,7 +8,7 @@ import { getListaTipoServicios } from "actions/TipoServicioActions";
 import { setHorariosAgenda } from "actions/AgendaActions";
 import { setDefault, setDoctor } from "actions/EditTurnoActions";
 import ItemAgendaContainer from "./ItemsAgendaContainer";
-
+import { getEstadosTurno } from "actions/EstadosTurnoActions";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -25,6 +25,7 @@ export default function Agenda(props) {
     dispatch(getListaPacientes());
     dispatch(getListaServicios());
     dispatch(getListaTipoServicios());
+    dispatch(getEstadosTurno());
     dispatch(setDoctor(profesional_seleccionado));
   }, [dispatch, profesional_seleccionado]);
 

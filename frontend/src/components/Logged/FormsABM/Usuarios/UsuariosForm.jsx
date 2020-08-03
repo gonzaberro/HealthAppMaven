@@ -7,9 +7,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { setUsuario, getListaUsuarios } from "actions/UsuariosActions";
 import { FormControl, InputLabel, Select, MenuItem } from "@material-ui/core";
 import { useSnackbar } from "notistack";
-import { url_servidor } from "Utils/constants";
+import { url_servidor, error_generico } from "Utils/constants";
 import { validateForm } from "Utils/functions";
-
+import { ERROR_MESSAGE } from "actions/types";
 const defaultState = {
   cd_usuario: 0,
   idUsuario: "",
@@ -60,19 +60,29 @@ export default function PacienteForm() {
           Authorization: localStorage.getItem("token"),
         },
         body: JSON.stringify(objPlan),
-      }).then(function (response) {
-        if (response.status === 200) {
-          enqueueSnackbar("Se guardó el Usuario", {
-            variant: "success",
+      })
+        .then(function (response) {
+          if (response.status === 200) {
+            enqueueSnackbar("Se guardó el Usuario", {
+              variant: "success",
+            });
+            dispatch(getListaUsuarios());
+            nuevoUsuario();
+          } else {
+            enqueueSnackbar("Error al guardar el Usuario", {
+              variant: "error",
+            });
+          }
+        })
+        .catch(() => {
+          dispatch({
+            type: ERROR_MESSAGE,
+            payload: {
+              message: error_generico,
+              tipo: "error",
+            },
           });
-          dispatch(getListaUsuarios());
-          nuevoUsuario();
-        } else {
-          enqueueSnackbar("Error al guardar el Usuario", {
-            variant: "error",
-          });
-        }
-      });
+        });
     } else {
       enqueueSnackbar("No puede dejar ningún campo en blanco", {
         variant: "warning",

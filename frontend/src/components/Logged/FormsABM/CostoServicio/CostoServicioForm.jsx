@@ -7,12 +7,12 @@ import Button from "@material-ui/core/Button";
 import { useSelector, useDispatch } from "react-redux";
 
 import { useSnackbar } from "notistack";
-import { url_servidor } from "Utils/constants";
+import { url_servidor, error_generico } from "Utils/constants";
 import {
   setCostoServicio,
   getListaCostoServicios,
 } from "actions/CostoServicioActions";
-
+import { ERROR_MESSAGE } from "actions/types";
 export default function CostoServicioForm() {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -55,19 +55,29 @@ export default function CostoServicioForm() {
           },
           costo: costo,
         }),
-      }).then(function (response) {
-        if (response.status === 200) {
-          enqueueSnackbar("Se asigno el costo al servicio", {
-            variant: "success",
+      })
+        .then(function (response) {
+          if (response.status === 200) {
+            enqueueSnackbar("Se asigno el costo al servicio", {
+              variant: "success",
+            });
+            nuevoCostoServicio();
+            dispatch(getListaCostoServicios());
+          } else {
+            enqueueSnackbar("Error al asignar el costo al servicio", {
+              variant: "error",
+            });
+          }
+        })
+        .catch(() => {
+          dispatch({
+            type: ERROR_MESSAGE,
+            payload: {
+              message: error_generico,
+              tipo: "error",
+            },
           });
-          nuevoCostoServicio();
-          dispatch(getListaCostoServicios());
-        } else {
-          enqueueSnackbar("Error al asignar el costo al servicio", {
-            variant: "error",
-          });
-        }
-      });
+        });
     } else {
       enqueueSnackbar("No puede dejar campos en blanco", {
         variant: "warning",

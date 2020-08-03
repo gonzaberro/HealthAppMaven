@@ -6,7 +6,7 @@ import {
   SELECT_PROFESIONAL,
   ERROR_MESSAGE,
 } from "../actions/types";
-import { url_servidor } from "Utils/constants/";
+import { url_servidor, error_generico } from "Utils/constants";
 import { prestadora } from "Utils/functions";
 
 export function setFechaAgenda(fecha) {
@@ -42,18 +42,28 @@ export function borrarTurno(cdTurno, cleanProgramar, cleanEditTurno, callback) {
         "Content-Type": "application/json",
         Authorization: localStorage.getItem("token"),
       },
-    }).then((response) => {
-      if (response.status === 200 && callback) {
-        cleanProgramar();
-        cleanEditTurno();
-        callback();
+    })
+      .then((response) => {
+        if (response.status === 200 && callback) {
+          cleanProgramar();
+          cleanEditTurno();
+          callback();
 
+          dispatch({
+            type: ERROR_MESSAGE,
+            payload: { message: "Se eliminó el turno", tipo: "success" },
+          });
+        }
+      })
+      .catch(() => {
         dispatch({
           type: ERROR_MESSAGE,
-          payload: { message: "Se eliminó el turno", tipo: "success" },
+          payload: {
+            message: error_generico,
+            tipo: "error",
+          },
         });
-      }
-    });
+      });
   };
 }
 export function setHorariosAgenda() {
@@ -71,7 +81,16 @@ export function setHorariosAgenda() {
           type: SET_HORARIOS,
           payload: data,
         })
-      );
+      )
+      .catch(() => {
+        dispatch({
+          type: ERROR_MESSAGE,
+          payload: {
+            message: error_generico,
+            tipo: "error",
+          },
+        });
+      });
   };
 }
 
@@ -93,6 +112,15 @@ export function getTurnos(fecha, profesional) {
         dispatch({
           type: SET_TURNOS,
           payload: data,
+        });
+      })
+      .catch(() => {
+        dispatch({
+          type: ERROR_MESSAGE,
+          payload: {
+            message: error_generico,
+            tipo: "error",
+          },
         });
       });
   };

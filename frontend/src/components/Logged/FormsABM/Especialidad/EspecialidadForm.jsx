@@ -9,8 +9,8 @@ import {
   getListaEspecialidad,
 } from "actions/EspecialidadActions";
 import { useSnackbar } from "notistack";
-import { url_servidor } from "Utils/constants";
-
+import { url_servidor, error_generico } from "Utils/constants";
+import { ERROR_MESSAGE } from "actions/types";
 export default function EspecialidadForm() {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -32,19 +32,29 @@ export default function EspecialidadForm() {
           cd_especialidad: cdEspecialidad,
           nombre: nombreEspecialidad,
         }),
-      }).then(function (response) {
-        if (response.status === 200) {
-          enqueueSnackbar("Se guardó la Especialidad", {
-            variant: "success",
+      })
+        .then(function (response) {
+          if (response.status === 200) {
+            enqueueSnackbar("Se guardó la Especialidad", {
+              variant: "success",
+            });
+            dispatch(getListaEspecialidad());
+            nuevaEspecialidad();
+          } else {
+            enqueueSnackbar("Error al guardar la Especialidad", {
+              variant: "error",
+            });
+          }
+        })
+        .catch(() => {
+          dispatch({
+            type: ERROR_MESSAGE,
+            payload: {
+              message: error_generico,
+              tipo: "error",
+            },
           });
-          dispatch(getListaEspecialidad());
-          nuevaEspecialidad();
-        } else {
-          enqueueSnackbar("Error al guardar la Especialidad", {
-            variant: "error",
-          });
-        }
-      });
+        });
     } else {
       enqueueSnackbar("No puede dejar el nombre en blanco", {
         variant: "warning",

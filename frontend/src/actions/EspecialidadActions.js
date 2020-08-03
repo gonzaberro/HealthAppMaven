@@ -29,6 +29,15 @@ export function especialidadesPaciente(dni) {
           type: SET_LISTA_ESPECIALIDAD,
           payload: data,
         });
+      })
+      .catch(() => {
+        dispatch({
+          type: ERROR_MESSAGE,
+          payload: {
+            message: error_generico,
+            tipo: "error",
+          },
+        });
       });
   };
 }
@@ -88,6 +97,15 @@ export function getListaEspecialidad() {
           type: SET_LISTA_ESPECIALIDAD,
           payload: data,
         })
-      );
+      )
+      .catch(() => {
+        dispatch({
+          type: ERROR_MESSAGE,
+          payload: {
+            message: error_generico,
+            tipo: "error",
+          },
+        });
+      });
   };
 }

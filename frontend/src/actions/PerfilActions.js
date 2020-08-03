@@ -64,6 +64,15 @@ export function getListaPerfil() {
           type: SET_LISTA_PERFIL,
           payload: data,
         })
-      );
+      )
+      .catch(() => {
+        dispatch({
+          type: ERROR_MESSAGE,
+          payload: {
+            message: error_generico,
+            tipo: "error",
+          },
+        });
+      });
   };
 }

@@ -68,6 +68,15 @@ export function getListaProfesionales() {
           type: SET_LISTA_PROFESIONAL,
           payload: data,
         })
-      );
+      )
+      .catch(() => {
+        dispatch({
+          type: ERROR_MESSAGE,
+          payload: {
+            message: error_generico,
+            tipo: "error",
+          },
+        });
+      });
   };
 }

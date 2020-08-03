@@ -66,6 +66,15 @@ export function getListaPacientes() {
           type: SET_LISTA_PACIENTE,
           payload: data,
         })
-      );
+      )
+      .catch(() => {
+        dispatch({
+          type: ERROR_MESSAGE,
+          payload: {
+            message: error_generico,
+            tipo: "error",
+          },
+        });
+      });
   };
 }

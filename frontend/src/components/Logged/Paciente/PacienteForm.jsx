@@ -8,9 +8,9 @@ import { setPaciente, getListaPacientes } from "actions/PacienteActions";
 
 import FormSelect from "components/Logged/FormsABM/FormSelect";
 import { useSnackbar } from "notistack";
-import { url_servidor } from "Utils/constants";
+import { url_servidor, error_generico } from "Utils/constants";
 import { fechaString, validateForm } from "Utils/functions";
-
+import { ERROR_MESSAGE } from "actions/types";
 const defaultState = {
   dni: "",
   nombre: "",
@@ -84,19 +84,29 @@ export default function PacienteForm() {
           Authorization: localStorage.getItem("token"),
         },
         body: JSON.stringify(objPlan),
-      }).then(function (response) {
-        if (response.status === 200) {
-          enqueueSnackbar("Se guardó el Paciente", {
-            variant: "success",
+      })
+        .then(function (response) {
+          if (response.status === 200) {
+            enqueueSnackbar("Se guardó el Paciente", {
+              variant: "success",
+            });
+            dispatch(getListaPacientes());
+            nuevoPaciente();
+          } else {
+            enqueueSnackbar("Error al guardar el Paciente", {
+              variant: "error",
+            });
+          }
+        })
+        .catch(() => {
+          dispatch({
+            type: ERROR_MESSAGE,
+            payload: {
+              message: error_generico,
+              tipo: "error",
+            },
           });
-          dispatch(getListaPacientes());
-          nuevoPaciente();
-        } else {
-          enqueueSnackbar("Error al guardar el Paciente", {
-            variant: "error",
-          });
-        }
-      });
+        });
     } else {
       enqueueSnackbar("No puede dejar ningún campo en blanco", {
         variant: "warning",

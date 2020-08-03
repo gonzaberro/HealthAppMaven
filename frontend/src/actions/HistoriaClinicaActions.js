@@ -4,7 +4,7 @@ import {
   MODAL_HISTORIA_CLINICA,
   ERROR_MESSAGE,
 } from "./types";
-import { url_servidor } from "Utils/constants";
+import { url_servidor, error_generico } from "Utils/constants";
 
 export function setModalHistoriaClinica(open) {
   return (dispatch) => {
@@ -30,19 +30,29 @@ export function eliminarHistoriaClinica(id, callBack, especialidadPaciente) {
         "Content-Type": "application/json",
         Authorization: localStorage.getItem("token"),
       },
-    }).then((response) => {
-      if (response.status === 200) {
-        callBack();
-        especialidadPaciente();
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          callBack();
+          especialidadPaciente();
+          dispatch({
+            type: ERROR_MESSAGE,
+            payload: {
+              message: "Se elimnó la historia clinica",
+              tipo: "success",
+            },
+          });
+        }
+      })
+      .catch(() => {
         dispatch({
           type: ERROR_MESSAGE,
           payload: {
-            message: "Se elimnó la historia clinica",
-            tipo: "success",
+            message: error_generico,
+            tipo: "error",
           },
         });
-      }
-    });
+      });
   };
 }
 
@@ -64,7 +74,16 @@ export function getListaHistoriaClinica(dni, especialidad) {
           type: SET_LISTA_HISTORIA_CLINICA,
           payload: data,
         })
-      );
+      )
+      .catch(() => {
+        dispatch({
+          type: ERROR_MESSAGE,
+          payload: {
+            message: error_generico,
+            tipo: "error",
+          },
+        });
+      });
   };
 }
 
