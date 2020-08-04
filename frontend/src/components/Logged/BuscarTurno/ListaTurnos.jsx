@@ -17,7 +17,7 @@ import { SWITCH_MENU } from "actions/types";
 import { menuOptions } from "Utils/constants";
 import Alert from "@material-ui/lab/Alert";
 export default function ListaTurnos() {
-  const listaTurnos = useSelector((state) => state.buscarTurnos.turnos);
+  const buscarTurno = useSelector((state) => state.buscarTurnos);
 
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -39,7 +39,7 @@ export default function ListaTurnos() {
   };
 
   const armarListaTurnos = () => {
-    return listaTurnos.map((turno) => {
+    return buscarTurno.turnos.map((turno) => {
       return (
         <Card className={classes.root} key={turno.cd_turno}>
           <CardContent>
@@ -98,7 +98,12 @@ export default function ListaTurnos() {
   };
 
   const cardsTurnos = () => {
-    return listaTurnos && listaTurnos.length > 0 ? (
+    return (buscarTurno.estadoRecepcionado ||
+      buscarTurno.estadoAsignado ||
+      buscarTurno.estadoAtendido ||
+      buscarTurno.estadoCancelado) &&
+      buscarTurno.turnos &&
+      buscarTurno.turnos.length > 0 ? (
       armarListaTurnos()
     ) : (
       <div className={classes.rootAlert}>
@@ -111,7 +116,7 @@ export default function ListaTurnos() {
 
   return (
     <div className={classes.containerTurnos}>
-      {listaTurnos ? cardsTurnos() : ""}
+      {buscarTurno ? cardsTurnos() : ""}
     </div>
   );
 }
