@@ -5,7 +5,7 @@ import DataTable from "react-data-table-component";
 import { useSelector, useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faTrash } from "@fortawesome/free-solid-svg-icons";
-
+import { setModal } from "actions/ModalActions";
 import {
   setProfesional,
   eliminarProfesional,
@@ -84,19 +84,33 @@ export default function TablaProfesional() {
         setFilterText("");
       }
     };
+    const nuevoProfesional = () => {
+      dispatch(setProfesional({}));
+      dispatch(setModal(true));
+    };
 
     return (
       <Grid container>
-        <Grid item md={3} lg={3} sm={6} xs={12}>
+        <Grid item md={8} lg={8} sm={6} xs={6}>
           <FilterComponent
             onFilter={(e) => setFilterText(e.target.value)}
             onClear={handleClear}
             filterText={filterText}
           />
         </Grid>
+        <Grid item md={4} lg={4} sm={6} xs={6}>
+          <Button
+            variant="contained"
+            color="default"
+            style={{ width: "100%" }}
+            onClick={nuevoProfesional}
+          >
+            Nuevo Profesional
+          </Button>
+        </Grid>
       </Grid>
     );
-  }, [filterText, resetPaginationToggle]);
+  }, [filterText, resetPaginationToggle, dispatch]);
   const deleteProfesional = (row) => {
     confirmAlert({
       title: row.nombre + " " + row.apellido,
@@ -112,6 +126,12 @@ export default function TablaProfesional() {
       ],
     });
   };
+
+  const selectProfesional = (row) => {
+    dispatch(setProfesional(row));
+    dispatch(setModal(true));
+  };
+
   const columns = [
     {
       name: "Nombre",
@@ -149,7 +169,7 @@ export default function TablaProfesional() {
           variant="contained"
           color="primary"
           button
-          onClick={() => dispatch(setProfesional(row))}
+          onClick={() => selectProfesional(row)}
         >
           <FontAwesomeIcon icon={faEye} />
         </Button>

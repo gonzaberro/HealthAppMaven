@@ -8,6 +8,7 @@ import BuscarTurnoTabla from "./BuscarTurnoTabla";
 import ListaTurnos from "./ListaTurnos";
 import HeaderListaTurnos from "./HeaderListaTurnos";
 import { useDispatch } from "react-redux";
+import { getEstadosTurno } from "actions/EstadosTurnoActions";
 
 export default function BuscarTurno() {
   const classes = useStyles();
@@ -16,6 +17,7 @@ export default function BuscarTurno() {
   useEffect(() => {
     dispatch(cleanTurnos());
     dispatch(getListaProfesionales());
+    dispatch(getEstadosTurno());
     dispatch(getListaPacientes());
   }, [dispatch]);
 

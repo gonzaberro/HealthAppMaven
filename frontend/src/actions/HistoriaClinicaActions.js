@@ -1,19 +1,10 @@
 import {
   SET_HISTORIA_CLINICA,
   SET_LISTA_HISTORIA_CLINICA,
-  MODAL_HISTORIA_CLINICA,
   ERROR_MESSAGE,
 } from "./types";
 import { url_servidor, error_generico } from "Utils/constants";
 
-export function setModalHistoriaClinica(open) {
-  return (dispatch) => {
-    dispatch({
-      type: MODAL_HISTORIA_CLINICA,
-      payload: open,
-    });
-  };
-}
 export function setHistoriaClinica(historiaClinica) {
   return (dispatch) => {
     dispatch({

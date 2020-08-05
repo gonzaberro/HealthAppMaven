@@ -7,6 +7,7 @@ import {
   faUserMd,
   faUser,
   faSignOutAlt,
+  faFileAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
@@ -143,6 +144,16 @@ export default function ContainerBigMenu() {
             classes={classes}
           />
         </Grid>
+        <Grid item xs={12} className={classes.gridItemMenu}>
+          <Grid container>
+            <Grid item xs={12}>
+              <FontAwesomeIcon icon={faFileAlt} style={{ width: "100%" }} />
+            </Grid>
+            <Grid item xs={12} className={classes.textMenu}>
+              {menuOptions.REPORTES}
+            </Grid>
+          </Grid>
+        </Grid>
         <Grid
           item
           xs={12}
@@ -189,7 +200,7 @@ const useStyles = makeStyles((theme) => ({
   textMenu: {
     textAlign: "center",
     marginTop: 10,
-    fontSize: 10,
+    fontSize: 9,
   },
   mainContainer: {
     borderRight: "2px solid #de3444",

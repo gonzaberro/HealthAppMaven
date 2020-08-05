@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
 import {
-  setModalHistoriaClinica,
   setHistoriaClinica,
   cleanHistoriaClinica,
 } from "actions/HistoriaClinicaActions";
@@ -14,10 +13,11 @@ import { useDispatch, useSelector } from "react-redux";
 import HistoriaClinicaForm from "./HistoriaClinicaForm";
 import { setBuscarPaciente } from "actions/BuscarTurnosActions";
 import Modal from "@material-ui/core/Modal";
+import { setModal } from "actions/ModalActions";
 
 export default function HistoriaClinica() {
   const dispatch = useDispatch();
-  const open_modal = useSelector((state) => state.historiaClinica.open_modal);
+  const open_modal = useSelector((state) => state.modalReducer.open_modal);
 
   useEffect(() => {
     dispatch(getListaProfesionales());
@@ -27,7 +27,7 @@ export default function HistoriaClinica() {
   }, [dispatch]);
 
   const handleClose = () => {
-    dispatch(setModalHistoriaClinica(false));
+    dispatch(setModal(false));
     dispatch(setHistoriaClinica({}));
   };
 

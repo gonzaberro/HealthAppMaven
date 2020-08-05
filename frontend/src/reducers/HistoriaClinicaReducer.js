@@ -1,13 +1,11 @@
 import {
   SET_HISTORIA_CLINICA,
   SET_LISTA_HISTORIA_CLINICA,
-  MODAL_HISTORIA_CLINICA,
 } from "actions/types";
 
 const initialState = {
   historiaClinica: {},
   listaHistoriaClinica: [],
-  open_modal: false,
 };
 
 export default function (state = initialState, action) {
@@ -21,11 +19,6 @@ export default function (state = initialState, action) {
       return {
         ...state,
         listaHistoriaClinica: action.payload,
-      };
-    case MODAL_HISTORIA_CLINICA:
-      return {
-        ...state,
-        open_modal: action.payload,
       };
 
     default:

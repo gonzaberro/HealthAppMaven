@@ -9,6 +9,8 @@ import { getPacientes } from "actions/BuscarTurnosActions";
 import { useEffect } from "react";
 import { confirmAlert } from "react-confirm-alert"; // Import
 import { setPaciente, eliminarPaciente } from "actions/PacienteActions";
+import { setModal } from "actions/ModalActions";
+
 const FilterComponent = ({ filterText, onFilter, onClear }) => (
   <>
     <TextField
@@ -71,6 +73,7 @@ export default function TablaPaciente() {
       ],
     });
   };
+
   /* FIN STATES DATATABLE */
 
   React.useEffect(() => {
@@ -98,19 +101,39 @@ export default function TablaPaciente() {
       }
     };
 
+    const nuevoPaciente = () => {
+      dispatch(setPaciente({}));
+      dispatch(setModal(true));
+    };
+
     return (
       <Grid container>
-        <Grid item md={3} lg={3} sm={6} xs={12}>
+        <Grid item md={8} lg={8} sm={6} xs={6}>
           <FilterComponent
             onFilter={(e) => setFilterText(e.target.value)}
             onClear={handleClear}
             filterText={filterText}
           />
         </Grid>
+        <Grid item md={4} lg={4} sm={6} xs={6}>
+          <Button
+            variant="contained"
+            style={{ width: "100%" }}
+            color="default"
+            onClick={nuevoPaciente}
+          >
+            Nuevo Paciente
+          </Button>
+        </Grid>
       </Grid>
     );
-  }, [filterText, resetPaginationToggle]);
+  }, [filterText, resetPaginationToggle, dispatch]);
   /** FIN FILTROS TABLA */
+
+  const selectPaciente = (row) => {
+    dispatch(setPaciente(row));
+    dispatch(setModal(true));
+  };
 
   const columns = [
     {
@@ -155,7 +178,7 @@ export default function TablaPaciente() {
           variant="contained"
           color="primary"
           button
-          onClick={() => dispatch(setPaciente(row))}
+          onClick={() => selectPaciente(row)}
         >
           <FontAwesomeIcon icon={faEye} />
         </Button>

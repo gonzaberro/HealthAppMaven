@@ -6,11 +6,13 @@ import Button from "@material-ui/core/Button";
 import { useSelector, useDispatch } from "react-redux";
 import { setPaciente, getListaPacientes } from "actions/PacienteActions";
 
-import FormSelect from "components/Logged/FormsABM/FormSelect";
 import { useSnackbar } from "notistack";
 import { url_servidor, error_generico } from "Utils/constants";
 import { fechaString, validateForm } from "Utils/functions";
 import { ERROR_MESSAGE } from "actions/types";
+import Select from "react-select";
+import { setModal } from "actions/ModalActions";
+
 const defaultState = {
   dni: "",
   nombre: "",
@@ -23,7 +25,7 @@ const defaultState = {
   nroAfiliado: "",
 };
 
-const options = [
+const optionsSexo = [
   { name: "Femenino", value: "F" },
   { name: "Masculino", value: "M" },
 ];
@@ -45,11 +47,29 @@ export default function PacienteForm() {
 
   const [plan, setPlan] = useState();
 
-  const planesOptions = listaPlanes
-    ? listaPlanes.map((e) => {
-        return { name: e.obraSocial.nombre + " " + e.nombre, value: e.cd_plan };
-      })
-    : [];
+  const optionsSelectSexo = () => {
+    const options = [];
+
+    optionsSexo.map((sexo) => {
+      return options.push({
+        value: sexo.value,
+        label: sexo.name,
+      });
+    });
+    return options;
+  };
+
+  const optionsPlan = (listaPlanes) => {
+    const options = [];
+
+    listaPlanes.map((plan) => {
+      return options.push({
+        value: plan.cd_plan,
+        label: plan.obraSocial.nombre.toUpperCase() + " - " + plan.nombre,
+      });
+    });
+    return options;
+  };
 
   useEffect(() => {
     if (Object.keys(pacienteSeleccionado).length !== 0) {
@@ -69,9 +89,17 @@ export default function PacienteForm() {
     const { name, value } = e.target;
     setPacienteForm({ [name]: value });
   };
+  const handleSexoChange = (e) => {
+    setPacienteForm({ sexo: e.value });
+  };
 
   const handlePlan = (e) => {
-    setPlan({ cd_plan: e.target.value });
+    setPlan({ cd_plan: e });
+  };
+
+  const handleClose = () => {
+    dispatch(setPaciente({}));
+    dispatch(setModal(false));
   };
 
   const guardarPaciente = () => {
@@ -91,7 +119,7 @@ export default function PacienteForm() {
               variant: "success",
             });
             dispatch(getListaPacientes());
-            nuevoPaciente();
+            handleClose();
           } else {
             enqueueSnackbar("Error al guardar el Paciente", {
               variant: "error",
@@ -114,31 +142,37 @@ export default function PacienteForm() {
     }
   };
 
-  const nuevoPaciente = () => {
-    dispatch(setPaciente({}));
-    setPacienteForm(defaultState);
-    setPlan("");
-  };
-
   return (
     <div>
       <Grid container>
         <Grid item lg={9} xs={12} md={7} sm={12} className={classes.headerForm}>
           Crear/Editar Paciente
         </Grid>
-        <Grid item lg={3} xs={12} md={5} sm={12} className={classes.buttonForm}>
-          <Button
-            variant="contained"
-            style={{ width: "100%" }}
-            color="default"
-            onClick={nuevoPaciente}
-          >
-            Nuevo
-          </Button>
-        </Grid>
       </Grid>
       <Grid container className={classes.gridForm}>
-        <Grid item lg={12} md={12} sm={12} xs={12}>
+        <Grid item lg={6} md={6} sm={6} xs={6} className={classes.gridInputs}>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            label="Nombre"
+            name="nombre"
+            fullWidth
+            value={paciente.nombre}
+            onChange={handleInputChange}
+          />
+        </Grid>
+        <Grid item lg={6} md={6} sm={6} xs={6} className={classes.gridInputs}>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            label="Apellido"
+            name="apellido"
+            fullWidth
+            value={paciente.apellido}
+            onChange={handleInputChange}
+          />
+        </Grid>
+        <Grid item lg={6} md={6} sm={6} xs={6} className={classes.gridInputs}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -150,39 +184,24 @@ export default function PacienteForm() {
             onChange={handleInputChange}
           />
         </Grid>
-
-        <Grid item lg={12} md={12} sm={12} xs={12}>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            label="Nombre"
-            name="nombre"
-            fullWidth
-            value={paciente.nombre}
-            onChange={handleInputChange}
-          />
-        </Grid>
-        <Grid item lg={12} md={12} sm={12} xs={12}>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            label="Apellido"
-            name="apellido"
-            fullWidth
-            value={paciente.apellido}
-            onChange={handleInputChange}
-          />
-        </Grid>
-        <Grid item lg={12} md={12} sm={12} xs={12}>
-          <FormSelect
+        <Grid item lg={6} md={6} sm={6} xs={6} className={classes.gridInputs}>
+          <Select
+            options={optionsSelectSexo()}
+            isSearchable={true}
             name="sexo"
-            label="Sexo"
-            options={options}
-            value={paciente.sexo}
-            handleChange={handleInputChange}
+            placeholder={<div>Sexo</div>}
+            styles={colourStyles}
+            onChange={(value) => handleSexoChange(value)}
+            value={
+              paciente.sexo
+                ? optionsSelectSexo().filter(
+                    (option) => option.value === paciente.sexo
+                  )
+                : ""
+            }
           />
         </Grid>
-        <Grid item lg={12} md={12} sm={12} xs={12}>
+        <Grid item lg={6} md={6} sm={6} xs={6} className={classes.gridInputs}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -193,7 +212,7 @@ export default function PacienteForm() {
             onChange={handleInputChange}
           />
         </Grid>
-        <Grid item lg={12} md={12} sm={12} xs={12}>
+        <Grid item lg={6} md={6} sm={6} xs={6} className={classes.gridInputs}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -205,7 +224,7 @@ export default function PacienteForm() {
             onChange={handleInputChange}
           />
         </Grid>
-        <Grid item lg={12} md={12} sm={12} xs={12}>
+        <Grid item lg={6} md={6} sm={6} xs={6} className={classes.gridInputs}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -216,7 +235,7 @@ export default function PacienteForm() {
             onChange={handleInputChange}
           />
         </Grid>
-        <Grid item lg={12} md={12} sm={12} xs={12}>
+        <Grid item lg={6} md={6} sm={6} xs={6} className={classes.gridInputs}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -228,7 +247,7 @@ export default function PacienteForm() {
             onChange={handleInputChange}
           />
         </Grid>
-        <Grid item lg={12} md={12} sm={12} xs={12}>
+        <Grid item lg={6} md={6} sm={6} xs={6} className={classes.gridInputs}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -241,17 +260,24 @@ export default function PacienteForm() {
           />
         </Grid>
 
-        <Grid item lg={12} md={12} sm={12} xs={12}>
-          <FormSelect
-            name="plan"
-            label="Plan"
-            options={planesOptions}
-            value={(plan && plan.cd_plan) || ""}
-            handleChange={handlePlan}
+        <Grid item lg={6} md={6} sm={6} xs={6} className={classes.gridInputs}>
+          <Select
+            options={optionsPlan(listaPlanes)}
+            isSearchable={true}
+            placeholder={<div>Plan</div>}
+            styles={colourStyles}
+            onChange={(value) => handlePlan(value.value)}
+            value={
+              plan
+                ? optionsPlan(listaPlanes).filter(
+                    (option) => option.value === plan.cd_plan
+                  )
+                : ""
+            }
           />
         </Grid>
 
-        <Grid item lg={12} md={12} sm={12} xs={12}>
+        <Grid item xs={6} md={2}>
           <Button
             variant="contained"
             color="primary"
@@ -259,6 +285,16 @@ export default function PacienteForm() {
             onClick={guardarPaciente}
           >
             Guardar
+          </Button>
+        </Grid>
+        <Grid item xs={6} md={2} style={{ paddingLeft: 5 }}>
+          <Button
+            variant="contained"
+            color="default"
+            fullWidth
+            onClick={handleClose}
+          >
+            Cerrar
           </Button>
         </Grid>
       </Grid>
@@ -278,4 +314,14 @@ const useStyles = makeStyles(() => ({
   gridForm: {
     padding: 10,
   },
+  gridInputs: { paddingLeft: 10, paddingRight: 10, backgroundColor: "white" },
 }));
+const colourStyles = {
+  control: (base) => ({
+    ...base,
+    height: 56,
+    minHeight: 35,
+    marginTop: 10,
+    marginBottom: 10,
+  }),
+};

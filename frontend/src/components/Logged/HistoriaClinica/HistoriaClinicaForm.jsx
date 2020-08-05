@@ -13,12 +13,13 @@ import Select from "react-select";
 import {
   setHistoriaClinica,
   getListaHistoriaClinica,
-  setModalHistoriaClinica,
 } from "actions/HistoriaClinicaActions";
 import { fechaString, validateForm } from "Utils/functions";
 import { useSnackbar } from "notistack";
 import { url_servidor, error_generico } from "Utils/constants";
 import { ERROR_MESSAGE } from "actions/types";
+import { setModal } from "actions/ModalActions";
+
 const defaultState = {
   id_historia_clinica: 0,
   diagnostico: "",
@@ -193,7 +194,7 @@ export default function HistoriaClinicaForm() {
     dispatch(setHistoriaClinica({}));
     setHistoriaClinicaForm(defaultState);
     setProfesional("");
-    dispatch(setModalHistoriaClinica(false));
+    dispatch(setModal(false));
   };
 
   return (
@@ -364,7 +365,7 @@ export default function HistoriaClinicaForm() {
                 fullWidth
                 variant="contained"
                 color="default"
-                onClick={() => dispatch(setModalHistoriaClinica(false))}
+                onClick={() => dispatch(setModal(false))}
               >
                 Cerrar
               </Button>

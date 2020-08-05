@@ -10,9 +10,9 @@ import { especialidadesPaciente } from "actions/EspecialidadActions";
 import {
   getListaHistoriaClinica,
   setHistoriaClinica,
-  setModalHistoriaClinica,
 } from "actions/HistoriaClinicaActions";
 import { setEspecialidad } from "actions/EspecialidadActions";
+import { setModal } from "actions/ModalActions";
 
 export default function HeaderListaHistoriaClinica() {
   const [especialidadSeleccionada, setValue] = React.useState(0);
@@ -52,7 +52,7 @@ export default function HeaderListaHistoriaClinica() {
   };
   const nuevaHistoriaClinica = () => {
     dispatch(setHistoriaClinica({}));
-    dispatch(setModalHistoriaClinica(true));
+    dispatch(setModal(true));
   };
 
   return (

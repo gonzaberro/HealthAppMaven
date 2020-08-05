@@ -13,12 +13,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   getListaHistoriaClinica,
   setHistoriaClinica,
-  setModalHistoriaClinica,
   eliminarHistoriaClinica,
 } from "actions/HistoriaClinicaActions";
 import { especialidadesPaciente } from "actions/EspecialidadActions";
 import Alert from "@material-ui/lab/Alert";
 import { confirmAlert } from "react-confirm-alert"; // Import
+import { setModal } from "actions/ModalActions";
 
 export default function ListaHistoriaClinica() {
   const listaHistoriaClinica = useSelector(
@@ -36,7 +36,7 @@ export default function ListaHistoriaClinica() {
 
   const seleccionarHistoriaClinica = (historia_clinica) => {
     dispatch(setHistoriaClinica(historia_clinica));
-    dispatch(setModalHistoriaClinica(true));
+    dispatch(setModal(true));
   };
   const deleteHistoriaClinica = (historiaClinica) => {
     confirmAlert({

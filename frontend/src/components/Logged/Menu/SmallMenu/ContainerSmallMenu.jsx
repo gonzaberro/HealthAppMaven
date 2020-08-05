@@ -9,6 +9,7 @@ import {
   faCalendarAlt,
   faBook,
   faSignOutAlt,
+  faFileAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
@@ -160,6 +161,26 @@ export default function ContainerSmallMenu() {
             <InformacionEmpresaSmallMenu />
           </Grid>
         ) : null}
+        <Grid
+          item
+          xs={12}
+          className={[
+            classes.gridItemMenu,
+            menuOptions.HISTORIA_CLINICA === menuSelected
+              ? classes.gridSelected
+              : "",
+          ]}
+          onClick={() => closeSession(dispatch)}
+        >
+          <Grid container>
+            <Grid item xs={3}>
+              <FontAwesomeIcon icon={faFileAlt} style={{ width: "100%" }} />
+            </Grid>
+            <Grid item xs={9} className={classes.textMenu}>
+              {menuOptions.REPORTES}
+            </Grid>
+          </Grid>
+        </Grid>
         <Grid
           item
           xs={12}
