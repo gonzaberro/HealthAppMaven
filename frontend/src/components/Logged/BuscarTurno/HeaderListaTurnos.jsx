@@ -52,12 +52,15 @@ export default function HeaderListaTurnos() {
         />
         <span
           style={{
-            borderBottom: `2px solid ${getColorEstadoTurno(1)}`,
-            paddingRight: 5,
+            width: 10,
+            height: 10,
+            borderRadius: "50%",
+            display: "inline-block",
+            marginRight: 10,
+            background: `${getColorEstadoTurno(1)}`,
           }}
-        >
-          Asignados
-        </span>
+        ></span>
+        Asignados
       </Grid>
       <Grid md={3} sm={12} className={classes.gridItems}>
         <Checkbox
@@ -70,12 +73,15 @@ export default function HeaderListaTurnos() {
         />
         <span
           style={{
-            borderBottom: `2px solid ${getColorEstadoTurno(2)}`,
-            paddingRight: 5,
+            width: 10,
+            height: 10,
+            borderRadius: "50%",
+            display: "inline-block",
+            marginRight: 10,
+            background: `${getColorEstadoTurno(2)}`,
           }}
-        >
-          Recepcionados
-        </span>
+        ></span>
+        Recepcionados
       </Grid>
       <Grid md={3} sm={12} className={classes.gridItems}>
         <Checkbox
@@ -86,12 +92,15 @@ export default function HeaderListaTurnos() {
         />
         <span
           style={{
-            borderBottom: `2px solid ${getColorEstadoTurno(3)}`,
-            paddingRight: 5,
+            width: 10,
+            height: 10,
+            borderRadius: "50%",
+            display: "inline-block",
+            marginRight: 10,
+            background: `${getColorEstadoTurno(3)}`,
           }}
-        >
-          Atendidos
-        </span>
+        ></span>
+        Atendidos
       </Grid>
       <Grid md={3} sm={12} className={classes.gridItems}>
         <Checkbox
@@ -102,12 +111,15 @@ export default function HeaderListaTurnos() {
         />
         <span
           style={{
-            borderBottom: `2px solid ${getColorEstadoTurno(4)}`,
-            paddingRight: 5,
+            width: 10,
+            height: 10,
+            borderRadius: "50%",
+            display: "inline-block",
+            marginRight: 10,
+            background: `${getColorEstadoTurno(4)}`,
           }}
-        >
-          Cancelados
-        </span>
+        ></span>
+        Cancelados
       </Grid>
     </Grid>
   ) : (

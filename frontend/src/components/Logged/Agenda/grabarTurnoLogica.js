@@ -1,6 +1,6 @@
 import { url_servidor, error_generico } from "Utils/constants";
 import { getTurnos } from "../../../actions/AgendaActions";
-import { setDefault } from "../../../actions/EditTurnoActions";
+import { setDefault, setDoctor } from "../../../actions/EditTurnoActions";
 import { cleanProgramar } from "actions/ProgramarAgendaActions";
 import { ERROR_MESSAGE } from "actions/types";
 const sendTurno = (data) => {
@@ -39,14 +39,11 @@ const sendTurno = (data) => {
         });
 
         data.dispatch(
-          getTurnos(
-            data.fechaCalendario,
-            data.profesional_seleccionado,
-            data.token
-          )
+          getTurnos(data.fechaCalendario, data.profesional_seleccionado)
         );
         data.dispatch(cleanProgramar());
         data.dispatch(setDefault());
+        data.dispatch(setDoctor(data.profesional_seleccionado));
       } else {
         data.dispatch({
           type: ERROR_MESSAGE,

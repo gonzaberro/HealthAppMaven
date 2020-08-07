@@ -71,7 +71,6 @@ export const optionsHorarios = (horarios) => {
   return options;
 };
 export const validarCamposTurno = (turno_info) => {
-  console.log(turno_info);
   if (
     turno_info.paciente !== undefined &&
     turno_info.paciente !== "" &&

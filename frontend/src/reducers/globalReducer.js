@@ -1,7 +1,7 @@
 import { SWITCH_MENU, CLEAN_GLOBAL } from "actions/types";
 import { menuOptions } from "Utils/constants";
 const initialState = {
-  menuSelected: menuOptions.Agenda_DIARIA,
+  menuSelected: menuOptions.BUSCAR_TURNO,
   limpiar: false,
 };
 

@@ -63,6 +63,10 @@ export default function BuscarTurnoTabla() {
     buscarInfo.paciente,
   ]);
 
+  useEffect(() => {
+    return () => dispatch(cleanTurnos());
+  }, [dispatch]);
+
   return (
     <div style={{ height: "100%" }}>
       <Grid container>

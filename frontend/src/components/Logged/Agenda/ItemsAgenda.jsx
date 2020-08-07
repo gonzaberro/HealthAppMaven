@@ -1,14 +1,11 @@
 import React, { useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
 import { getTurnos } from "actions/AgendaActions";
-import Chip from "@material-ui/core/Chip";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  setHorario,
-  editTurnoComplete,
-} from "../../../actions/EditTurnoActions";
+import { setHorario } from "../../../actions/EditTurnoActions";
 import { fechaString } from "Utils/functions";
 import { makeStyles } from "@material-ui/core/styles";
+import TurnoAgenda from "./TurnoAgenda";
 
 export default function ItemsAgendaHeader() {
   const turnos = useSelector((state) => state.agenda_reducer.turnos);
@@ -28,10 +25,6 @@ export default function ItemsAgendaHeader() {
       dispatch(getTurnos(fechaString(fecha_agenda), profesional_seleccionado));
   }, [fecha_agenda, profesional_seleccionado, dispatch]);
 
-  const editTurno = (turno) => {
-    turno.fecha = fechaString(new Date(turno.fecha));
-    dispatch(editTurnoComplete(turno));
-  };
   return (
     <>
       {horarios &&
@@ -67,23 +60,7 @@ export default function ItemsAgendaHeader() {
                   })
                   .map((turno, index) => {
                     return (
-                      <Chip
-                        clickable={true}
-                        key={index}
-                        style={{ background: turno.estadoTurno.colorHexa }}
-                        className={classes.chipTurnos}
-                        onClick={() => editTurno(turno)}
-                        label={
-                          turno.paciente.dni +
-                          " - " +
-                          turno.paciente.nombre +
-                          " " +
-                          turno.paciente.apellido +
-                          " (" +
-                          turno.tipoServicio.nombre +
-                          ")"
-                        }
-                      ></Chip>
+                      <TurnoAgenda index={index} turno={turno}></TurnoAgenda>
                     );
                   })}
               </Grid>

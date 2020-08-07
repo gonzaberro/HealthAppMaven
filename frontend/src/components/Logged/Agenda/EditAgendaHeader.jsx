@@ -2,15 +2,18 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import { setDefault } from "../../../actions/EditTurnoActions";
-import { useDispatch } from "react-redux";
+import { setDefault, setDoctor } from "../../../actions/EditTurnoActions";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function EditAgendaHeader() {
   const classes = useStyles();
   const dispatch = useDispatch();
-
+  const profesional_seleccionado = useSelector(
+    (state) => state.agenda_reducer.profesional_seleccionado
+  );
   const nuevoTurno = () => {
     dispatch(setDefault());
+    dispatch(setDoctor(profesional_seleccionado));
   };
 
   return (

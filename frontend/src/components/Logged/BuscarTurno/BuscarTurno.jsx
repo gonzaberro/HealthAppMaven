@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import { getListaProfesionales } from "actions/ProfesionalActions";
@@ -15,7 +15,6 @@ export default function BuscarTurno() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(cleanTurnos());
     dispatch(getListaProfesionales());
     dispatch(getEstadosTurno());
     dispatch(getListaPacientes());
