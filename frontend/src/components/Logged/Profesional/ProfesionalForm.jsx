@@ -339,8 +339,9 @@ export default function ProfesionalForm() {
 
 const useStyles = makeStyles(() => ({
   headerForm: {
-    textAlign: "center",
+    textAlign: "left",
     paddingTop: 20,
+    paddingLeft: 20,
   },
   buttonForm: {
     paddingRight: 10,

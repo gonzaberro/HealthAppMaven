@@ -157,7 +157,7 @@ export const isAlive = (dispatch, login) => {
   })
     .then(function (res) {
       if (res.status === 200) {
-        if (login === 0) dispatch(setLogin(1));
+        if (login === 0) dispatch(setLogin(1)); //0 siugnifica que no esta logueado, 1 esta logueado
       } else {
         closeSession(dispatch);
       }

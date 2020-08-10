@@ -75,10 +75,6 @@ export default function EditAgendaItem() {
     (state) => state.agenda_reducer.profesional_seleccionado
   );
 
-  /*useEffect(() => {
-    dispatch(cleanProgramar());
-  }, [dispatch, turno_info, fechaCalendario]);*/
-
   useEffect(() => {
     dispatch(setFecha(fechaCalendario));
   }, [dispatch, fechaCalendario]);
