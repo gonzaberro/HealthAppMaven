@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import { getListaProfesionales } from "actions/ProfesionalActions";
 import { getListaPacientes } from "actions/PacienteActions";
-import { cleanTurnos } from "actions/BuscarTurnosActions";
 import BuscarTurnoTabla from "./BuscarTurnoTabla";
 import ListaTurnos from "./ListaTurnos";
 import HeaderListaTurnos from "./HeaderListaTurnos";

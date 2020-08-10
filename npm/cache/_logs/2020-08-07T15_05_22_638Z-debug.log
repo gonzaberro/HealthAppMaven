@@ -6,7 +6,7 @@
 5 info lifecycle healthapp@0.1.0~prebuild: healthapp@0.1.0
 6 info lifecycle healthapp@0.1.0~build: healthapp@0.1.0
 7 verbose lifecycle healthapp@0.1.0~build: unsafe-perm in lifecycle true
-8 verbose lifecycle healthapp@0.1.0~build: PATH: /usr/local/lib/node_modules/npm/node_modules/npm-lifecycle/node-gyp-bin:/Users/gonzaloberro/Documents/React Project/HealthAppWar/frontend/node_modules/.bin:/Users/gonzaloberro/opt/apache-maven-3.6.3//bin:/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Library/Apple/usr/bin
+8 verbose lifecycle healthapp@0.1.0~build: PATH: /usr/local/lib/node_modules/npm/node_modules/npm-lifecycle/node-gyp-bin:/Users/gonzaloberro/Documents/React Project/HealthAppWar/frontend/node_modules/.bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Library/Apple/usr/bin
 9 verbose lifecycle healthapp@0.1.0~build: CWD: /Users/gonzaloberro/Documents/React Project/HealthAppWar/frontend
 10 silly lifecycle healthapp@0.1.0~build: Args: [ '-c', 'react-scripts build' ]
 11 silly lifecycle healthapp@0.1.0~build: Returned: code: 1  signal: null
@@ -21,7 +21,7 @@
 13 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:286:5)
 14 verbose pkgid healthapp@0.1.0
 15 verbose cwd /Users/gonzaloberro/Documents/React Project/HealthAppWar/frontend
-16 verbose Darwin 19.4.0
+16 verbose Darwin 19.6.0
 17 verbose argv "/usr/local/bin/node" "/usr/local/bin/npm" "run" "build"
 18 verbose node v12.17.0
 19 verbose npm  v6.14.4
