@@ -23,6 +23,7 @@ import UsuariosReducer from "./UsuariosReducer";
 import PerfilReducer from "./PerfilReducer";
 import EstadosTurnoReducer from "./EstadosTurnoReducer";
 import ModalReducer from "./ModalReducer";
+import FuncionesPerfilReducer from "./FuncionesPerfilReducer";
 
 export default combineReducers({
   login_state: LoginReducer,
@@ -48,4 +49,5 @@ export default combineReducers({
   perfil: PerfilReducer,
   estadosTurno: EstadosTurnoReducer,
   modalReducer: ModalReducer,
+  funcionesPerfil: FuncionesPerfilReducer,
 });

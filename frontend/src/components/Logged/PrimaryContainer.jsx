@@ -16,6 +16,7 @@ import Usuarios from "./FormsABM/Usuarios/Usuarios";
 import Profesional from "./Profesional/Profesional";
 import Paciente from "./Paciente/Paciente";
 import Perfil from "./FormsABM/Perfil/Perfil";
+import FuncionPerfil from "./FormsABM/FuncionPerfil/FuncionPerfil";
 import HistoriaClinica from "./HistoriaClinica/HistoriaClinica";
 import { useSnackbar } from "notistack";
 
@@ -134,6 +135,12 @@ export default function PrimaryContainer() {
         return (
           <div style={{ height: "100%" }}>
             <Perfil />
+          </div>
+        );
+      case menuOptions.FUNCIONES_PERFIL:
+        return (
+          <div style={{ height: "100%" }}>
+            <FuncionPerfil />
           </div>
         );
 

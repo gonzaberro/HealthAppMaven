@@ -44,6 +44,21 @@ export default function InformacionEmpresaSmallMenu(props) {
       </Grid>
       <Grid container>
         <Grid item xs={3}></Grid>
+        <Grid
+          item
+          xs={9}
+          onClick={() => gotoMenu(menuOptions.FUNCIONES_PERFIL, dispatch)}
+          className={
+            menuSelected === menuOptions.FUNCIONES_PERFIL
+              ? classes.selectedSubMenu
+              : classes.textSubMenu
+          }
+        >
+          {menuOptions.FUNCIONES_PERFIL}
+        </Grid>
+      </Grid>
+      <Grid container>
+        <Grid item xs={3}></Grid>
 
         <Grid
           item

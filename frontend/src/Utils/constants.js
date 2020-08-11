@@ -20,6 +20,7 @@ export const menuOptions = {
   USUARIOS: "Usuarios",
   PERFIL: "Perfiles",
   REPORTES: "Reportes",
+  FUNCIONES_PERFIL: "Funciones Perfil",
 };
 //export const url_servidor = "http://190.190.115.14:8580/HealthBackApp/";
 export const url_servidor = "http://localhost:8080/HealthBackApp/";
